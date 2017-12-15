@@ -65,6 +65,7 @@ public class MyDialogFragment extends DialogFragment {
 //                break;
 //        }
 //        setStyle(style, theme);
+
     }
 
     @NonNull
