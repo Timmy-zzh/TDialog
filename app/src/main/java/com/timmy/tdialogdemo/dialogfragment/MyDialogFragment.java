@@ -1,4 +1,4 @@
-package com.timmy.tdialog.dialogfragment;
+package com.timmy.tdialogdemo.dialogfragment;
 
 
 import android.app.Dialog;
@@ -13,8 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.timmy.tdialog.R;
-import com.timmy.tdialog.ui.NormalDFActivity;
+import com.timmy.tdialogdemo.R;
 
 /**
  * 使用onCreateView返回Dialog的界面布局

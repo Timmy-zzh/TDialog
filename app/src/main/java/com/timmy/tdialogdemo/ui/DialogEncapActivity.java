@@ -1,12 +1,11 @@
-package com.timmy.tdialog.ui;
+package com.timmy.tdialogdemo.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.timmy.tdialog.R;
-import com.timmy.tdialog.dialog.TDialog;
+import com.timmy.tdialogdemo.R;
+import com.timmy.tdialog.TDialog;
 
 /**
  * DialogFragment封装

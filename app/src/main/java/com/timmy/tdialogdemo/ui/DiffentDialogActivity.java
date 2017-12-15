@@ -1,9 +1,9 @@
-package com.timmy.tdialog.ui;
+package com.timmy.tdialogdemo.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.timmy.tdialog.R;
+import com.timmy.tdialogdemo.R;
 
 /**
  * 常用的各种Dialog

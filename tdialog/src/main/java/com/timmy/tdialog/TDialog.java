@@ -1,4 +1,4 @@
-package com.timmy.tdialog.dialog;
+package com.timmy.tdialog;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -6,12 +6,20 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 
+import com.timmy.tdialog.base.BaseDialogFragment;
+
 /**
- *  设置屏幕宽高比例值
- *  设置弹出键盘
- *  设置返回键是否可以取消
+ * 设置屏幕宽高比例值
+ * 设置弹出键盘
+ * 设置返回键是否可以取消
  */
 public class TDialog extends BaseDialogFragment {
+
+    private static final String KEY_LAYOUT_RES = "layoutRes";
+    private static final String KEY_HEIGHT = "height";
+    private static final String KEY_WIDTH = "width";
+    private static final String KEY_DIMAMOUNT = "dimAmount";
+    private static final String KEY_CANCEL_OUTSIDE = "isCancelOutside";
 
     private FragmentManager fragmentManager;
     private boolean mIsCancelOutside = super.getCancelOutside();
@@ -19,7 +27,7 @@ public class TDialog extends BaseDialogFragment {
     private float mDimAmount = super.getDimAmount();
     private int mHeight = super.getDialogHeight();
     private int mWidth = super.getDialogWidth();
-    private int gravity = super.getGravity();
+    private int mGravity = super.getGravity();
 
     @LayoutRes
     private int layoutRes;
@@ -31,13 +39,31 @@ public class TDialog extends BaseDialogFragment {
         return dialog;
     }
 
+    /**
+     * 当设备旋转时,会重新调用onCreate,进行数据恢复
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            layoutRes = savedInstanceState.getInt(KEY_LAYOUT_RES);
+            mHeight = savedInstanceState.getInt(KEY_HEIGHT);
+            mWidth = savedInstanceState.getInt(KEY_WIDTH);
+            mDimAmount = savedInstanceState.getFloat(KEY_DIMAMOUNT);
+            mIsCancelOutside = savedInstanceState.getBoolean(KEY_CANCEL_OUTSIDE);
+        }
     }
 
+    /**
+     * 进行数据保存
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(KEY_LAYOUT_RES, layoutRes);
+        outState.putInt(KEY_HEIGHT, mHeight);
+        outState.putInt(KEY_WIDTH, mWidth);
+        outState.putFloat(KEY_DIMAMOUNT, mDimAmount);
+        outState.putBoolean(KEY_CANCEL_OUTSIDE, mIsCancelOutside);
         super.onSaveInstanceState(outState);
     }
 
@@ -83,11 +109,26 @@ public class TDialog extends BaseDialogFragment {
         return this;
     }
 
+    /**
+     * 设置屏幕高度比例 0 -1
+     */
+    public TDialog setScreenHeightAspect(float heightAspect) {
+        mHeight = (int) (getWindowHeight() * heightAspect);
+        return this;
+    }
+
     public TDialog setHeight(int heightPx) {
         mHeight = heightPx;
         return this;
     }
 
+    /**
+     * 设置弹窗宽度是屏幕宽度的比例 0 -1
+     */
+    public TDialog setScreenWidthAspect(float widthAspect) {
+        mWidth = (int) ((int) getWindowWidth() * widthAspect);
+        return this;
+    }
 
     public TDialog setWidth(int width) {
         mWidth = width;
@@ -95,13 +136,13 @@ public class TDialog extends BaseDialogFragment {
     }
 
     public TDialog setGravity(int gravity) {
-        this.gravity = gravity;
+        this.mGravity = gravity;
         return this;
     }
 
     @Override
     public int getGravity() {
-        return gravity;
+        return mGravity;
     }
 
     @Override
@@ -134,6 +175,7 @@ public class TDialog extends BaseDialogFragment {
     }
 
     public TDialog show() {
+        //判断是否传入了布局id
         show(fragmentManager);
         return this;
     }

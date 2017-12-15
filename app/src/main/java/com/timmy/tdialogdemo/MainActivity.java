@@ -1,14 +1,14 @@
-package com.timmy.tdialog;
+package com.timmy.tdialogdemo;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.timmy.tdialog.ui.DialogEncapActivity;
-import com.timmy.tdialog.ui.DiffentDialogActivity;
-import com.timmy.tdialog.ui.NormalDFActivity;
-import com.timmy.tdialog.ui.SystemDialog;
+import com.timmy.tdialogdemo.ui.DialogEncapActivity;
+import com.timmy.tdialogdemo.ui.DiffentDialogActivity;
+import com.timmy.tdialogdemo.ui.NormalDFActivity;
+import com.timmy.tdialogdemo.ui.SystemDialog;
 
 public class MainActivity extends AppCompatActivity {
 

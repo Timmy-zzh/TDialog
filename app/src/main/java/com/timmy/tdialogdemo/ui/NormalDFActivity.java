@@ -1,4 +1,4 @@
-package com.timmy.tdialog.ui;
+package com.timmy.tdialogdemo.ui;
 
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -7,9 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.timmy.tdialog.R;
-import com.timmy.tdialog.dialogfragment.MyAlertDialogFragment;
-import com.timmy.tdialog.dialogfragment.MyDialogFragment;
+import com.timmy.tdialogdemo.R;
+import com.timmy.tdialogdemo.dialogfragment.MyAlertDialogFragment;
+import com.timmy.tdialogdemo.dialogfragment.MyDialogFragment;
 
 /**
  * DialogFragment的使用

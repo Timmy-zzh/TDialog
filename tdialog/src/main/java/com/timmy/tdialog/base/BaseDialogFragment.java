@@ -1,12 +1,9 @@
-package com.timmy.tdialog.dialog;
+package com.timmy.tdialog.base;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.ImageFormat;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -17,8 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-
-import com.timmy.tdialog.dialogfragment.MyDialogFragment;
 
 /**
  * DialogFragment的基类
@@ -37,6 +32,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
     private int gravity = Gravity.CENTER;
 
     protected abstract int getLayoutRes();
+
     protected abstract void bindView(View view);
 
     @Override
@@ -116,6 +112,9 @@ public abstract class BaseDialogFragment extends DialogFragment {
         return DEFAULT_DIMAMOUNT;
     }
 
+    /**
+     * 默认Dialog外部点击可以取消显示
+     */
     public boolean getCancelOutside() {
         return true;
     }
@@ -126,5 +125,16 @@ public abstract class BaseDialogFragment extends DialogFragment {
 
     public void show(FragmentManager fragmentManager) {
         show(fragmentManager, getFragmentTag());
+    }
+
+    /**
+     * 获得屏幕宽/高
+     */
+    public int getWindowHeight() {
+        return getActivity().getWindowManager().getDefaultDisplay().getHeight();
+    }
+
+    public  int getWindowWidth() {
+        return getActivity().getWindowManager().getDefaultDisplay().getWidth();
     }
 }

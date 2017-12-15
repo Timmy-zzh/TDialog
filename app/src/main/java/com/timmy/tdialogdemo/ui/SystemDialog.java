@@ -1,4 +1,4 @@
-package com.timmy.tdialog.ui;
+package com.timmy.tdialogdemo.ui;
 
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.timmy.tdialog.R;
+import com.timmy.tdialogdemo.R;
 
 /**
  * 系统Dialog使用

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TDialog.iml" filepath="$PROJECT_DIR$/TDialog.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tdialog/tdialog.iml" filepath="$PROJECT_DIR$/tdialog/tdialog.iml" />
     </modules>
   </component>
 </project>

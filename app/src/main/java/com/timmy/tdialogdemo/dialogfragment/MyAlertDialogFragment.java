@@ -1,4 +1,4 @@
-package com.timmy.tdialog.dialogfragment;
+package com.timmy.tdialogdemo.dialogfragment;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -8,7 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.timmy.tdialog.R;
+import com.timmy.tdialogdemo.R;
 
 /**
  * 采用返回Dialog的方式处理
