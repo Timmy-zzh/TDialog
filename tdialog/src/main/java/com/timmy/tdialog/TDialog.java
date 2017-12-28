@@ -1,5 +1,6 @@
 package com.timmy.tdialog;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import com.timmy.tdialog.base.BaseDialogFragment;
+import com.timmy.tdialog.base.BindViewHolder;
 
 /**
  * 设置屏幕宽高比例值
@@ -27,11 +29,14 @@ public class TDialog extends BaseDialogFragment {
     private float mDimAmount = super.getDimAmount();
     private int mHeight = super.getDialogHeight();
     private int mWidth = super.getDialogWidth();
-    private int mGravity = super.getGravity();
+    protected int mGravity = super.getGravity();
+    private OnItemChildClickListener mOnItemChildClickListener;
 
     @LayoutRes
     private int layoutRes;
     private OnBindViewListener bindViewListener;
+    private BindViewHolder viewHolder  =  new BindViewHolder();
+    private int[] ids;
 
     public static TDialog create(FragmentManager manager) {
         TDialog dialog = new TDialog();
@@ -73,10 +78,30 @@ public class TDialog extends BaseDialogFragment {
     }
 
     @Override
-    protected void bindView(View view) {
+    protected  void bindView(View view) {
+        viewHolder.setBindView(view);
+        for (int id : ids) {
+            viewHolder.addOnClickListener(id);
+        }
+        viewHolder.setDialog(this);
         if (bindViewListener != null) {
             bindViewListener.bindView(view);
         }
+    }
+
+    public TDialog addOnClickListener(int... ids){
+       this.ids = ids;
+        return this;
+    }
+
+    public TDialog setOnItemChildClickListener(OnItemChildClickListener listener) {
+        mOnItemChildClickListener = listener;
+        return this;
+    }
+
+    @Nullable
+    public final OnItemChildClickListener getOnItemChildClickListener() {
+        return mOnItemChildClickListener;
     }
 
     public TDialog setFragmentManager(FragmentManager manager) {
@@ -112,8 +137,8 @@ public class TDialog extends BaseDialogFragment {
     /**
      * 设置屏幕高度比例 0 -1
      */
-    public TDialog setScreenHeightAspect(float heightAspect) {
-        mHeight = (int) (getWindowHeight() * heightAspect);
+    public TDialog setScreenHeightAspect(Activity activity,float heightAspect) {
+        mHeight = (int) (getWindowHeight(activity) * heightAspect);
         return this;
     }
 
@@ -125,8 +150,8 @@ public class TDialog extends BaseDialogFragment {
     /**
      * 设置弹窗宽度是屏幕宽度的比例 0 -1
      */
-    public TDialog setScreenWidthAspect(float widthAspect) {
-        mWidth = (int) ((int) getWindowWidth() * widthAspect);
+    public TDialog setScreenWidthAspect(Activity activity,float widthAspect) {
+        mWidth = (int) ( getWindowWidth(activity) * widthAspect);
         return this;
     }
 
@@ -179,5 +204,7 @@ public class TDialog extends BaseDialogFragment {
         show(fragmentManager);
         return this;
     }
-
+    public interface OnItemChildClickListener {
+        void onItemChildClick(BindViewHolder viewHolder, View view);
+    }
 }

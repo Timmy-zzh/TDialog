@@ -1,9 +1,12 @@
 package com.timmy.tdialog.base;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -17,11 +20,42 @@ import android.view.WindowManager;
 
 /**
  * DialogFragment的基类
- * 1.默认的onCreateDialog方法返回的是一个实例化一个系统的Dialog,我们不用
- * 2.在onCreateView方法中返回Dialog需要展示的布局界面,具体返回布局还是交给子类出实现
- * 3.Dialog的展示控制方法onStart处理,需要设置宽高,背景色,位置等控制属性
- * 4.监听回调,很多弹窗需要输入信息,然后将输入的信息通过回调的方法返回
- */
+ * 1.系统默认onCreateDialog方法返回一个Dialog对象,对其不做处理
+ * 2.主要操作onCreateView方法
+ * 因为DialogFragment继承自Fragment,所以可以在onCreteView()方法返回xml布局,
+ * 该布局在onActivityCreated()方法中,设置给系统之前创建的Dialog对象
+ * //           @Override
+ * //            public void onActivityCreated(Bundle savedInstanceState) {
+ * //                super.onActivityCreated(savedInstanceState);
+ * //
+ * //                if (!mShowsDialog) {
+ * //                return;
+ * //                }
+ * //
+ * //                View view = getView();
+ * //                if (view != null) {
+ * //                if (view.getParent() != null) {
+ * //                throw new IllegalStateException(
+ * //                "DialogFragment can not be attached to a container view");
+ * //                }
+ * //                mDialog.setContentView(view);
+ * //                }
+ * //           }
+ * 3.对应使用Dialog不同部分包括
+ *      a.xml布局
+ *      b.宽高
+ *      c.位置
+ *      d.背景色
+ *      e.透明度
+ *      f.是否可以点击空白处隐藏
+ *      控制方法在onStart处理,
+ * 4.暴露方法:界面中控件处理和点击事件处理
+ * 5.监听回调,很多弹窗需要输入信息,然后将输入的信息通过回调的方法返回
+ * 6.当设备Configure属性变化时,数据保存和恢复处理
+ *
+ * @author Timmy
+ * @time 2017/12/28 15:25
+ **/
 public abstract class BaseDialogFragment extends DialogFragment {
 
     public static final String TAG = "BaseDialogFragment";
@@ -50,6 +84,13 @@ public abstract class BaseDialogFragment extends DialogFragment {
         Log.d(TAG, "onCreate");
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateDialog");
+        return super.onCreateDialog(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,6 +107,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "onViewCreated");
+
     }
 
     @Override
@@ -130,11 +172,11 @@ public abstract class BaseDialogFragment extends DialogFragment {
     /**
      * 获得屏幕宽/高
      */
-    public int getWindowHeight() {
-        return getActivity().getWindowManager().getDefaultDisplay().getHeight();
+    public int getWindowHeight(Activity activity) {
+        return activity.getWindowManager().getDefaultDisplay().getHeight();
     }
 
-    public  int getWindowWidth() {
-        return getActivity().getWindowManager().getDefaultDisplay().getWidth();
+    public int getWindowWidth(Activity activity) {
+        return activity.getWindowManager().getDefaultDisplay().getWidth();
     }
 }

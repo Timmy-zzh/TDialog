@@ -1,42 +1,10 @@
-apply plugin: 'com.android.library'
-//apply from: 'bintrayUpload.gradle'
-
-android {
-    compileSdkVersion 26
-
-    defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:26.1.0'
-    compile 'com.android.support:recyclerview-v7:26.1.0'
-}
-
-/////////////////////////////////////////////////////////////////////////
-
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
 def siteUrl = 'https://github.com/Timmy-zzh/TDialog'   // 项目的主页
 def gitUrl = 'https://github.com/Timmy-zzh/TDialog.git'   // Git仓库的url
 
-version = "1.0.0" //发布版本号
+version = "1.0" //发布版本号
 group = "com.timmy.tdialog" //最终引用形式，如compile 'com.leon.lfilepicker:1.0.0'，其中lfilepicker在后面配置
 
 install {
@@ -46,7 +14,7 @@ install {
             project {
                 packaging 'aar'
                 // Add your description here
-                name 'Timmy Android Library'
+                name 'Timmy Android'
                 description 'timmy open library.'
                 url siteUrl
                 // Set your license
@@ -91,7 +59,6 @@ artifacts {
 }
 
 Properties properties = new Properties()
-// 加载本地配置
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 bintray {
@@ -106,13 +73,13 @@ bintray {
         licenses = ['Apache-2.0']//不能随便写，只能是仓库创建时选择的license type
         publish = true // 是否是公开项目，公开别人可以引用
 
-//        version {
-//            name = '1.0'
-//            desc = 'DialogFragment封装2.'//描述，自己定义
-//            released  = new Date()
-//            vcsTag = 'v1.0'
-//            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
-//        }
+        version {
+            name = '1.0'
+            desc = 'DialogFragment封装2.'//描述，自己定义
+            released  = new Date()
+            vcsTag = 'v1.0'
+            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+        }
     }
 }
 
