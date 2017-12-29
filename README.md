@@ -1,6 +1,6 @@
 #### 前言
 >文章代码示例已放到Github上了,有需要的朋友可以去看下[TDialog](https://github.com/Timmy-zzh/TDialog),欢迎star和fork,项目会一直维护,有疑问可以提Issues或留言.
-#####文章目录
+##### 文章目录
 * TDialog框架的由来
 * 框架使用解析
 * 框架实现原理,用到了那些知识点
@@ -8,21 +8,21 @@
 * UML类图
 * 总结
 
-######正文开始前先来一波效果图
+###### 正文开始前先来一波效果图
 
-####一.TDialog的由来
+#### 一.TDialog的由来
 TDialog是继承自DialogFragment进行封装的,大部分开发者在实现弹窗效果的时候,会首选系统提供的AlertDialog;
 但是使用系统的Dialog在某些情况下会出现问题,最常见的场景是当手机屏幕旋转时Dialog弹窗会消失,并抛出一个系统,这个异常不会导致异常崩溃,因为Google开发者知道这个问题,并进行了处理.
 Dialog使用起来其实更简单,但是Google却是推荐尽量使用DialogFragment.
-#####1.DialogFragment的优点
+##### 1.DialogFragment的优点
 * DialogFragment 本身是 Fragment 的子类，有着和 Fragment 基本一样的生命周期，使用 DialogFragment 来管理对话框，当旋转屏幕和按下后退键的时候可以更好的管理其生命周期
 * 在手机配置变化导致 Activity 需要重新创建时，例如旋转屏幕，基于 DialogFragment 的对话框将会由 FragmentManager 自动重建，然而基于 Dialog 实现的对话框却没有这样的能力
 #### 使用
-1.在项目build.gradle文件中添加依赖
+##### 1.在项目build.gradle文件中添加依赖
 ```
 compile 'com.timmy.tdialog:tdialog:1.1.1'
 ```
-2.Activity或者Fragment中使用
+##### 2.Activity或者Fragment中使用
 ```
     new TDialog.Builder(getSupportFragmentManager())
             .setLayoutRes(R.layout.dialog_click)
@@ -49,7 +49,7 @@ compile 'com.timmy.tdialog:tdialog:1.1.1'
             .create()
             .show();
 ```
-####使用方法解析
+#### 使用方法解析
 TDialog的实现原理和系统Dialog原理差不多,主要使用Builder设计模式实现
 1.创建弹窗,必须传入xml布局文件,且自己设置背景色,因为默认是透明背景色
 ```
