@@ -33,10 +33,7 @@ public class DialogEncapActivity extends AppCompatActivity {
     public void showClickDialog(View view) {
         new TDialog.Builder(getSupportFragmentManager())
                 .setLayoutRes(R.layout.dialog_click)
-                .setWidth(600)
-                .setHeight(800)
-                .setScreenWidthAspect(DialogEncapActivity.this,0.5f)
-                .setScreenHeightAspect(DialogEncapActivity.this,0.6f)
+                .setScreenWidthAspect(DialogEncapActivity.this,0.8f)
                 .setTag("DialogTest")
                 .setDimAmount(0.6f)
                 .setGravity(Gravity.CENTER)

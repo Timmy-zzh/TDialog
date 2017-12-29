@@ -9,7 +9,7 @@
 * 总结
 
 ###### 正文开始前先来一波效果图
-
+![](/images/TDialog.gif)
 #### 一.TDialog的由来
 TDialog是继承自DialogFragment进行封装的,大部分开发者在实现弹窗效果的时候,会首选系统提供的AlertDialog;
 但是使用系统的Dialog在某些情况下会出现问题,最常见的场景是当手机屏幕旋转时Dialog弹窗会消失,并抛出一个系统,这个异常不会导致异常崩溃,因为Google开发者知道这个问题,并进行了处理.
