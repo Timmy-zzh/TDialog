@@ -35,7 +35,6 @@ public class DialogEncapActivity extends AppCompatActivity {
     public void showClickDialog(View view) {
         new TDialog.Builder(getSupportFragmentManager())
                 .setLayoutRes(R.layout.dialog_click)
-                .setCancelOutside(false)
                 .setDimAmount(0.6f)
                 .setGravity(Gravity.RIGHT)
                 .setOnBindViewListener(new OnBindViewListener() {
@@ -47,10 +46,11 @@ public class DialogEncapActivity extends AppCompatActivity {
                 .addOnClickListener(R.id.btn_right, R.id.tv_title)
                 .setOnViewClickListener(new OnViewClickListener() {
                     @Override
-                    public void onViewClick(BindViewHolder viewHolder, View view) {
-                        switch (view.getId()) {
+                    public void onViewClick(BindViewHolder viewHolder,View view1, TDialog tDialog) {
+                        switch (view1.getId()) {
                             case R.id.btn_right:
                                 Toast.makeText(DialogEncapActivity.this, "btn_right", Toast.LENGTH_SHORT).show();
+                                tDialog.dismiss();
                                 break;
                             case R.id.tv_title:
                                 Toast.makeText(DialogEncapActivity.this, "tv_title", Toast.LENGTH_SHORT).show();

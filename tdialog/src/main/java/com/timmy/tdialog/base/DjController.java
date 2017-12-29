@@ -81,7 +81,7 @@ public class DjController implements Serializable {
         public int mGravity;
         public String mTag;
         public int[] ids;
-        public boolean mIsCancelableOutside;
+        public boolean mIsCancelableOutside = true;
         public OnViewClickListener mOnViewClickListener;
         public OnBindViewListener bindViewListener;
 

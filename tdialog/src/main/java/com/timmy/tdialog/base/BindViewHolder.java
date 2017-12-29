@@ -62,7 +62,7 @@ public class BindViewHolder {
                 @Override
                 public void onClick(View v) {
                     if (dialog.getOnViewClickListener() != null) {
-                        dialog.getOnViewClickListener().onViewClick(BindViewHolder.this, view);
+                        dialog.getOnViewClickListener().onViewClick(BindViewHolder.this,view, dialog);
                     }
                 }
             });

@@ -36,7 +36,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 def siteUrl = 'https://github.com/Timmy-zzh/TDialog'   // 项目的主页
 def gitUrl = 'https://github.com/Timmy-zzh/TDialog.git'   // Git仓库的url
 
-version = "1.0.0" //发布版本号
+version = "1.1.1" //发布版本号
 group = "com.timmy.tdialog" //最终引用形式，如compile 'com.leon.lfilepicker:1.0.0'，其中lfilepicker在后面配置
 
 install {
@@ -46,8 +46,8 @@ install {
             project {
                 packaging 'aar'
                 // Add your description here
-                name 'Timmy Android Library'
-                description 'timmy open library.'
+                name 'Timmy Android Library 11'
+                description 'timmy open library TDialog'
                 url siteUrl
                 // Set your license
                 licenses {
