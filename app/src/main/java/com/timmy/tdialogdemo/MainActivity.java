@@ -1,6 +1,8 @@
 package com.timmy.tdialogdemo;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -51,6 +53,18 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void diffentDialog(View view) {
+//        Handler handler ;
+//
+//        //HandlerThread的使用
+//        HandlerThread handlerThread = new HandlerThread("handlerThread");
+//        handlerThread.start();
+//        handler = new Handler(handlerThread.getLooper());
+//        handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
         startActivity(new Intent(this, DiffentDialogActivity.class));
     }
 }

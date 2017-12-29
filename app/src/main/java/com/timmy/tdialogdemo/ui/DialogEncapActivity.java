@@ -2,12 +2,15 @@ package com.timmy.tdialogdemo.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.timmy.tdialog.base.BindViewHolder;
-import com.timmy.tdialogdemo.R;
 import com.timmy.tdialog.TDialog;
+import com.timmy.tdialog.base.BindViewHolder;
+import com.timmy.tdialog.listener.OnBindViewListener;
+import com.timmy.tdialog.listener.OnViewClickListener;
+import com.timmy.tdialogdemo.R;
 
 /**
  * DialogFragment封装
@@ -26,54 +29,46 @@ public class DialogEncapActivity extends AppCompatActivity {
      * @param view
      */
     public void showDialog(View view) {
-        TDialog.create(getSupportFragmentManager())
-                .setLayoutRes(R.layout.dialog_simple)
-//                .setGravity(Gravity.BOTTOM|Gravity.RIGHT)
-                .setWidth(800)
-//                .setHeight(400)
-                .setDimAmount(0.6f)
-                .setCancelOutside(false)
-                .setOnBindViewListener(new TDialog.OnBindViewListener() {
-                    @Override
-                    public void bindView(View v) {
 
-                    }
-                })
-                .show();
     }
 
     public void showClickDialog(View view) {
-        TDialog.create(getSupportFragmentManager())
+        new TDialog.Builder(getSupportFragmentManager())
                 .setLayoutRes(R.layout.dialog_click)
-                .setScreenWidthAspect(this, 0.8f)
-                .setDimAmount(0.2f)
                 .setCancelOutside(false)
-                .setOnBindViewListener(new TDialog.OnBindViewListener() {
+                .setDimAmount(0.6f)
+                .setGravity(Gravity.RIGHT)
+                .setOnBindViewListener(new OnBindViewListener() {
                     @Override
-                    public void bindView(View v) {
-
+                    public void bindView(BindViewHolder bindViewHolder) {
+                        bindViewHolder.setText(R.id.tv_content, "爱的减肥啦到家啦房间看多了几分");
                     }
                 })
-                .addOnClickListener(R.id.tv_title, R.id.tv_content, R.id.btn_left, R.id.btn_right)
-                .setOnItemChildClickListener(new TDialog.OnItemChildClickListener() {
+                .addOnClickListener(R.id.btn_right, R.id.tv_title)
+                .setOnViewClickListener(new OnViewClickListener() {
                     @Override
-                    public void onItemChildClick(BindViewHolder viewHolder, View view) {
+                    public void onViewClick(BindViewHolder viewHolder, View view) {
                         switch (view.getId()) {
-                            case R.id.tv_title:
-                                Toast.makeText(DialogEncapActivity.this, "title", Toast.LENGTH_SHORT).show();
-                                break;
-                            case R.id.tv_content:
-                                Toast.makeText(DialogEncapActivity.this, "tv_content", Toast.LENGTH_SHORT).show();
-                                break;
-                            case R.id.btn_left:
-                                Toast.makeText(DialogEncapActivity.this, "btn_left", Toast.LENGTH_SHORT).show();
-                                break;
                             case R.id.btn_right:
                                 Toast.makeText(DialogEncapActivity.this, "btn_right", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.tv_title:
+                                Toast.makeText(DialogEncapActivity.this, "tv_title", Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     }
                 })
+                .create()
                 .show();
     }
+
+    public void showClickDialog2(View view) {
+        TDialog.Builder builder = new TDialog.Builder(getSupportFragmentManager())
+                .setLayoutRes(R.layout.dialog_click)
+                .setGravity(Gravity.BOTTOM);
+        TDialog djDialog = builder.create();
+        djDialog.show();
+    }
+
+
 }

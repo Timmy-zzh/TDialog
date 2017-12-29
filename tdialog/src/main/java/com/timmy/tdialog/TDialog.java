@@ -9,6 +9,10 @@ import android.view.View;
 
 import com.timmy.tdialog.base.BaseDialogFragment;
 import com.timmy.tdialog.base.BindViewHolder;
+import com.timmy.tdialog.base.DjController;
+import com.timmy.tdialog.listener.OnBindViewListener;
+import com.timmy.tdialog.listener.OnViewClickListener;
+import com.timmy.tdialog.util.DensityUtils;
 
 /**
  * 设置屏幕宽高比例值
@@ -17,31 +21,11 @@ import com.timmy.tdialog.base.BindViewHolder;
  */
 public class TDialog extends BaseDialogFragment {
 
-    private static final String KEY_LAYOUT_RES = "layoutRes";
-    private static final String KEY_HEIGHT = "height";
-    private static final String KEY_WIDTH = "width";
-    private static final String KEY_DIMAMOUNT = "dimAmount";
-    private static final String KEY_CANCEL_OUTSIDE = "isCancelOutside";
+    private static final String KEY_DJCONTROLLER = "DjController";
+    private DjController djController;
 
-    private FragmentManager fragmentManager;
-    private boolean mIsCancelOutside = super.getCancelOutside();
-    private String mTag = super.getFragmentTag();
-    private float mDimAmount = super.getDimAmount();
-    private int mHeight = super.getDialogHeight();
-    private int mWidth = super.getDialogWidth();
-    protected int mGravity = super.getGravity();
-    private OnItemChildClickListener mOnItemChildClickListener;
-
-    @LayoutRes
-    private int layoutRes;
-    private OnBindViewListener bindViewListener;
-    private BindViewHolder viewHolder  =  new BindViewHolder();
-    private int[] ids;
-
-    public static TDialog create(FragmentManager manager) {
-        TDialog dialog = new TDialog();
-        dialog.setFragmentManager(manager);
-        return dialog;
+    public TDialog() {
+        djController = new DjController();
     }
 
     /**
@@ -51,11 +35,7 @@ public class TDialog extends BaseDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            layoutRes = savedInstanceState.getInt(KEY_LAYOUT_RES);
-            mHeight = savedInstanceState.getInt(KEY_HEIGHT);
-            mWidth = savedInstanceState.getInt(KEY_WIDTH);
-            mDimAmount = savedInstanceState.getFloat(KEY_DIMAMOUNT);
-            mIsCancelOutside = savedInstanceState.getBoolean(KEY_CANCEL_OUTSIDE);
+            djController = (DjController) savedInstanceState.getSerializable(KEY_DJCONTROLLER);
         }
     }
 
@@ -64,147 +44,158 @@ public class TDialog extends BaseDialogFragment {
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(KEY_LAYOUT_RES, layoutRes);
-        outState.putInt(KEY_HEIGHT, mHeight);
-        outState.putInt(KEY_WIDTH, mWidth);
-        outState.putFloat(KEY_DIMAMOUNT, mDimAmount);
-        outState.putBoolean(KEY_CANCEL_OUTSIDE, mIsCancelOutside);
+        outState.putSerializable(KEY_DJCONTROLLER, djController);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected int getLayoutRes() {
-        return layoutRes;
+        return djController.getLayoutRes();
     }
 
     @Override
-    protected  void bindView(View view) {
-        viewHolder.setBindView(view);
-        for (int id : ids) {
-            viewHolder.addOnClickListener(id);
+    protected void bindView(View view) {
+        BindViewHolder viewHolder = new BindViewHolder(view, this);
+        if (djController.getIds() != null && djController.getIds().length > 0) {
+            for (int id : djController.getIds()) {
+                viewHolder.addOnClickListener(id);
+            }
         }
-        viewHolder.setDialog(this);
-        if (bindViewListener != null) {
-            bindViewListener.bindView(view);
+        if (djController.getBindViewListener() != null) {
+            djController.getBindViewListener().bindView(viewHolder);
         }
-    }
-
-    public TDialog addOnClickListener(int... ids){
-       this.ids = ids;
-        return this;
-    }
-
-    public TDialog setOnItemChildClickListener(OnItemChildClickListener listener) {
-        mOnItemChildClickListener = listener;
-        return this;
-    }
-
-    @Nullable
-    public final OnItemChildClickListener getOnItemChildClickListener() {
-        return mOnItemChildClickListener;
-    }
-
-    public TDialog setFragmentManager(FragmentManager manager) {
-        fragmentManager = manager;
-        return this;
-    }
-
-    public TDialog setOnBindViewListener(OnBindViewListener listener) {
-        bindViewListener = listener;
-        return this;
-    }
-
-    public TDialog setLayoutRes(@LayoutRes int layoutId) {
-        layoutRes = layoutId;
-        return this;
-    }
-
-    public TDialog setCancelOutside(boolean cancel) {
-        mIsCancelOutside = cancel;
-        return this;
-    }
-
-    public TDialog setTag(String tag) {
-        mTag = tag;
-        return this;
-    }
-
-    public TDialog setDimAmount(float dim) {
-        mDimAmount = dim;
-        return this;
-    }
-
-    /**
-     * 设置屏幕高度比例 0 -1
-     */
-    public TDialog setScreenHeightAspect(Activity activity,float heightAspect) {
-        mHeight = (int) (getWindowHeight(activity) * heightAspect);
-        return this;
-    }
-
-    public TDialog setHeight(int heightPx) {
-        mHeight = heightPx;
-        return this;
-    }
-
-    /**
-     * 设置弹窗宽度是屏幕宽度的比例 0 -1
-     */
-    public TDialog setScreenWidthAspect(Activity activity,float widthAspect) {
-        mWidth = (int) ( getWindowWidth(activity) * widthAspect);
-        return this;
-    }
-
-    public TDialog setWidth(int width) {
-        mWidth = width;
-        return this;
-    }
-
-    public TDialog setGravity(int gravity) {
-        this.mGravity = gravity;
-        return this;
     }
 
     @Override
     public int getGravity() {
-        return mGravity;
+        return djController.getGravity();
     }
 
     @Override
     public float getDimAmount() {
-        return mDimAmount;
+        return djController.getDimAmount();
     }
 
     @Override
     public int getDialogHeight() {
-        return mHeight;
+        return djController.getHeight();
     }
 
     @Override
     public int getDialogWidth() {
-        return mWidth;
+        return djController.getWidth();
     }
 
     @Override
     public boolean getCancelOutside() {
-        return mIsCancelOutside;
+        return djController.isCancelableOutside();
     }
 
     @Override
     public String getFragmentTag() {
-        return mTag;
+        return djController.getTag();
     }
 
-    public interface OnBindViewListener {
-        void bindView(View v);
+    public OnViewClickListener getOnViewClickListener() {
+        return djController.getOnViewClickListener();
     }
 
     public TDialog show() {
         //判断是否传入了布局id
-        show(fragmentManager);
+        //如果宽高都没有设置,则默认给弹窗提供宽度为800
+        if (djController.getWidth() <= 0 && djController.getHeight() <= 0) {
+            djController.setWidth(600);
+        }
+        show(djController.getFragmentManager());
         return this;
     }
-    public interface OnItemChildClickListener {
-        void onItemChildClick(BindViewHolder viewHolder, View view);
+
+    /*********************************************************************
+     * 使用Builder模式实现
+     *
+     */
+    public static class Builder {
+
+        DjController.DjParams params;
+
+        public Builder(FragmentManager fragmentManager) {
+            params = new DjController.DjParams();
+            params.fragmentManager = fragmentManager;
+        }
+
+        //各种setXXX()方法设置数据
+
+        public Builder setLayoutRes(@LayoutRes int layoutRes) {
+            params.layoutRes = layoutRes;
+            return this;
+        }
+
+        /**
+         * 设置弹窗宽度是屏幕宽度的比例 0 -1
+         */
+        public Builder setScreenWidthAspect(Activity activity, float widthAspect) {
+            params.mWidth = (int) (DensityUtils.getWindowWidth(activity) * widthAspect);
+            return this;
+        }
+
+        public Builder setWidth(int width) {
+            params.mWidth = width;
+            return this;
+        }
+
+        /**
+         * 设置屏幕高度比例 0 -1
+         */
+        public Builder setScreenHeightAspect(Activity activity, float heightAspect) {
+            params.mHeight = (int) (DensityUtils.getWindowHeight(activity) * heightAspect);
+            return this;
+        }
+
+        public Builder setHeight(int heightPx) {
+            params.mHeight = heightPx;
+            return this;
+        }
+
+        public Builder setGravity(int gravity) {
+            params.mGravity = gravity;
+            return this;
+        }
+
+        public Builder setCancelOutside(boolean cancel) {
+            params.mIsCancelableOutside = cancel;
+            return this;
+        }
+
+        public Builder setDimAmount(float dim) {
+            params.mDimAmount = dim;
+            return this;
+        }
+
+        public Builder setTag(String tag) {
+            params.mTag = tag;
+            return this;
+        }
+
+        public Builder setOnBindViewListener(OnBindViewListener listener) {
+            params.bindViewListener = listener;
+            return this;
+        }
+
+        public Builder addOnClickListener(int... ids) {
+            params.ids = ids;
+            return this;
+        }
+
+        public Builder setOnViewClickListener(OnViewClickListener listener) {
+            params.mOnViewClickListener = listener;
+            return this;
+        }
+
+        public TDialog create() {
+            TDialog dialog = new TDialog();
+            //将数据从Buidler的DjParams中传递到DjDialog中
+            params.apply(dialog.djController);
+            return dialog;
+        }
     }
 }

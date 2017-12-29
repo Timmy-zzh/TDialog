@@ -17,7 +17,7 @@ public  class TListDialog extends TDialog {
 
     public static TListDialog create(FragmentManager manager) {
         TListDialog dialog = new TListDialog();
-        dialog.setFragmentManager(manager);
+//        dialog.setFragmentManager(manager);
         return dialog;
     }
 
@@ -31,11 +31,11 @@ public  class TListDialog extends TDialog {
         return this;
     }
 
-    @Override
-    public TListDialog setGravity(int gravity) {
-        this.mGravity = gravity;
-        return this;
-    }
+//    @Override
+//    public TListDialog setGravity(int gravity) {
+//        this.mGravity = gravity;
+//        return this;
+//    }
 
     @Override
     protected void bindView(View view) {

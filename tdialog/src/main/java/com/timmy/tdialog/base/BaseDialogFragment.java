@@ -72,7 +72,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.d(TAG, "onAttach");
         if (context instanceof OnDialogResultListener) {
             onDialogResultListener = (OnDialogResultListener) context;
         }
@@ -81,20 +80,17 @@ public abstract class BaseDialogFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateDialog");
         return super.onCreateDialog(savedInstanceState);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
         //去除Dialog默认头部
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(getCancelOutside());
@@ -106,14 +102,11 @@ public abstract class BaseDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "onViewCreated");
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart");
         Window window = getDialog().getWindow();
         if (window != null) {
             //设置窗体背景色透明
@@ -169,14 +162,4 @@ public abstract class BaseDialogFragment extends DialogFragment {
         show(fragmentManager, getFragmentTag());
     }
 
-    /**
-     * 获得屏幕宽/高
-     */
-    public int getWindowHeight(Activity activity) {
-        return activity.getWindowManager().getDefaultDisplay().getHeight();
-    }
-
-    public int getWindowWidth(Activity activity) {
-        return activity.getWindowManager().getDefaultDisplay().getWidth();
-    }
 }

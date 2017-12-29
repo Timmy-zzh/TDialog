@@ -26,12 +26,12 @@ public class DiffentDialogActivity extends AppCompatActivity {
     }
 
     public void listDialog(View view) {
-        SimpleAdapter adapter = new SimpleAdapter(Arrays.asList(data));
-        TListDialog.create(getSupportFragmentManager())
-                .setGravity(Gravity.BOTTOM)
-                .setAdapter(adapter)
-                .setScreenWidthAspect(this, 1.0f)
-                .setScreenHeightAspect(this,0.4f)
-                .show();
+//        SimpleAdapter adapter = new SimpleAdapter(Arrays.asList(data));
+//        TListDialog.create(getSupportFragmentManager())
+//                .setGravity(Gravity.BOTTOM)
+//                .setAdapter(adapter)
+//                .setScreenWidthAspect(this, 1.0f)
+//                .setScreenHeightAspect(this,0.4f)
+//                .show();
     }
 }
