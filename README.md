@@ -1,4 +1,4 @@
-####前言
+#### 前言
 >文章代码示例已放到Github上了,有需要的朋友可以去看下[TDialog](https://github.com/Timmy-zzh/TDialog),欢迎star和fork,项目会一直维护,有疑问可以提Issues或留言.
 #####文章目录
 * TDialog框架的由来
@@ -7,6 +7,7 @@
 * 应用中常见弹窗实现效果
 * UML类图
 * 总结
+
 ######正文开始前先来一波效果图
 
 ####一.TDialog的由来
@@ -23,7 +24,6 @@ compile 'com.timmy.tdialog:tdialog:1.1.1'
 ```
 2.Activity或者Fragment中使用
 ```
-
     new TDialog.Builder(getSupportFragmentManager())
             .setLayoutRes(R.layout.dialog_click)
             .setWidth(600)
