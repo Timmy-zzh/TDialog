@@ -1,4 +1,4 @@
-package com.timmy.tdialog.base;
+package com.timmy.tdialog.listener;
 
 /**
  * DialogFragment弹窗结束时,传值回调接口

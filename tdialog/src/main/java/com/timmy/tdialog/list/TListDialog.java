@@ -13,36 +13,36 @@ import com.timmy.tdialog.TDialog;
  */
 public  class TListDialog extends TDialog {
 
-    private RecyclerView.Adapter adapter;
-
-    public static TListDialog create(FragmentManager manager) {
-        TListDialog dialog = new TListDialog();
-//        dialog.setFragmentManager(manager);
-        return dialog;
-    }
-
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.dialog_recycler;
-    }
-
-    public TListDialog setAdapter(RecyclerView.Adapter adapter) {
-        this.adapter = adapter;
-        return this;
-    }
-
+//    private RecyclerView.Adapter adapter;
+//
+//    public static TListDialog create(FragmentManager manager) {
+//        TListDialog dialog = new TListDialog();
+////        dialog.setFragmentManager(manager);
+//        return dialog;
+//    }
+//
 //    @Override
-//    public TListDialog setGravity(int gravity) {
-//        this.mGravity = gravity;
+//    protected int getLayoutRes() {
+//        return R.layout.dialog_recycler;
+//    }
+//
+//    public TListDialog setAdapter(RecyclerView.Adapter adapter) {
+//        this.adapter = adapter;
 //        return this;
 //    }
-
-    @Override
-    protected void bindView(View view) {
-        super.bindView(view);
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
-    }
+//
+////    @Override
+////    public TListDialog setGravity(int gravity) {
+////        this.mGravity = gravity;
+////        return this;
+////    }
+//
+//    @Override
+//    protected void bindView(View view) {
+//        super.bindView(view);
+//        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        recyclerView.setAdapter(adapter);
+//    }
 
 }

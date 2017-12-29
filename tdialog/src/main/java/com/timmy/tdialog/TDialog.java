@@ -101,7 +101,6 @@ public class TDialog extends BaseDialogFragment {
     }
 
     public TDialog show() {
-        //判断是否传入了布局id
         //如果宽高都没有设置,则默认给弹窗提供宽度为800
         if (djController.getWidth() <= 0 && djController.getHeight() <= 0) {
             djController.setWidth(600);
@@ -138,8 +137,8 @@ public class TDialog extends BaseDialogFragment {
             return this;
         }
 
-        public Builder setWidth(int width) {
-            params.mWidth = width;
+        public Builder setWidth(int widthPx) {
+            params.mWidth = widthPx;
             return this;
         }
 

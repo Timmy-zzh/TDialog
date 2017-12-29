@@ -25,8 +25,6 @@ public class DialogEncapActivity extends AppCompatActivity {
 
     /**
      * 展示Dialog
-     *
-     * @param view
      */
     public void showDialog(View view) {
 
@@ -35,12 +33,17 @@ public class DialogEncapActivity extends AppCompatActivity {
     public void showClickDialog(View view) {
         new TDialog.Builder(getSupportFragmentManager())
                 .setLayoutRes(R.layout.dialog_click)
+                .setWidth(600)
+                .setHeight(800)
+                .setScreenWidthAspect(DialogEncapActivity.this,0.5f)
+                .setScreenHeightAspect(DialogEncapActivity.this,0.6f)
+                .setTag("DialogTest")
                 .setDimAmount(0.6f)
-                .setGravity(Gravity.RIGHT)
+                .setGravity(Gravity.CENTER)
                 .setOnBindViewListener(new OnBindViewListener() {
                     @Override
                     public void bindView(BindViewHolder bindViewHolder) {
-                        bindViewHolder.setText(R.id.tv_content, "爱的减肥啦到家啦房间看多了几分");
+                        bindViewHolder.setText(R.id.tv_content, "abcdef");
                     }
                 })
                 .addOnClickListener(R.id.btn_right, R.id.tv_title)
