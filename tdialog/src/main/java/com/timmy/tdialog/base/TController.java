@@ -4,12 +4,13 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
 
+import com.timmy.tdialog.R;
 import com.timmy.tdialog.listener.OnBindViewListener;
 import com.timmy.tdialog.listener.OnViewClickListener;
 
 import java.io.Serializable;
 
-public class TController implements Serializable {
+public class TController<A extends TBaseAdapter> implements Serializable {
 
     private FragmentManager fragmentManager;
     private int layoutRes;
@@ -22,6 +23,8 @@ public class TController implements Serializable {
     private boolean mIsCancelableOutside;
     private OnViewClickListener mOnViewClickListener;
     private OnBindViewListener bindViewListener;
+    private A adapter;
+    private TBaseAdapter.OnAdapterItemClickListener adapterItemClickListener;
 
     ///////get
     public FragmentManager getFragmentManager() {
@@ -113,7 +116,24 @@ public class TController implements Serializable {
         this.bindViewListener = bindViewListener;
     }
 
-    public static class TParams {
+    //列表
+    public A getAdapter() {
+        return adapter;
+    }
+
+    public void setAdapter(A adapter) {
+        this.adapter = adapter;
+    }
+
+    public TBaseAdapter.OnAdapterItemClickListener getAdapterItemClickListener() {
+        return adapterItemClickListener;
+    }
+
+    public void setAdapterItemClickListener(TBaseAdapter.OnAdapterItemClickListener adapterItemClickListener) {
+        this.adapterItemClickListener = adapterItemClickListener;
+    }
+
+    public static class TParams<A extends TBaseAdapter> {
         public FragmentManager fragmentManager;
         public int layoutRes;
         public int mWidth;
@@ -125,6 +145,9 @@ public class TController implements Serializable {
         public boolean mIsCancelableOutside = true;
         public OnViewClickListener mOnViewClickListener;
         public OnBindViewListener bindViewListener;
+        //列表
+        public A adapter;
+        public TBaseAdapter.OnAdapterItemClickListener adapterItemClickListener;
 
         public void apply(TController tController) {
             if (fragmentManager != null) {
@@ -132,8 +155,8 @@ public class TController implements Serializable {
             }
             if (layoutRes > 0) {
                 tController.layoutRes = layoutRes;
-            } else {
-                throw new IllegalArgumentException("DjDialog.Buidler should set LayoutRes");
+            } else if (adapter == null) {
+                throw new IllegalArgumentException("请先调用setLayoutRes()方法传入xml布局!");
             }
             if (mWidth > 0) {
                 tController.mWidth = mWidth;
@@ -162,6 +185,16 @@ public class TController implements Serializable {
             tController.mIsCancelableOutside = mIsCancelableOutside;
             tController.mOnViewClickListener = mOnViewClickListener;
             tController.bindViewListener = bindViewListener;
+
+            if (adapter != null) {
+                tController.setAdapter(adapter);
+                if (layoutRes <= 0) {//使用默认的布局
+                    tController.setLayoutRes(R.layout.dialog_recycler);
+                }
+            }
+            if (adapterItemClickListener != null) {
+                tController.setAdapterItemClickListener(adapterItemClickListener);
+            }
         }
     }
 }

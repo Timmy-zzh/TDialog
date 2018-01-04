@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_solid_white_4"
+    android:paddingBottom="11dp">
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:gravity="center"
+        android:text="确定要积分兑换吗?"
+        android:textColor="@color/topic"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/T_F2"
+        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+    <TextView
+        android:id="@+id/tv_jiuyuan_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="22dp"
+        android:text="积分兑换为余额，完成立即生效，此过程不可逆"
+        android:textColor="@color/T_99"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line" />
+
+    <TextView
+        android:id="@+id/tv_jiuyuan_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="10dp"
+        android:text="[查看兑换说明]"
+        android:textColor="@color/topic"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_jiuyuan_content" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="104dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/shape_stroke_gray_99"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/T_99"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_jiuyuan_desc" />
+
+    <TextView
+        android:id="@+id/tv_confirm"
+        android:layout_width="104dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/shape_solid_topic"
+        android:gravity="center"
+        android:text="兑换"
+        android:textColor="@color/T_FF"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_jiuyuan_desc" />
+
+
+</android.support.constraint.ConstraintLayout>

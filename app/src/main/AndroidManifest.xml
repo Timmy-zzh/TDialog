@@ -10,16 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".ui.SystemDialog" />
+        <activity android:name=".ui.NormalDFActivity" />
+        <activity android:name=".ui.DialogEncapActivity" />
+        <activity android:name=".ui.DiffentDialogActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.SystemDialog" />
-        <activity android:name=".ui.NormalDFActivity" />
-        <activity android:name=".ui.DialogEncapActivity" />
-        <activity android:name=".ui.DiffentDialogActivity"/>
     </application>
 
 </manifest>

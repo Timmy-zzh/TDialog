@@ -1,4 +1,4 @@
-package com.timmy.tdialog.list;
+package com.timmy.tdialog.base;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
@@ -6,19 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.timmy.tdialog.TDialog;
 import com.timmy.tdialog.base.BindViewHolder;
 
 import java.util.List;
-
-/**
- * Created by Timmy on 2018/1/3.
- */
 
 public abstract class TBaseAdapter<T> extends RecyclerView.Adapter<BindViewHolder> {
 
     private final int layoutRes;
     private List<T> datas;
     private OnAdapterItemClickListener adapterItemClickListener;
+    private TDialog dialog;
 
     protected abstract void onBind(BindViewHolder holder, int position, T t);
 
@@ -33,12 +31,12 @@ public abstract class TBaseAdapter<T> extends RecyclerView.Adapter<BindViewHolde
     }
 
     @Override
-    public void onBindViewHolder(BindViewHolder holder, final int position) {
+    public void onBindViewHolder(final BindViewHolder holder, final int position) {
         onBind(holder, position, datas.get(position));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapterItemClickListener.onItemClick(v, position, datas.get(position));
+                adapterItemClickListener.onItemClick(holder, position, datas.get(position), dialog);
             }
         });
     }
@@ -48,8 +46,12 @@ public abstract class TBaseAdapter<T> extends RecyclerView.Adapter<BindViewHolde
         return datas.size();
     }
 
+    public void setTDialog(TDialog tDialog) {
+        this.dialog = tDialog;
+    }
+
     public interface OnAdapterItemClickListener<T> {
-        void onItemClick(View view, int position, T t);
+        void onItemClick(BindViewHolder holder, int position, T t, TDialog tDialog);
     }
 
     public void setOnAdapterItemClickListener(OnAdapterItemClickListener listener) {

@@ -5,27 +5,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:onClick="systemDialog"
-        android:text="系统Dialog"
-        android:textAllCaps="false" />
+    <!--<Button-->
+        <!--android:id="@+id/button2"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:onClick="systemDialog"-->
+        <!--android:text="系统Dialog"-->
+        <!--android:textAllCaps="false" />-->
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:onClick="NormalDF"
-        android:text="DialogFragment的使用"
-        android:textAllCaps="false" />
+    <!--<Button-->
+        <!--android:id="@+id/button"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:onClick="NormalDF"-->
+        <!--android:text="DialogFragment的使用"-->
+        <!--android:textAllCaps="false" />-->
 
     <Button
         android:id="@+id/button4"

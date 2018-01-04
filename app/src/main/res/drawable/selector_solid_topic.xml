@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--主题色按钮,点击和不可用状态下显示设置-->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <!--主题色全部填充-->
+            <corners android:radius="4dp" />
+            <solid android:color="@color/topic_trans" />
+        </shape>
+    </item>
+
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <!--主题色全部填充-->
+            <corners android:radius="4dp" />
+            <solid android:color="@color/topic_trans" />
+        </shape>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle">
+            <!--主题色全部填充-->
+            <corners android:radius="4dp" />
+            <solid android:color="@color/topic" />
+        </shape>
+    </item>
+
+</selector>

@@ -2,15 +2,13 @@ package com.timmy.tdialogdemo.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.timmy.tdialog.TDialog;
 import com.timmy.tdialog.base.BindViewHolder;
-import com.timmy.tdialog.list.TBaseAdapter;
-import com.timmy.tdialog.list.TListDialog;
+import com.timmy.tdialog.base.TBaseAdapter;
 import com.timmy.tdialog.listener.OnBindViewListener;
 import com.timmy.tdialog.listener.OnViewClickListener;
 import com.timmy.tdialogdemo.R;
@@ -35,7 +33,7 @@ public class DialogEncapActivity extends AppCompatActivity {
     public void showTDialog(View view) {
         new TDialog.Builder(getSupportFragmentManager())
                 .setLayoutRes(R.layout.dialog_click)
-                .setScreenWidthAspect(DialogEncapActivity.this,0.8f)
+                .setScreenWidthAspect(DialogEncapActivity.this, 0.8f)
                 .setTag("DialogTest")
                 .setDimAmount(0.6f)
                 .setGravity(Gravity.CENTER)
@@ -48,7 +46,7 @@ public class DialogEncapActivity extends AppCompatActivity {
                 .addOnClickListener(R.id.btn_right, R.id.tv_title)
                 .setOnViewClickListener(new OnViewClickListener() {
                     @Override
-                    public void onViewClick(BindViewHolder viewHolder,View view1, TDialog tDialog) {
+                    public void onViewClick(BindViewHolder viewHolder, View view1, TDialog tDialog) {
                         switch (view1.getId()) {
                             case R.id.btn_right:
                                 Toast.makeText(DialogEncapActivity.this, "btn_right", Toast.LENGTH_SHORT).show();
@@ -67,33 +65,31 @@ public class DialogEncapActivity extends AppCompatActivity {
     public void showTListDialog(View view) {
         List<String> datas = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            datas.add("item:"+i);
+            datas.add("item:" + i);
         }
 
-        TListDialog.Builder builder = new TListDialog.Builder(getSupportFragmentManager());
-        builder.setHeight(800);
-        builder.setScreenWidthAspect(DialogEncapActivity.this,1.0f);
-        builder.setAdapter(new TBaseAdapter<String>(R.layout.item_simple_text,datas) {
+        TDialog.Builder builder = new TDialog.Builder(getSupportFragmentManager());
+        builder.setLayoutRes(R.layout.dialog_recycler_test);
+        builder.setHeight(600);
+        builder.setScreenWidthAspect(DialogEncapActivity.this, 1.0f);
+        builder.setAdapter(new TBaseAdapter<String>(R.layout.item_simple_text, datas) {
             @Override
             protected void onBind(BindViewHolder holder, int position, String item) {
-                holder.setText(R.id.tv,item);
+                holder.setText(R.id.tv, item);
             }
         });
         builder.setOnAdapterItemClickListener(new TBaseAdapter.OnAdapterItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, Object o) {
+            public void onItemClick(BindViewHolder holder, int position, Object o, TDialog tDialog) {
                 String item = (String) o;
-                Toast.makeText(DialogEncapActivity.this,"pos:"+position+","+item,Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(DialogEncapActivity.this, "pos:" + position + "," + item, Toast.LENGTH_SHORT).show();
+                tDialog.dismiss();
             }
         });
+        builder.setGravity(Gravity.BOTTOM);
 
-        TListDialog tListDialog = builder.create();
+        TDialog tListDialog = builder.create();
         tListDialog.show();
-
-
-//      tListDialog.setL
-
     }
 
 }

@@ -36,8 +36,8 @@ apply plugin: 'com.github.dcendents.android-maven'
 def siteUrl = 'https://github.com/Timmy-zzh/TDialog'   // 项目的主页
 def gitUrl = 'https://github.com/Timmy-zzh/TDialog.git'   // Git仓库的url
 
-version = "1.1.1" //发布版本号
-group = "com.timmy.tdialog" //最终引用形式，如compile 'com.leon.lfilepicker:1.0.0'，其中lfilepicker在后面配置
+version = "1.1.2" //发布版本号
+group = "com.timmy.tdialog" //最终引用形式，如compile 'com.timmy.tdialog:1.0.0'，其中tdialog在后面配置
 
 install {
     repositories.mavenInstaller {

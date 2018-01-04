@@ -43,12 +43,13 @@ public class BindViewHolder extends RecyclerView.ViewHolder  {
 
     public BindViewHolder(final View view) {
         super(view);
+        this.bindView = view;
         this.views = new SparseArray<>();
     }
 
     public BindViewHolder(View view, TDialog dialog) {
         super(view);
-        this.bindView = bindView;
+        this.bindView = view;
         this.dialog = dialog;
         views = new SparseArray<>();
     }

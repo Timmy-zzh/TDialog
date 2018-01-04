@@ -6,23 +6,25 @@ import android.support.annotation.FloatRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.timmy.tdialog.base.BaseDialogFragment;
 import com.timmy.tdialog.base.BindViewHolder;
 import com.timmy.tdialog.base.TController;
+import com.timmy.tdialog.base.TBaseAdapter;
 import com.timmy.tdialog.listener.OnBindViewListener;
 import com.timmy.tdialog.listener.OnViewClickListener;
 import com.timmy.tdialog.util.DensityUtils;
 
 /**
- * 设置屏幕宽高比例值
- * 设置弹出键盘
- * 设置返回键是否可以取消
- */
+ * @author Timmy
+ * @time 2018/1/4 16:28
+ **/
 public class TDialog extends BaseDialogFragment {
 
-    private static final String KEY_DJCONTROLLER = "DjController";
+    private static final String KEY_TCONTROLLER = "TController";
     protected TController tController;
 
     public TDialog() {
@@ -36,7 +38,7 @@ public class TDialog extends BaseDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            tController = (TController) savedInstanceState.getSerializable(KEY_DJCONTROLLER);
+            tController = (TController) savedInstanceState.getSerializable(KEY_TCONTROLLER);
         }
     }
 
@@ -45,7 +47,7 @@ public class TDialog extends BaseDialogFragment {
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(KEY_DJCONTROLLER, tController);
+        outState.putSerializable(KEY_TCONTROLLER, tController);
         super.onSaveInstanceState(outState);
     }
 
@@ -59,12 +61,26 @@ public class TDialog extends BaseDialogFragment {
         return tController.getLayoutRes();
     }
 
-    protected void setLayoutRes(@LayoutRes int layoutRes) {
-        tController.setLayoutRes(layoutRes);
-    }
-
     @Override
     protected void bindView(View view) {
+        if (tController.getAdapter() != null) {//有设置列表
+            //列表
+            RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+            if (recyclerView == null) {
+                throw new IllegalArgumentException("自定义列表xml布局,请设置RecyclerView的控件id为recycler_view");
+            }
+            if (tController.getAdapter() != null && recyclerView != null) {
+                tController.getAdapter().setTDialog(this);
+                recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                recyclerView.setAdapter(tController.getAdapter());
+                tController.getAdapter().notifyDataSetChanged();
+                if (tController.getAdapterItemClickListener() != null) {
+                    tController.getAdapter().setOnAdapterItemClickListener(tController.getAdapterItemClickListener());
+                }
+            }
+        }
+
+        //其他控件点击事件等处理
         BindViewHolder viewHolder = new BindViewHolder(view, this);
         if (tController.getIds() != null && tController.getIds().length > 0) {
             for (int id : tController.getIds()) {
@@ -81,17 +97,9 @@ public class TDialog extends BaseDialogFragment {
         return tController.getGravity();
     }
 
-    protected void setGravity(int gravity) {
-        tController.setGravity(gravity);
-    }
-
     @Override
     public float getDimAmount() {
         return tController.getDimAmount();
-    }
-
-    protected void setDimAmount(@FloatRange(from = 0f, to = 1.0f) float dimAmount) {
-        tController.setDimAmount(dimAmount);
     }
 
     @Override
@@ -99,17 +107,9 @@ public class TDialog extends BaseDialogFragment {
         return tController.getHeight();
     }
 
-    protected void setDialogHeight(int height) {
-        tController.setHeight(height);
-    }
-
     @Override
     public int getDialogWidth() {
         return tController.getWidth();
-    }
-
-    protected void setDialogWidth(int width) {
-        tController.setWidth(width);
     }
 
     @Override
@@ -117,25 +117,13 @@ public class TDialog extends BaseDialogFragment {
         return tController.isCancelableOutside();
     }
 
-    protected void setCancelableOutside(boolean cancelable) {
-        tController.setCancelableOutside(cancelable);
-    }
-
     @Override
     public String getFragmentTag() {
         return tController.getTag();
     }
 
-    protected void setFragmentTag(String tag) {
-        tController.setTag(tag);
-    }
-
     public OnViewClickListener getOnViewClickListener() {
         return tController.getOnViewClickListener();
-    }
-
-    protected void setOnViewClickListener(OnViewClickListener listener) {
-        tController.setOnViewClickListener(listener);
     }
 
     public TDialog show() {
@@ -227,7 +215,16 @@ public class TDialog extends BaseDialogFragment {
             return this;
         }
 
-        //列表数据,需要传入数据和Adapter
+        //列表数据,需要传入数据和Adapter,和item点击数据
+        public <A extends TBaseAdapter> Builder setAdapter(A adapter) {
+            params.adapter = adapter;
+            return this;
+        }
+
+        public Builder setOnAdapterItemClickListener(TBaseAdapter.OnAdapterItemClickListener listener) {
+            params.adapterItemClickListener = listener;
+            return this;
+        }
 
 
         public TDialog create() {

@@ -69,10 +69,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
 
     protected abstract void bindView(View view);
 
-    protected View getLayoutView() {
-        return null;
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -99,7 +95,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(getCancelableOutside());
        View view = inflater.inflate(getLayoutRes(),container,false);
-//        View view = getLayoutView();
         bindView(view);
         return view;
     }
@@ -166,5 +161,4 @@ public abstract class BaseDialogFragment extends DialogFragment {
     public void show(FragmentManager fragmentManager) {
         show(fragmentManager, getFragmentTag());
     }
-
 }

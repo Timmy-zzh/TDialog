@@ -4,4 +4,40 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
+
+    <!-- 主页背景 -->
+    <color name="bg_main">#f1f1f1</color>
+    <color name="gray">#f1f1f1</color>
+    <!--字体颜色-->
+    <!--黑色-->
+    <color name="T_24">#242424</color>
+    <color name="T_26">#262626</color>
+    <!--白色-->
+    <color name="T_FF">#ffffff</color>
+    <!--灰色-->
+    <color name="T_54">#545454</color>
+    <!--深灰-->
+    <color name="T_75">#757575</color>
+    <!--通用字体颜色-->
+    <color name="T_66">#666666</color>
+    <!--浅灰色-->
+    <color name="T_99">#999999</color>
+    <color name="T_F6">#f6f6f6</color>
+    <!--黑色-->
+    <color name="T_00">#000000</color>
+    <!-- 文字黑色 -->
+    <color name="T_BD">#bdbdbd</color>
+    <color name="T_DB">#dbdbdb</color>
+    <color name="T_B6">#b6b6b6</color>
+    <color name="T_verify">#4c85ff</color>
+    <color name="T_coupons">#ef965e</color>
+    <color name="T_address_grey">#555555</color>
+    <color name="T_33">#333333</color>
+    <color name="topic">#627984</color>
+    <color name="topic_trans">#aa627984</color>
+    <color name="T_4D">#4D4D4D</color>
+    <color name="T_D9">#D9D9D9</color>
+    <color name="T_F2">#F2F2F2</color>
+    <color name="green_light">#2BB0FC</color>
+
 </resources>
