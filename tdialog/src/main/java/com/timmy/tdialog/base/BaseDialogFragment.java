@@ -69,6 +69,10 @@ public abstract class BaseDialogFragment extends DialogFragment {
 
     protected abstract void bindView(View view);
 
+    protected View getLayoutView() {
+        return null;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -93,8 +97,9 @@ public abstract class BaseDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //去除Dialog默认头部
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(getCancelOutside());
-        View view = inflater.inflate(getLayoutRes(), container, false);
+        getDialog().setCanceledOnTouchOutside(getCancelableOutside());
+       View view = inflater.inflate(getLayoutRes(),container,false);
+//        View view = getLayoutView();
         bindView(view);
         return view;
     }
@@ -150,7 +155,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
     /**
      * 默认Dialog外部点击可以取消显示
      */
-    public boolean getCancelOutside() {
+    public boolean getCancelableOutside() {
         return true;
     }
 

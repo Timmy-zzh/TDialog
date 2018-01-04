@@ -2,6 +2,7 @@ package com.timmy.tdialog;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.FloatRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -9,7 +10,7 @@ import android.view.View;
 
 import com.timmy.tdialog.base.BaseDialogFragment;
 import com.timmy.tdialog.base.BindViewHolder;
-import com.timmy.tdialog.base.DjController;
+import com.timmy.tdialog.base.TController;
 import com.timmy.tdialog.listener.OnBindViewListener;
 import com.timmy.tdialog.listener.OnViewClickListener;
 import com.timmy.tdialog.util.DensityUtils;
@@ -22,10 +23,10 @@ import com.timmy.tdialog.util.DensityUtils;
 public class TDialog extends BaseDialogFragment {
 
     private static final String KEY_DJCONTROLLER = "DjController";
-    private DjController djController;
+    protected TController tController;
 
     public TDialog() {
-        djController = new DjController();
+        tController = new TController();
     }
 
     /**
@@ -35,7 +36,7 @@ public class TDialog extends BaseDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            djController = (DjController) savedInstanceState.getSerializable(KEY_DJCONTROLLER);
+            tController = (TController) savedInstanceState.getSerializable(KEY_DJCONTROLLER);
         }
     }
 
@@ -44,68 +45,105 @@ public class TDialog extends BaseDialogFragment {
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(KEY_DJCONTROLLER, djController);
+        outState.putSerializable(KEY_DJCONTROLLER, tController);
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * 获取弹窗xml布局界面
+     *
+     * @return 基类调用
+     */
     @Override
     protected int getLayoutRes() {
-        return djController.getLayoutRes();
+        return tController.getLayoutRes();
+    }
+
+    protected void setLayoutRes(@LayoutRes int layoutRes) {
+        tController.setLayoutRes(layoutRes);
     }
 
     @Override
     protected void bindView(View view) {
         BindViewHolder viewHolder = new BindViewHolder(view, this);
-        if (djController.getIds() != null && djController.getIds().length > 0) {
-            for (int id : djController.getIds()) {
+        if (tController.getIds() != null && tController.getIds().length > 0) {
+            for (int id : tController.getIds()) {
                 viewHolder.addOnClickListener(id);
             }
         }
-        if (djController.getBindViewListener() != null) {
-            djController.getBindViewListener().bindView(viewHolder);
+        if (tController.getBindViewListener() != null) {
+            tController.getBindViewListener().bindView(viewHolder);
         }
     }
 
     @Override
     public int getGravity() {
-        return djController.getGravity();
+        return tController.getGravity();
+    }
+
+    protected void setGravity(int gravity) {
+        tController.setGravity(gravity);
     }
 
     @Override
     public float getDimAmount() {
-        return djController.getDimAmount();
+        return tController.getDimAmount();
+    }
+
+    protected void setDimAmount(@FloatRange(from = 0f, to = 1.0f) float dimAmount) {
+        tController.setDimAmount(dimAmount);
     }
 
     @Override
     public int getDialogHeight() {
-        return djController.getHeight();
+        return tController.getHeight();
+    }
+
+    protected void setDialogHeight(int height) {
+        tController.setHeight(height);
     }
 
     @Override
     public int getDialogWidth() {
-        return djController.getWidth();
+        return tController.getWidth();
+    }
+
+    protected void setDialogWidth(int width) {
+        tController.setWidth(width);
     }
 
     @Override
-    public boolean getCancelOutside() {
-        return djController.isCancelableOutside();
+    public boolean getCancelableOutside() {
+        return tController.isCancelableOutside();
+    }
+
+    protected void setCancelableOutside(boolean cancelable) {
+        tController.setCancelableOutside(cancelable);
     }
 
     @Override
     public String getFragmentTag() {
-        return djController.getTag();
+        return tController.getTag();
+    }
+
+    protected void setFragmentTag(String tag) {
+        tController.setTag(tag);
     }
 
     public OnViewClickListener getOnViewClickListener() {
-        return djController.getOnViewClickListener();
+        return tController.getOnViewClickListener();
+    }
+
+    protected void setOnViewClickListener(OnViewClickListener listener) {
+        tController.setOnViewClickListener(listener);
     }
 
     public TDialog show() {
         //如果宽高都没有设置,则默认给弹窗提供宽度为800
-        if (djController.getWidth() <= 0 && djController.getHeight() <= 0) {
-            djController.setWidth(600);
+        if (tController.getWidth() <= 0 && tController.getHeight() <= 0) {
+            tController.setWidth(600);
         }
-        show(djController.getFragmentManager());
+        show(tController.getFragmentManager());
         return this;
     }
 
@@ -115,15 +153,14 @@ public class TDialog extends BaseDialogFragment {
      */
     public static class Builder {
 
-        DjController.DjParams params;
+        TController.TParams params;
 
         public Builder(FragmentManager fragmentManager) {
-            params = new DjController.DjParams();
+            params = new TController.TParams();
             params.fragmentManager = fragmentManager;
         }
 
         //各种setXXX()方法设置数据
-
         public Builder setLayoutRes(@LayoutRes int layoutRes) {
             params.layoutRes = layoutRes;
             return this;
@@ -190,10 +227,13 @@ public class TDialog extends BaseDialogFragment {
             return this;
         }
 
+        //列表数据,需要传入数据和Adapter
+
+
         public TDialog create() {
             TDialog dialog = new TDialog();
             //将数据从Buidler的DjParams中传递到DjDialog中
-            params.apply(dialog.djController);
+            params.apply(dialog.tController);
             return dialog;
         }
     }

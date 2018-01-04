@@ -9,7 +9,7 @@ import com.timmy.tdialog.listener.OnViewClickListener;
 
 import java.io.Serializable;
 
-public class DjController implements Serializable {
+public class TController implements Serializable {
 
     private FragmentManager fragmentManager;
     private int layoutRes;
@@ -23,6 +23,7 @@ public class DjController implements Serializable {
     private OnViewClickListener mOnViewClickListener;
     private OnBindViewListener bindViewListener;
 
+    ///////get
     public FragmentManager getFragmentManager() {
         return fragmentManager;
     }
@@ -71,8 +72,48 @@ public class DjController implements Serializable {
         return bindViewListener;
     }
 
-    public static class DjParams {
+    /////////////////set
+    public void setFragmentManager(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
+    }
 
+    public void setLayoutRes(int layoutRes) {
+        this.layoutRes = layoutRes;
+    }
+
+    public void setHeight(int mHeight) {
+        this.mHeight = mHeight;
+    }
+
+    public void setDimAmount(float mDimAmount) {
+        this.mDimAmount = mDimAmount;
+    }
+
+    public void setGravity(int mGravity) {
+        this.mGravity = mGravity;
+    }
+
+    public void setTag(String mTag) {
+        this.mTag = mTag;
+    }
+
+    public void setIds(int[] ids) {
+        this.ids = ids;
+    }
+
+    public void setCancelableOutside(boolean mIsCancelableOutside) {
+        this.mIsCancelableOutside = mIsCancelableOutside;
+    }
+
+    public void setOnViewClickListener(OnViewClickListener mOnViewClickListener) {
+        this.mOnViewClickListener = mOnViewClickListener;
+    }
+
+    public void setBindViewListener(OnBindViewListener bindViewListener) {
+        this.bindViewListener = bindViewListener;
+    }
+
+    public static class TParams {
         public FragmentManager fragmentManager;
         public int layoutRes;
         public int mWidth;
@@ -85,42 +126,42 @@ public class DjController implements Serializable {
         public OnViewClickListener mOnViewClickListener;
         public OnBindViewListener bindViewListener;
 
-        public void apply(DjController djController) {
+        public void apply(TController tController) {
             if (fragmentManager != null) {
-                djController.fragmentManager = fragmentManager;
+                tController.fragmentManager = fragmentManager;
             }
             if (layoutRes > 0) {
-                djController.layoutRes = layoutRes;
+                tController.layoutRes = layoutRes;
             } else {
                 throw new IllegalArgumentException("DjDialog.Buidler should set LayoutRes");
             }
             if (mWidth > 0) {
-                djController.mWidth = mWidth;
+                tController.mWidth = mWidth;
             }
             if (mHeight > 0) {
-                djController.mHeight = mHeight;
+                tController.mHeight = mHeight;
             }
             if (mDimAmount > 0f) {
-                djController.mDimAmount = mDimAmount;
+                tController.mDimAmount = mDimAmount;
             } else {
-                djController.mDimAmount = 0.2f;//默认0.2
+                tController.mDimAmount = 0.2f;//默认0.2
             }
             if (mGravity > 0) {
-                djController.mGravity = mGravity;
+                tController.mGravity = mGravity;
             } else {
-                djController.mGravity = Gravity.CENTER;
+                tController.mGravity = Gravity.CENTER;
             }
             if (TextUtils.isEmpty(mTag)) {
-                djController.mTag = mTag;
+                tController.mTag = mTag;
             } else {
-                djController.mTag = "DjDialog";
+                tController.mTag = "DjDialog";
             }
             if (ids != null) {
-                djController.ids = ids;
+                tController.ids = ids;
             }
-            djController.mIsCancelableOutside = mIsCancelableOutside;
-            djController.mOnViewClickListener = mOnViewClickListener;
-            djController.bindViewListener = bindViewListener;
+            tController.mIsCancelableOutside = mIsCancelableOutside;
+            tController.mOnViewClickListener = mOnViewClickListener;
+            tController.bindViewListener = bindViewListener;
         }
     }
 }

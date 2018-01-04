@@ -2,15 +2,21 @@ package com.timmy.tdialogdemo.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.timmy.tdialog.TDialog;
 import com.timmy.tdialog.base.BindViewHolder;
+import com.timmy.tdialog.list.TBaseAdapter;
+import com.timmy.tdialog.list.TListDialog;
 import com.timmy.tdialog.listener.OnBindViewListener;
 import com.timmy.tdialog.listener.OnViewClickListener;
 import com.timmy.tdialogdemo.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DialogFragment封装
@@ -26,11 +32,7 @@ public class DialogEncapActivity extends AppCompatActivity {
     /**
      * 展示Dialog
      */
-    public void showDialog(View view) {
-
-    }
-
-    public void showClickDialog(View view) {
+    public void showTDialog(View view) {
         new TDialog.Builder(getSupportFragmentManager())
                 .setLayoutRes(R.layout.dialog_click)
                 .setScreenWidthAspect(DialogEncapActivity.this,0.8f)
@@ -62,13 +64,36 @@ public class DialogEncapActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void showClickDialog2(View view) {
-        TDialog.Builder builder = new TDialog.Builder(getSupportFragmentManager())
-                .setLayoutRes(R.layout.dialog_click)
-                .setGravity(Gravity.BOTTOM);
-        TDialog djDialog = builder.create();
-        djDialog.show();
-    }
+    public void showTListDialog(View view) {
+        List<String> datas = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            datas.add("item:"+i);
+        }
 
+        TListDialog.Builder builder = new TListDialog.Builder(getSupportFragmentManager());
+        builder.setHeight(800);
+        builder.setScreenWidthAspect(DialogEncapActivity.this,1.0f);
+        builder.setAdapter(new TBaseAdapter<String>(R.layout.item_simple_text,datas) {
+            @Override
+            protected void onBind(BindViewHolder holder, int position, String item) {
+                holder.setText(R.id.tv,item);
+            }
+        });
+        builder.setOnAdapterItemClickListener(new TBaseAdapter.OnAdapterItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, Object o) {
+                String item = (String) o;
+                Toast.makeText(DialogEncapActivity.this,"pos:"+position+","+item,Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        TListDialog tListDialog = builder.create();
+        tListDialog.show();
+
+
+//      tListDialog.setL
+
+    }
 
 }

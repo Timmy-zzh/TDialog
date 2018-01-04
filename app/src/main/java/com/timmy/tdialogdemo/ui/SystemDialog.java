@@ -1,5 +1,6 @@
 package com.timmy.tdialogdemo.ui;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.timmy.tdialogdemo.R;
@@ -206,5 +208,12 @@ public class SystemDialog extends AppCompatActivity {
                 .show();
     }
 
+    public void progressDialog(View view) {
+        ProgressDialog progressDialog = new ProgressDialog(this);
+//        progressDialog.setTitle("加载中");
+        progressDialog.setMessage("拼命加载中...");
+        progressDialog.show();
 
+//        ProgressBar progressBar = new ProgressBar(this);
+    }
 }

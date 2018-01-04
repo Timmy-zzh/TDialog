@@ -9,6 +9,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
+import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
 import android.util.SparseArray;
 import android.view.View;
@@ -24,6 +25,9 @@ import android.widget.TextView;
 
 import com.timmy.tdialog.TDialog;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 /**
  * 借鉴RecyclerView.Adapter的ViewHolder写法
  * 将Dialog的根布局传入,主要处理点击方法
@@ -31,13 +35,19 @@ import com.timmy.tdialog.TDialog;
  * @author Timmy
  * @time 2017/12/28 16:18
  **/
-public class BindViewHolder {
+public class BindViewHolder extends RecyclerView.ViewHolder  {
 
     public View bindView;
     private SparseArray<View> views;
     private TDialog dialog;
 
-    public BindViewHolder(View bindView, TDialog dialog) {
+    public BindViewHolder(final View view) {
+        super(view);
+        this.views = new SparseArray<>();
+    }
+
+    public BindViewHolder(View view, TDialog dialog) {
+        super(view);
         this.bindView = bindView;
         this.dialog = dialog;
         views = new SparseArray<>();

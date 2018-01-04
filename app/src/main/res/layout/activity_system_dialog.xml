@@ -45,13 +45,6 @@
             android:text="多选"
             android:textAllCaps="false" />
 
-        <!--<Button-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:onClick="btnDialog6"-->
-            <!--android:text="多选"-->
-            <!--android:textAllCaps="false" />-->
-
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,6 +57,13 @@
             android:layout_height="wrap_content"
             android:onClick="btnDialog8"
             android:text="自定义2"
+            android:textAllCaps="false" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="progressDialog"
+            android:text="ProgressDialog"
             android:textAllCaps="false" />
 
     </LinearLayout>
