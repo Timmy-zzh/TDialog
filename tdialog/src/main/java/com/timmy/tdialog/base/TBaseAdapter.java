@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.timmy.tdialog.TDialog;
-import com.timmy.tdialog.base.BindViewHolder;
 
 import java.util.List;
 
@@ -57,5 +56,4 @@ public abstract class TBaseAdapter<T> extends RecyclerView.Adapter<BindViewHolde
     public void setOnAdapterItemClickListener(OnAdapterItemClickListener listener) {
         this.adapterItemClickListener = listener;
     }
-
 }

@@ -1,5 +1,6 @@
 package com.timmy.tdialog.base;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -15,8 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-
-import com.timmy.tdialog.listener.OnDialogResultListener;
 
 /**
  * DialogFragment的基类
@@ -53,17 +52,11 @@ import com.timmy.tdialog.listener.OnDialogResultListener;
  * 5.监听回调,很多弹窗需要输入信息,然后将输入的信息通过回调的方法返回
  * 6.当设备Configure属性变化时,数据保存和恢复处理
  *
- * @author Timmy
- * @time 2017/12/28 15:25
  **/
 public abstract class BaseDialogFragment extends DialogFragment {
 
     public static final String TAG = "BaseDialogFragment";
     private static final float DEFAULT_DIMAMOUNT = 0.2F;
-    private OnDialogResultListener onDialogResultListener;
-    private int dialogWidth = WindowManager.LayoutParams.WRAP_CONTENT;
-    private int dialogHeight = WindowManager.LayoutParams.WRAP_CONTENT;
-    private int gravity = Gravity.CENTER;
 
     protected abstract int getLayoutRes();
 
@@ -72,9 +65,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnDialogResultListener) {
-            onDialogResultListener = (OnDialogResultListener) context;
-        }
     }
 
     @Override
@@ -131,18 +121,21 @@ public abstract class BaseDialogFragment extends DialogFragment {
         }
     }
 
+    //默认弹窗位置为中心
     public int getGravity() {
-        return gravity;
+        return Gravity.CENTER;
     }
 
+    //默认宽高为包裹内容
     public int getDialogHeight() {
-        return dialogHeight;
+        return WindowManager.LayoutParams.WRAP_CONTENT;
     }
 
     public int getDialogWidth() {
-        return dialogWidth;
+        return WindowManager.LayoutParams.WRAP_CONTENT;
     }
 
+    //默认透明度为0.2
     public float getDimAmount() {
         return DEFAULT_DIMAMOUNT;
     }
@@ -160,5 +153,16 @@ public abstract class BaseDialogFragment extends DialogFragment {
 
     public void show(FragmentManager fragmentManager) {
         show(fragmentManager, getFragmentTag());
+    }
+
+    /**
+     * 获得屏幕宽/高
+     */
+    public static int getWindowHeight(Activity acitvity) {
+        return acitvity.getWindowManager().getDefaultDisplay().getHeight();
+    }
+
+    public static int getWindowWidth(Activity acitvity) {
+        return acitvity.getWindowManager().getDefaultDisplay().getWidth();
     }
 }

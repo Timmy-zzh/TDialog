@@ -2,7 +2,6 @@ package com.timmy.tdialog;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.FloatRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -12,11 +11,10 @@ import android.view.View;
 
 import com.timmy.tdialog.base.BaseDialogFragment;
 import com.timmy.tdialog.base.BindViewHolder;
-import com.timmy.tdialog.base.TController;
 import com.timmy.tdialog.base.TBaseAdapter;
+import com.timmy.tdialog.base.TController;
 import com.timmy.tdialog.listener.OnBindViewListener;
 import com.timmy.tdialog.listener.OnViewClickListener;
-import com.timmy.tdialog.util.DensityUtils;
 
 /**
  * @author Timmy
@@ -69,14 +67,20 @@ public class TDialog extends BaseDialogFragment {
             if (recyclerView == null) {
                 throw new IllegalArgumentException("自定义列表xml布局,请设置RecyclerView的控件id为recycler_view");
             }
-            if (tController.getAdapter() != null && recyclerView != null) {
-                tController.getAdapter().setTDialog(this);
-                recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                recyclerView.setAdapter(tController.getAdapter());
-                tController.getAdapter().notifyDataSetChanged();
-                if (tController.getAdapterItemClickListener() != null) {
-                    tController.getAdapter().setOnAdapterItemClickListener(tController.getAdapterItemClickListener());
-                }
+            tController.getAdapter().setTDialog(this);
+
+            RecyclerView.LayoutManager layoutManager;
+            if (tController.getLayoutManager() != null) {
+                layoutManager = tController.getLayoutManager();
+            } else {
+                layoutManager = new LinearLayoutManager(view.getContext());
+            }
+            recyclerView.setLayoutManager(layoutManager);
+
+            recyclerView.setAdapter(tController.getAdapter());
+            tController.getAdapter().notifyDataSetChanged();
+            if (tController.getAdapterItemClickListener() != null) {
+                tController.getAdapter().setOnAdapterItemClickListener(tController.getAdapterItemClickListener());
             }
         }
 
@@ -154,11 +158,18 @@ public class TDialog extends BaseDialogFragment {
             return this;
         }
 
+        //设置自定义列表布局和方向
+        public Builder setListLayoutRes(@LayoutRes int layoutRes, RecyclerView.LayoutManager layoutManager) {
+            params.listLayoutRes = layoutRes;
+            params.layoutManager = layoutManager;
+            return this;
+        }
+
         /**
          * 设置弹窗宽度是屏幕宽度的比例 0 -1
          */
         public Builder setScreenWidthAspect(Activity activity, float widthAspect) {
-            params.mWidth = (int) (DensityUtils.getWindowWidth(activity) * widthAspect);
+            params.mWidth = (int) (getWindowWidth(activity) * widthAspect);
             return this;
         }
 
@@ -171,7 +182,7 @@ public class TDialog extends BaseDialogFragment {
          * 设置屏幕高度比例 0 -1
          */
         public Builder setScreenHeightAspect(Activity activity, float heightAspect) {
-            params.mHeight = (int) (DensityUtils.getWindowHeight(activity) * heightAspect);
+            params.mHeight = (int) (getWindowHeight(activity) * heightAspect);
             return this;
         }
 

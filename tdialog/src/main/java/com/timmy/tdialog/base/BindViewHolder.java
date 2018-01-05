@@ -25,9 +25,6 @@ import android.widget.TextView;
 
 import com.timmy.tdialog.TDialog;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-
 /**
  * 借鉴RecyclerView.Adapter的ViewHolder写法
  * 将Dialog的根布局传入,主要处理点击方法

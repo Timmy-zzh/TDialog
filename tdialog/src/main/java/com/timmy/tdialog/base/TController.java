@@ -1,6 +1,7 @@
 package com.timmy.tdialog.base;
 
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 
@@ -25,6 +26,7 @@ public class TController<A extends TBaseAdapter> implements Serializable {
     private OnBindViewListener bindViewListener;
     private A adapter;
     private TBaseAdapter.OnAdapterItemClickListener adapterItemClickListener;
+    private RecyclerView.LayoutManager layoutManager;
 
     ///////get
     public FragmentManager getFragmentManager() {
@@ -73,6 +75,14 @@ public class TController<A extends TBaseAdapter> implements Serializable {
 
     public OnBindViewListener getBindViewListener() {
         return bindViewListener;
+    }
+
+    public RecyclerView.LayoutManager getLayoutManager() {
+        return layoutManager;
+    }
+
+    public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
+        this.layoutManager = layoutManager;
     }
 
     /////////////////set
@@ -148,6 +158,8 @@ public class TController<A extends TBaseAdapter> implements Serializable {
         //列表
         public A adapter;
         public TBaseAdapter.OnAdapterItemClickListener adapterItemClickListener;
+        public int listLayoutRes;
+        public RecyclerView.LayoutManager layoutManager;
 
         public void apply(TController tController) {
             if (fragmentManager != null) {
@@ -155,9 +167,10 @@ public class TController<A extends TBaseAdapter> implements Serializable {
             }
             if (layoutRes > 0) {
                 tController.layoutRes = layoutRes;
-            } else if (adapter == null) {
-                throw new IllegalArgumentException("请先调用setLayoutRes()方法传入xml布局!");
             }
+//            else if (adapter == null) {
+//                throw new IllegalArgumentException("请先调用setLayoutRes()方法传入xml布局!");
+//            }
             if (mWidth > 0) {
                 tController.mWidth = mWidth;
             }
@@ -188,10 +201,17 @@ public class TController<A extends TBaseAdapter> implements Serializable {
 
             if (adapter != null) {
                 tController.setAdapter(adapter);
-                if (layoutRes <= 0) {//使用默认的布局
+                if (listLayoutRes <= 0) {//使用默认的布局
                     tController.setLayoutRes(R.layout.dialog_recycler);
+                } else {
+                    tController.setLayoutRes(listLayoutRes);
                 }
             }
+
+            if (layoutManager != null) {
+                tController.setLayoutManager(layoutManager);
+            }
+
             if (adapterItemClickListener != null) {
                 tController.setAdapterItemClickListener(adapterItemClickListener);
             }
