@@ -1,16 +1,13 @@
+
 #### 前言
 >文章代码示例已放到Github上了,有需要的朋友可以去看下[TDialog](https://github.com/Timmy-zzh/TDialog),欢迎star和fork,项目会一直维护,有疑问可以提Issues或留言.
 ##### 文章目录
 * TDialog框架的由来
 * 框架使用解析
-* 框架实现原理,用到了那些知识点
-* 应用中常见弹窗实现效果
-* UML类图
-* 总结
-
+* 框架原理解析
 ###### 正文开始前先来一波效果图
 ![](/images/TDialog.gif)
-#### 一.TDialog的由来
+####一.TDialog的由来
 所有框架的由来都是为了更方便,更高效的解决问题,TDialog也一样,是为了在项目中更高效的实现项目的弹窗效果
 
 TDialog是继承自DialogFragment进行封装的,大部分开发者在实现弹窗效果的时候,会首选系统提供的AlertDialog;
@@ -19,10 +16,10 @@ Dialog使用起来其实更简单,但是Google却是推荐尽量使用DialogFrag
 ##### 1.DialogFragment的优点
 * DialogFragment 本身是 Fragment 的子类，有着和 Fragment 基本一样的生命周期，使用 DialogFragment 来管理对话框，当旋转屏幕和按下后退键的时候可以更好的管理其生命周期
 * 在手机配置变化导致 Activity 需要重新创建时，例如旋转屏幕，基于 DialogFragment 的对话框将会由 FragmentManager 自动重建，然而基于 Dialog 实现的对话框却没有这样的能力
-#### 二.使用
-##### 1.在项目build.gradle文件中添加依赖
+####使用
+1.在项目build.gradle文件中添加依赖
 ```
-compile 'com.timmy.tdialog:tdialog:1.1.1'
+compile 'com.timmy.tdialog:tdialog:1.1.3'
 ```
 2.Activity或者Fragment中使用
 ```
@@ -51,7 +48,7 @@ compile 'com.timmy.tdialog:tdialog:1.1.1'
             .create()
             .show();
 ```
-####使用方法解析
+#### 使用方法解析
 TDialog的实现原理和系统Dialog原理差不多,主要使用Builder设计模式实现
 1.创建弹窗,必须传入xml布局文件,且自己设置背景色,因为默认是透明背景色
 ```
@@ -80,7 +77,7 @@ new TDialog.Builder(getSupportFragmentManager())
 ```
 .setDimAmount(0.6f)
 ```
-5.当弹窗需要动态改变控件子view内容时,这里借鉴了RecyclerView.Adapter的设计思想,内部封装号一个BindViewHolder
+5.当弹窗需要动态改变控件子view内容时,这里借鉴了RecyclerView.Adapter的设计思想,内部封装好一个BindViewHolder
 ```
 .setOnBindViewListener(new OnBindViewListener() {
     @Override
@@ -89,7 +86,7 @@ new TDialog.Builder(getSupportFragmentManager())
     }
 })
 ```
-6.监听弹窗子控件的点击事件,
+6.监听弹窗子控件的点击事件,内部也是通过BindViewHolder实现
 addOnClickListener(ids[])只需要将点击事件控件的id传入,并设置回调接口setOnViewClickListener()
 ```
 .addOnClickListener(R.id.btn_right, R.id.tv_title)
@@ -131,7 +128,7 @@ addOnClickListener(ids[])只需要将点击事件控件的id传入,并设置回�
         .create()
         .show();
 ```
-#####列表弹窗
+##### 列表弹窗
 为了方便使用:
 1. 不用传入layoutRes布局文件,TDialog内部设置了一个默认的RecyclerView布局,且RecyclerView的控件id为recycler_view,背景为#ffffff
 2. setAdapter(Adapter),设置recyclerview的adapter,为了封装Adapter的item点击事件,传入的adapter需要为TBaseAdapter的实现类
@@ -196,7 +193,7 @@ public abstract class TBaseAdapter<T> extends RecyclerView.Adapter<BindViewHolde
     }
 }
 ```
-#####如果使用者需要使用自己的列表布局时,可以使用setListLayoutRes(layotuRes,LayoutManager)方法设置xml布局和布局管理器LayoutManager,切记xml布局中的RecyclerView的id必须设置为recycler_view(如效果图中的分享弹窗)
+##### 如果使用者需要使用自己的列表布局时,可以使用setListLayoutRes(layotuRes,LayoutManager)方法设置xml布局和布局管理器LayoutManager,切记xml布局中的RecyclerView的id必须设置为recycler_view(如效果图中的分享弹窗)
 ```
 //底部分享
 public void shareDialog(View view) {
@@ -252,3 +249,10 @@ public void shareDialog(View view) {
 
 </android.support.constraint.ConstraintLayout>
 ```
+#### 框架原理解析
+TDialog的实现原理主要分为三步
+1. 实例化TDialog.Builer对象builder,然后调用各种setXXX()方法设置数据,设置的数据都保存在TController.TParams实例中
+2. create()方法调用后才会实例化TDialog对象,并将TController.TParams中设置的数据传递到TDialog的属性TController对象中
+3. show()方法调用显示弹窗
+
+#### 项目github地址:https://github.com/Timmy-zzh/TDialog
