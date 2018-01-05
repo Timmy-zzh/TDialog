@@ -11,6 +11,8 @@
 ###### 正文开始前先来一波效果图
 ![](/images/TDialog.gif)
 #### 一.TDialog的由来
+所有框架的由来都是为了更方便,更高效的解决问题,TDialog也一样,是为了在项目中更高效的实现项目的弹窗效果
+
 TDialog是继承自DialogFragment进行封装的,大部分开发者在实现弹窗效果的时候,会首选系统提供的AlertDialog;
 但是使用系统的Dialog在某些情况下会出现问题,最常见的场景是当手机屏幕旋转时Dialog弹窗会消失,并抛出一个系统,这个异常不会导致异常崩溃,因为Google开发者知道这个问题,并进行了处理.
 Dialog使用起来其实更简单,但是Google却是推荐尽量使用DialogFragment.
@@ -22,20 +24,20 @@ Dialog使用起来其实更简单,但是Google却是推荐尽量使用DialogFrag
 ```
 compile 'com.timmy.tdialog:tdialog:1.1.1'
 ```
-##### 2.Activity或者Fragment中使用
+2.Activity或者Fragment中使用
 ```
-    new TDialog.Builder(getSupportFragmentManager())
+     new TDialog.Builder(getSupportFragmentManager())
             .setLayoutRes(R.layout.dialog_click)
             .setWidth(600)
             .setHeight(800)
-            .setScreenWidthAspect(MainActivity.this,0.5f)
-            .setScreenHeightAspect(MainActivity.this,0.6f)
+            .setScreenWidthAspect(DialogEncapActivity.this,0.5f)
+            .setScreenHeightAspect(DialogEncapActivity.this,0.6f)
             .setTag("DialogTest")
             .setDimAmount(0.6f)
             .setGravity(Gravity.CENTER)
             .setOnBindViewListener(new OnBindViewListener() {
                 @Override
-                public void bindView(BindViewHolder viewHolder) {
+                public void bindView(BindViewHolder bindViewHolder) {
                     bindViewHolder.setText(R.id.tv_content, "abcdef");
                 }
             })
@@ -43,21 +45,13 @@ compile 'com.timmy.tdialog:tdialog:1.1.1'
             .setOnViewClickListener(new OnViewClickListener() {
                 @Override
                 public void onViewClick(BindViewHolder viewHolder,View view, TDialog tDialog) {
-                        switch (view1.getId()) {
-                            case R.id.btn_right:
-                                Toast.makeText(MainActivity.this, "btn_right", Toast.LENGTH_SHORT).show();
-                                tDialog.dismiss();
-                                break;
-                            case R.id.tv_title:
-                                Toast.makeText(MainActivity.this, "tv_title", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
+
                 }
             })
             .create()
             .show();
 ```
-##### 使用方法解析
+####使用方法解析
 TDialog的实现原理和系统Dialog原理差不多,主要使用Builder设计模式实现
 1.创建弹窗,必须传入xml布局文件,且自己设置背景色,因为默认是透明背景色
 ```
@@ -80,6 +74,7 @@ new TDialog.Builder(getSupportFragmentManager())
 3.设置弹窗展示的位置
 ```
 .setGravity(Gravity.CENTER)
+其他位置有:Gravity.Bottom / Gravity.LEFT等等和设置控件位置一样
 ```
 4.设置弹窗背景色透明度(取值0-1f,0为全透明)
 ```
@@ -89,18 +84,19 @@ new TDialog.Builder(getSupportFragmentManager())
 ```
 .setOnBindViewListener(new OnBindViewListener() {
     @Override
-    public void bindView(BindViewHolder viewHolder) {
+    public void bindView(BindViewHolder bindViewHolder) {
         bindViewHolder.setText(R.id.tv_content, "abcdef");
     }
 })
 ```
-6.监听弹窗子控件的点击事件,只需要将点击事件控件的id传入,并设置回调接口
+6.监听弹窗子控件的点击事件,
+addOnClickListener(ids[])只需要将点击事件控件的id传入,并设置回调接口setOnViewClickListener()
 ```
 .addOnClickListener(R.id.btn_right, R.id.tv_title)
 .setOnViewClickListener(new OnViewClickListener() {
     @Override
-    public void onViewClick(BindViewHolder viewHolder,View view, TDialog tDialog) {
-        switch (view.getId()) {
+    public void onViewClick(BindViewHolder viewHolder,View view1, TDialog tDialog) {
+        switch (view1.getId()) {
             case R.id.btn_right:
                 Toast.makeText(DialogEncapActivity.this, "btn_right", Toast.LENGTH_SHORT).show();
                 tDialog.dismiss();
@@ -111,4 +107,148 @@ new TDialog.Builder(getSupportFragmentManager())
         }
     }
 })
+```
+7.设置底部列表弹窗
+```
+   new TDialog.Builder(getSupportFragmentManager())
+        .setHeight(600)
+        .setScreenWidthAspect(this, 0.8f)
+        .setGravity(Gravity.CENTER)
+        .setAdapter(new TBaseAdapter<String>(R.layout.item_simple_text, Arrays.asList(data)) {
+
+            @Override
+            protected void onBind(BindViewHolder holder, int position, String s) {
+                holder.setText(R.id.tv, s);
+            }
+        })
+        .setOnAdapterItemClickListener(new TBaseAdapter.OnAdapterItemClickListener<String>() {
+            @Override
+            public void onItemClick(BindViewHolder holder, int position, String s, TDialog tDialog) {
+                Toast.makeText(DiffentDialogActivity.this, "click:" + s, Toast.LENGTH_SHORT).show();
+                tDialog.dismiss();
+            }
+        })
+        .create()
+        .show();
+```
+#####列表弹窗
+为了方便使用:
+1. 不用传入layoutRes布局文件,TDialog内部设置了一个默认的RecyclerView布局,且RecyclerView的控件id为recycler_view,背景为#ffffff
+2. setAdapter(Adapter),设置recyclerview的adapter,为了封装Adapter的item点击事件,传入的adapter需要为TBaseAdapter的实现类
+3. setOnAdapterItemClickListener(),设置adapter的点击事件
+```
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recycler_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical" />
+```
+TBaseAdapter实现:需要使用者传入item的xml布局,和List数据
+```
+public abstract class TBaseAdapter<T> extends RecyclerView.Adapter<BindViewHolder> {
+
+    private final int layoutRes;
+    private List<T> datas;
+    private OnAdapterItemClickListener adapterItemClickListener;
+    private TDialog dialog;
+
+    protected abstract void onBind(BindViewHolder holder, int position, T t);
+
+    public TBaseAdapter(@LayoutRes int layoutRes, List<T> datas) {
+        this.layoutRes = layoutRes;
+        this.datas = datas;
+    }
+
+    @Override
+    public BindViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new BindViewHolder(LayoutInflater.from(parent.getContext()).inflate(layoutRes, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(final BindViewHolder holder, final int position) {
+        onBind(holder, position, datas.get(position));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapterItemClickListener.onItemClick(holder, position, datas.get(position), dialog);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return datas.size();
+    }
+
+    public void setTDialog(TDialog tDialog) {
+        this.dialog = tDialog;
+    }
+
+    public interface OnAdapterItemClickListener<T> {
+        void onItemClick(BindViewHolder holder, int position, T t, TDialog tDialog);
+    }
+
+    public void setOnAdapterItemClickListener(OnAdapterItemClickListener listener) {
+        this.adapterItemClickListener = listener;
+    }
+}
+```
+#####如果使用者需要使用自己的列表布局时,可以使用setListLayoutRes(layotuRes,LayoutManager)方法设置xml布局和布局管理器LayoutManager,切记xml布局中的RecyclerView的id必须设置为recycler_view(如效果图中的分享弹窗)
+```
+//底部分享
+public void shareDialog(View view) {
+    new TDialog.Builder(getSupportFragmentManager())
+            .setListLayoutRes(R.layout.dialog_share_recycler, new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false))
+            .setScreenWidthAspect(this, 1.0f)
+            .setGravity(Gravity.BOTTOM)
+            .setAdapter(new TBaseAdapter<String>(R.layout.item_share, Arrays.asList(sharePlatform)) {
+                @Override
+                protected void onBind(BindViewHolder holder, int position, String s) {
+                    holder.setText(R.id.tv, s);
+                }
+            })
+            .setOnAdapterItemClickListener(new TBaseAdapter.OnAdapterItemClickListener<String>() {
+                @Override
+                public void onItemClick(BindViewHolder holder, int position, String item, TDialog tDialog) {
+                    Toast.makeText(DiffentDialogActivity.this, item, Toast.LENGTH_SHORT).show();
+                    tDialog.dismiss();
+                }
+            })
+            .create()
+            .show();
+}
+```
+自定义列表布局
+```
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#242424">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="分享到"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+</android.support.constraint.ConstraintLayout>
 ```
