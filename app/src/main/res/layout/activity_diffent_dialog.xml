@@ -15,7 +15,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:onClick="useTDialog"
-            android:text="TDialog使用"
+            android:text="TDialog基本使用"
             android:textAllCaps="false" />
 
         <Button
@@ -70,8 +70,18 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:onClick="listDialog"
-            android:text="列表数据选择" />
+            android:onClick="updateHead"
+            android:text="底部弹窗选择修改头像" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="18dp"
+            android:onClick="updateHead"
+            android:text="列表弹窗使用TListDialog"
+            android:textColor="#000" />
 
         <Button
             android:layout_width="match_parent"
@@ -79,8 +89,8 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:onClick="updateHead"
-            android:text="底部弹窗选择修改头像" />
+            android:onClick="listDialog"
+            android:text="列表数据选择" />
 
         <Button
             android:layout_width="match_parent"
@@ -98,7 +108,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:onClick="shareDialog"
-            android:text="底部弹窗选择分享平台" />
+            android:text="自定义-底部弹窗选择分享平台" />
 
     </LinearLayout>
 

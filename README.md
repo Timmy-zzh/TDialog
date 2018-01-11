@@ -7,7 +7,7 @@
 * 框架原理解析
 ###### 正文开始前先来一波效果图
 ![](/images/TDialog.gif)
-####一.TDialog的由来
+#### 一.TDialog的由来
 所有框架的由来都是为了更方便,更高效的解决问题,TDialog也一样,是为了在项目中更高效的实现项目的弹窗效果
 
 TDialog是继承自DialogFragment进行封装的,大部分开发者在实现弹窗效果的时候,会首选系统提供的AlertDialog;
@@ -19,34 +19,48 @@ Dialog使用起来其实更简单,但是Google却是推荐尽量使用DialogFrag
 ####使用
 1.在项目build.gradle文件中添加依赖
 ```
-compile 'com.timmy.tdialog:tdialog:1.1.3'
+compile 'com.timmy.tdialog:tdialog:1.2.0'
 ```
 2.Activity或者Fragment中使用
 ```
-     new TDialog.Builder(getSupportFragmentManager())
-            .setLayoutRes(R.layout.dialog_click)
-            .setWidth(600)
-            .setHeight(800)
-            .setScreenWidthAspect(DialogEncapActivity.this,0.5f)
-            .setScreenHeightAspect(DialogEncapActivity.this,0.6f)
-            .setTag("DialogTest")
-            .setDimAmount(0.6f)
-            .setGravity(Gravity.CENTER)
-            .setOnBindViewListener(new OnBindViewListener() {
-                @Override
-                public void bindView(BindViewHolder bindViewHolder) {
-                    bindViewHolder.setText(R.id.tv_content, "abcdef");
+new TDialog.Builder(getSupportFragmentManager())
+        .setLayoutRes(R.layout.dialog_click)
+        .setWidth(600)
+        .setHeight(800)
+        .setScreenWidthAspect(this, 0.8f)
+        .setScreenHeightAspect(this, 0.3f)
+        .setTag("DialogTest")
+        .setDimAmount(0.6f)
+        .setCancelOutside(true)
+        .setGravity(Gravity.CENTER)
+        .setOnBindViewListener(new OnBindViewListener() {
+            @Override
+            public void bindView(BindViewHolder bindViewHolder) {
+                bindViewHolder.setText(R.id.tv_content, "abcdef");
+                bindViewHolder.setText(R.id.tv_title,"我是Title");
+            }
+        })
+        .addOnClickListener(R.id.btn_left,R.id.btn_right, R.id.tv_title)
+        .setOnViewClickListener(new OnViewClickListener() {
+            @Override
+            public void onViewClick(BindViewHolder viewHolder, View view, TDialog tDialog) {
+                switch (view.getId()){
+                    case R.id.btn_left:
+                        Toast.makeText(DiffentDialogActivity.this,"left clicked",Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.btn_right:
+                        Toast.makeText(DiffentDialogActivity.this,"right clicked",Toast.LENGTH_SHORT).show();
+                        tDialog.dismiss();
+                        break;
+                    case R.id.tv_title:
+                        Toast.makeText(DiffentDialogActivity.this,"title clicked",Toast.LENGTH_SHORT).show();
+                        break;
                 }
-            })
-            .addOnClickListener(R.id.btn_right, R.id.tv_title)
-            .setOnViewClickListener(new OnViewClickListener() {
-                @Override
-                public void onViewClick(BindViewHolder viewHolder,View view, TDialog tDialog) {
+            }
+        })
+        .create()
+        .show();
 
-                }
-            })
-            .create()
-            .show();
 ```
 #### 使用方法解析
 TDialog的实现原理和系统Dialog原理差不多,主要使用Builder设计模式实现
@@ -77,16 +91,21 @@ new TDialog.Builder(getSupportFragmentManager())
 ```
 .setDimAmount(0.6f)
 ```
-5.当弹窗需要动态改变控件子view内容时,这里借鉴了RecyclerView.Adapter的设计思想,内部封装好一个BindViewHolder
+5.设置弹窗外部是否可以点击取消(默认可点击取消)
+```
+.setCancelOutside(true)
+```
+6.当弹窗需要动态改变控件子view内容时,这里借鉴了RecyclerView.Adapter的设计思想,内部封装好一个BindViewHolder
 ```
 .setOnBindViewListener(new OnBindViewListener() {
     @Override
     public void bindView(BindViewHolder bindViewHolder) {
         bindViewHolder.setText(R.id.tv_content, "abcdef");
+    bindViewHolder.setText(R.id.tv_title,"我是Title");
     }
 })
 ```
-6.监听弹窗子控件的点击事件,内部也是通过BindViewHolder实现
+7.监听弹窗子控件的点击事件,内部也是通过BindViewHolder实现
 addOnClickListener(ids[])只需要将点击事件控件的id传入,并设置回调接口setOnViewClickListener()
 ```
 .addOnClickListener(R.id.btn_right, R.id.tv_title)
@@ -105,9 +124,9 @@ addOnClickListener(ids[])只需要将点击事件控件的id传入,并设置回�
     }
 })
 ```
-7.设置底部列表弹窗
+8.列表弹窗-使用TListDialog,TListDialog继承自TDialog,可以使用父类所有的方法,并且扩展列表数据展示丰富setAdapter()和item点击事件回调方法setOnAdapterItemClickListener()
 ```
-   new TDialog.Builder(getSupportFragmentManager())
+new TListDialog.Builder(getSupportFragmentManager())
         .setHeight(600)
         .setScreenWidthAspect(this, 0.8f)
         .setGravity(Gravity.CENTER)
@@ -197,8 +216,8 @@ public abstract class TBaseAdapter<T> extends RecyclerView.Adapter<BindViewHolde
 ```
 //底部分享
 public void shareDialog(View view) {
-    new TDialog.Builder(getSupportFragmentManager())
-            .setListLayoutRes(R.layout.dialog_share_recycler, new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false))
+    new TListDialog.Builder(getSupportFragmentManager())
+            .setListLayoutRes(R.layout.dialog_share_recycler, LinearLayoutManager.HORIZONTAL)
             .setScreenWidthAspect(this, 1.0f)
             .setGravity(Gravity.BOTTOM)
             .setAdapter(new TBaseAdapter<String>(R.layout.item_share, Arrays.asList(sharePlatform)) {
@@ -256,3 +275,4 @@ TDialog的实现原理主要分为三步
 3. show()方法调用显示弹窗
 
 #### 项目github地址:https://github.com/Timmy-zzh/TDialog
+
