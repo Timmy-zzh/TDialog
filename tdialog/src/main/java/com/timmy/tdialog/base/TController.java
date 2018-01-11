@@ -1,6 +1,9 @@
 package com.timmy.tdialog.base;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -11,7 +14,7 @@ import com.timmy.tdialog.listener.OnViewClickListener;
 
 import java.io.Serializable;
 
-public class TController<A extends TBaseAdapter> implements Serializable {
+public class TController<A extends TBaseAdapter> implements Parcelable, Serializable {
 
     private FragmentManager fragmentManager;
     private int layoutRes;
@@ -26,9 +29,54 @@ public class TController<A extends TBaseAdapter> implements Serializable {
     private OnBindViewListener bindViewListener;
     private A adapter;
     private TBaseAdapter.OnAdapterItemClickListener adapterItemClickListener;
-    private RecyclerView.LayoutManager layoutManager;
+    private int mOrientation;
 
-    ///////get
+    public TController() {
+    }
+
+    protected TController(Parcel in) {
+        layoutRes = in.readInt();
+        mHeight = in.readInt();
+        mWidth = in.readInt();
+        mDimAmount = in.readFloat();
+        mGravity = in.readInt();
+        mTag = in.readString();
+        ids = in.createIntArray();
+        mIsCancelableOutside = in.readByte() != 0;
+    }
+
+    public static final Creator<TController> CREATOR = new Creator<TController>() {
+        @Override
+        public TController createFromParcel(Parcel in) {
+            return new TController(in);
+        }
+
+        @Override
+        public TController[] newArray(int size) {
+            return new TController[size];
+        }
+    };
+
+    //内容描述接口,不用管
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    //写入接口,
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(layoutRes);
+        dest.writeInt(mHeight);
+        dest.writeInt(mWidth);
+        dest.writeFloat(mDimAmount);
+        dest.writeInt(mGravity);
+        dest.writeString(mTag);
+        dest.writeIntArray(ids);
+        dest.writeByte((byte) (mIsCancelableOutside ? 1 : 0));
+    }
+
+    //get
     public FragmentManager getFragmentManager() {
         return fragmentManager;
     }
@@ -77,15 +125,11 @@ public class TController<A extends TBaseAdapter> implements Serializable {
         return bindViewListener;
     }
 
-    public RecyclerView.LayoutManager getLayoutManager() {
-        return layoutManager;
+    public int getOrientation() {
+        return mOrientation;
     }
 
-    public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
-        this.layoutManager = layoutManager;
-    }
-
-    /////////////////set
+    //set
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
@@ -159,7 +203,7 @@ public class TController<A extends TBaseAdapter> implements Serializable {
         public A adapter;
         public TBaseAdapter.OnAdapterItemClickListener adapterItemClickListener;
         public int listLayoutRes;
-        public RecyclerView.LayoutManager layoutManager;
+        public int orientation = LinearLayoutManager.VERTICAL;//默认RecyclerView的列表方向为垂直方向
 
         public void apply(TController tController) {
             if (fragmentManager != null) {
@@ -168,9 +212,6 @@ public class TController<A extends TBaseAdapter> implements Serializable {
             if (layoutRes > 0) {
                 tController.layoutRes = layoutRes;
             }
-//            else if (adapter == null) {
-//                throw new IllegalArgumentException("请先调用setLayoutRes()方法传入xml布局!");
-//            }
             if (mWidth > 0) {
                 tController.mWidth = mWidth;
             }
@@ -206,10 +247,11 @@ public class TController<A extends TBaseAdapter> implements Serializable {
                 } else {
                     tController.setLayoutRes(listLayoutRes);
                 }
-            }
-
-            if (layoutManager != null) {
-                tController.setLayoutManager(layoutManager);
+                tController.mOrientation = orientation;
+            } else {
+                if (tController.getLayoutRes() <= 0) {
+                    throw new IllegalArgumentException("请先调用setLayoutRes()方法设置弹窗所需的xml布局!");
+                }
             }
 
             if (adapterItemClickListener != null) {

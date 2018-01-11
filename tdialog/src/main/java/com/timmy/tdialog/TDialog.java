@@ -45,7 +45,7 @@ public class TDialog extends BaseDialogFragment {
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(KEY_TCONTROLLER, tController);
+        outState.putParcelable(KEY_TCONTROLLER, tController);
         super.onSaveInstanceState(outState);
     }
 
@@ -61,36 +61,14 @@ public class TDialog extends BaseDialogFragment {
 
     @Override
     protected void bindView(View view) {
-        if (tController.getAdapter() != null) {//有设置列表
-            //列表
-            RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-            if (recyclerView == null) {
-                throw new IllegalArgumentException("自定义列表xml布局,请设置RecyclerView的控件id为recycler_view");
-            }
-            tController.getAdapter().setTDialog(this);
-
-            RecyclerView.LayoutManager layoutManager;
-            if (tController.getLayoutManager() != null) {
-                layoutManager = tController.getLayoutManager();
-            } else {
-                layoutManager = new LinearLayoutManager(view.getContext());
-            }
-            recyclerView.setLayoutManager(layoutManager);
-
-            recyclerView.setAdapter(tController.getAdapter());
-            tController.getAdapter().notifyDataSetChanged();
-            if (tController.getAdapterItemClickListener() != null) {
-                tController.getAdapter().setOnAdapterItemClickListener(tController.getAdapterItemClickListener());
-            }
-        }
-
-        //其他控件点击事件等处理
+        //控件点击事件处理
         BindViewHolder viewHolder = new BindViewHolder(view, this);
         if (tController.getIds() != null && tController.getIds().length > 0) {
             for (int id : tController.getIds()) {
                 viewHolder.addOnClickListener(id);
             }
         }
+        //回调方法获取到布局,进行处理
         if (tController.getBindViewListener() != null) {
             tController.getBindViewListener().bindView(viewHolder);
         }
@@ -158,13 +136,6 @@ public class TDialog extends BaseDialogFragment {
             return this;
         }
 
-        //设置自定义列表布局和方向
-        public Builder setListLayoutRes(@LayoutRes int layoutRes, RecyclerView.LayoutManager layoutManager) {
-            params.listLayoutRes = layoutRes;
-            params.layoutManager = layoutManager;
-            return this;
-        }
-
         /**
          * 设置弹窗宽度是屏幕宽度的比例 0 -1
          */
@@ -225,18 +196,6 @@ public class TDialog extends BaseDialogFragment {
             params.mOnViewClickListener = listener;
             return this;
         }
-
-        //列表数据,需要传入数据和Adapter,和item点击数据
-        public <A extends TBaseAdapter> Builder setAdapter(A adapter) {
-            params.adapter = adapter;
-            return this;
-        }
-
-        public Builder setOnAdapterItemClickListener(TBaseAdapter.OnAdapterItemClickListener listener) {
-            params.adapterItemClickListener = listener;
-            return this;
-        }
-
 
         public TDialog create() {
             TDialog dialog = new TDialog();

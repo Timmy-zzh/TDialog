@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.timmy.tdialog.TDialog;
 import com.timmy.tdialog.base.BindViewHolder;
 import com.timmy.tdialog.base.TBaseAdapter;
+import com.timmy.tdialog.list.TListDialog;
 import com.timmy.tdialog.listener.OnBindViewListener;
 import com.timmy.tdialog.listener.OnViewClickListener;
 import com.timmy.tdialogdemo.R;
@@ -39,22 +40,35 @@ public class DiffentDialogActivity extends AppCompatActivity {
                 .setLayoutRes(R.layout.dialog_click)
                 .setWidth(600)
                 .setHeight(800)
-                .setScreenWidthAspect(this, 0.5f)
-                .setScreenHeightAspect(this, 0.6f)
+                .setScreenWidthAspect(this, 0.8f)
+                .setScreenHeightAspect(this, 0.3f)
                 .setTag("DialogTest")
                 .setDimAmount(0.6f)
+                .setCancelOutside(true)
                 .setGravity(Gravity.CENTER)
                 .setOnBindViewListener(new OnBindViewListener() {
                     @Override
                     public void bindView(BindViewHolder bindViewHolder) {
                         bindViewHolder.setText(R.id.tv_content, "abcdef");
+                        bindViewHolder.setText(R.id.tv_title,"我是Title");
                     }
                 })
-                .addOnClickListener(R.id.btn_right, R.id.tv_title)
+                .addOnClickListener(R.id.btn_left,R.id.btn_right, R.id.tv_title)
                 .setOnViewClickListener(new OnViewClickListener() {
                     @Override
                     public void onViewClick(BindViewHolder viewHolder, View view, TDialog tDialog) {
-
+                        switch (view.getId()){
+                            case R.id.btn_left:
+                                Toast.makeText(DiffentDialogActivity.this,"left clicked",Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.btn_right:
+                                Toast.makeText(DiffentDialogActivity.this,"right clicked",Toast.LENGTH_SHORT).show();
+                                tDialog.dismiss();
+                                break;
+                            case R.id.tv_title:
+                                Toast.makeText(DiffentDialogActivity.this,"title clicked",Toast.LENGTH_SHORT).show();
+                                break;
+                        }
                     }
                 })
                 .create()
@@ -82,7 +96,6 @@ public class DiffentDialogActivity extends AppCompatActivity {
                 })
                 .create()
                 .show();
-
     }
 
     public void tipsDialog(View view) {
@@ -173,7 +186,7 @@ public class DiffentDialogActivity extends AppCompatActivity {
     }
 
     public void listDialog(View view) {
-        new TDialog.Builder(getSupportFragmentManager())
+        new TListDialog.Builder(getSupportFragmentManager())
                 .setHeight(600)
                 .setScreenWidthAspect(this, 0.8f)
                 .setGravity(Gravity.CENTER)
@@ -196,7 +209,7 @@ public class DiffentDialogActivity extends AppCompatActivity {
     }
 
     public void bottomListDialog(View view) {
-        new TDialog.Builder(getSupportFragmentManager())
+        new TListDialog.Builder(getSupportFragmentManager())
                 .setScreenHeightAspect(this, 0.5f)
                 .setScreenWidthAspect(this, 1.0f)
                 .setGravity(Gravity.BOTTOM)
@@ -252,8 +265,8 @@ public class DiffentDialogActivity extends AppCompatActivity {
 
     //底部分享
     public void shareDialog(View view) {
-        new TDialog.Builder(getSupportFragmentManager())
-                .setListLayoutRes(R.layout.dialog_share_recycler, new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false))
+        new TListDialog.Builder(getSupportFragmentManager())
+                .setListLayoutRes(R.layout.dialog_share_recycler, LinearLayoutManager.HORIZONTAL)
                 .setScreenWidthAspect(this, 1.0f)
                 .setGravity(Gravity.BOTTOM)
                 .setAdapter(new TBaseAdapter<String>(R.layout.item_share, Arrays.asList(sharePlatform)) {

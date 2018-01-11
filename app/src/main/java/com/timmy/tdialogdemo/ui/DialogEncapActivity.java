@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.timmy.tdialog.TDialog;
 import com.timmy.tdialog.base.BindViewHolder;
 import com.timmy.tdialog.base.TBaseAdapter;
+import com.timmy.tdialog.list.TListDialog;
 import com.timmy.tdialog.listener.OnBindViewListener;
 import com.timmy.tdialog.listener.OnViewClickListener;
 import com.timmy.tdialogdemo.R;
@@ -68,7 +69,7 @@ public class DialogEncapActivity extends AppCompatActivity {
             datas.add("item:" + i);
         }
 
-        TDialog.Builder builder = new TDialog.Builder(getSupportFragmentManager());
+        TListDialog.Builder builder = new TListDialog.Builder(getSupportFragmentManager());
         builder.setLayoutRes(R.layout.dialog_recycler_test);
         builder.setHeight(600);
         builder.setScreenWidthAspect(DialogEncapActivity.this, 1.0f);
