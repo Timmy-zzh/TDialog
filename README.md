@@ -286,5 +286,5 @@ TDialog的实现原理主要分为三步
 2. create()方法调用后才会实例化TDialog对象,并将TController.TParams中设置的数据传递到TDialog的属性TController对象中
 3. show()方法调用显示弹窗
 4.UML调用时序图
-![](/images/TDialog-fw.gif)
+![](/images/TDialog-fw.png)
 #### 项目github地址:https://github.com/Timmy-zzh/TDialog
