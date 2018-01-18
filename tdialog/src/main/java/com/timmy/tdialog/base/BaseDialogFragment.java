@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +65,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG,"onCreateView");
         View view = null;
         if (getLayoutRes() > 0) {
             view = inflater.inflate(getLayoutRes(), container, false);
@@ -79,6 +81,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG,"onViewCreated");
         //去除Dialog默认头部
         Dialog dialog = getDialog();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -89,6 +92,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG,"onStart");
         Window window = getDialog().getWindow();
         if (window != null) {
             //设置窗体背景色透明

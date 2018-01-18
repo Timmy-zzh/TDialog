@@ -132,6 +132,7 @@ public class TDialog extends BaseDialogFragment {
         if (tController.getWidth() <= 0 && tController.getHeight() <= 0) {
             tController.setWidth(600);
         }
+        Log.d(TAG,"show");
         show(tController.getFragmentManager());
         return this;
     }
@@ -228,6 +229,7 @@ public class TDialog extends BaseDialogFragment {
 
         public TDialog create() {
             TDialog dialog = new TDialog();
+            Log.d(TAG,"create");
             //将数据从Buidler的DjParams中传递到DjDialog中
             params.apply(dialog.tController);
             return dialog;

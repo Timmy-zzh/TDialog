@@ -51,7 +51,7 @@ public class DiffentDialogActivity extends AppCompatActivity {
     public void useTDialog(View view) {
         new TDialog.Builder(getSupportFragmentManager())
                 .setLayoutRes(R.layout.dialog_click)
-                .setDialogView(view)
+//                .setDialogView(view)
                 .setWidth(600)
                 .setHeight(800)
                 .setScreenWidthAspect(this, 0.8f)
