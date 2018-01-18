@@ -4,9 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.View;
 
 import com.timmy.tdialog.R;
 import com.timmy.tdialog.listener.OnBindViewListener;
@@ -18,31 +17,36 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
 
     private FragmentManager fragmentManager;
     private int layoutRes;
-    private int mHeight;
-    private int mWidth;
-    private float mDimAmount;
-    private int mGravity;
-    private String mTag;
+    private int height;
+    private int width;
+    private float dimAmount;
+    private int gravity;
+    private String tag;
     private int[] ids;
-    private boolean mIsCancelableOutside;
-    private OnViewClickListener mOnViewClickListener;
-    private OnBindViewListener bindViewListener;
+    private boolean isCancelableOutside;
+    private OnViewClickListener onViewClickListener;
+    private OnBindViewListener onBindViewListener;
     private A adapter;
     private TBaseAdapter.OnAdapterItemClickListener adapterItemClickListener;
-    private int mOrientation;
+    private int orientation;
+    private boolean cancelable;//弹窗是否可以取消
+    private View dialogView;
 
+    //////////////////////////////////////////Parcelable持久化//////////////////////////////////////////////////////
     public TController() {
     }
 
     protected TController(Parcel in) {
         layoutRes = in.readInt();
-        mHeight = in.readInt();
-        mWidth = in.readInt();
-        mDimAmount = in.readFloat();
-        mGravity = in.readInt();
-        mTag = in.readString();
+        height = in.readInt();
+        width = in.readInt();
+        dimAmount = in.readFloat();
+        gravity = in.readInt();
+        tag = in.readString();
         ids = in.createIntArray();
-        mIsCancelableOutside = in.readByte() != 0;
+        isCancelableOutside = in.readByte() != 0;
+        orientation = in.readInt();
+        cancelable = in.readByte() != 0;
     }
 
     public static final Creator<TController> CREATOR = new Creator<TController>() {
@@ -63,18 +67,21 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
         return 0;
     }
 
-    //写入接口,
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(layoutRes);
-        dest.writeInt(mHeight);
-        dest.writeInt(mWidth);
-        dest.writeFloat(mDimAmount);
-        dest.writeInt(mGravity);
-        dest.writeString(mTag);
+        dest.writeInt(height);
+        dest.writeInt(width);
+        dest.writeFloat(dimAmount);
+        dest.writeInt(gravity);
+        dest.writeString(tag);
         dest.writeIntArray(ids);
-        dest.writeByte((byte) (mIsCancelableOutside ? 1 : 0));
+        dest.writeByte((byte) (isCancelableOutside ? 1 : 0));
+        dest.writeInt(orientation);
+        dest.writeByte((byte) (cancelable ? 1 : 0));
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     //get
     public FragmentManager getFragmentManager() {
@@ -85,28 +92,32 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
         return layoutRes;
     }
 
+    public void setLayoutRes(int layoutRes) {
+        this.layoutRes = layoutRes;
+    }
+
     public int getHeight() {
-        return mHeight;
+        return height;
     }
 
     public int getWidth() {
-        return mWidth;
+        return width;
     }
 
     public void setWidth(int mWidth) {
-        this.mWidth = mWidth;
+        this.width = mWidth;
     }
 
     public float getDimAmount() {
-        return mDimAmount;
+        return dimAmount;
     }
 
     public int getGravity() {
-        return mGravity;
+        return gravity;
     }
 
     public String getTag() {
-        return mTag;
+        return tag;
     }
 
     public int[] getIds() {
@@ -114,60 +125,27 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
     }
 
     public boolean isCancelableOutside() {
-        return mIsCancelableOutside;
+        return isCancelableOutside;
     }
 
     public OnViewClickListener getOnViewClickListener() {
-        return mOnViewClickListener;
-    }
-
-    public OnBindViewListener getBindViewListener() {
-        return bindViewListener;
+        return onViewClickListener;
     }
 
     public int getOrientation() {
-        return mOrientation;
+        return orientation;
     }
 
-    //set
-    public void setFragmentManager(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
+    public boolean isCancelable() {
+        return cancelable;
     }
 
-    public void setLayoutRes(int layoutRes) {
-        this.layoutRes = layoutRes;
+    public OnBindViewListener getOnBindViewListener() {
+        return onBindViewListener;
     }
 
-    public void setHeight(int mHeight) {
-        this.mHeight = mHeight;
-    }
-
-    public void setDimAmount(float mDimAmount) {
-        this.mDimAmount = mDimAmount;
-    }
-
-    public void setGravity(int mGravity) {
-        this.mGravity = mGravity;
-    }
-
-    public void setTag(String mTag) {
-        this.mTag = mTag;
-    }
-
-    public void setIds(int[] ids) {
-        this.ids = ids;
-    }
-
-    public void setCancelableOutside(boolean mIsCancelableOutside) {
-        this.mIsCancelableOutside = mIsCancelableOutside;
-    }
-
-    public void setOnViewClickListener(OnViewClickListener mOnViewClickListener) {
-        this.mOnViewClickListener = mOnViewClickListener;
-    }
-
-    public void setBindViewListener(OnBindViewListener bindViewListener) {
-        this.bindViewListener = bindViewListener;
+    public View getDialogView() {
+        return dialogView;
     }
 
     //列表
@@ -187,14 +165,16 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
         this.adapterItemClickListener = adapterItemClickListener;
     }
 
+    /**************************************************************************
+     */
     public static class TParams<A extends TBaseAdapter> {
-        public FragmentManager fragmentManager;
-        public int layoutRes;
+        public FragmentManager mFragmentManager;
+        public int mLayoutRes;
         public int mWidth;
         public int mHeight;
-        public float mDimAmount;
-        public int mGravity;
-        public String mTag;
+        public float mDimAmount = 0.2f;
+        public int mGravity = Gravity.CENTER;
+        public String mTag = "TDialog";
         public int[] ids;
         public boolean mIsCancelableOutside = true;
         public OnViewClickListener mOnViewClickListener;
@@ -204,41 +184,32 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
         public TBaseAdapter.OnAdapterItemClickListener adapterItemClickListener;
         public int listLayoutRes;
         public int orientation = LinearLayoutManager.VERTICAL;//默认RecyclerView的列表方向为垂直方向
+        public boolean mCancelable = true;//弹窗是否可以取消
+        public View mDialogView;//直接使用传入进来的View,而不需要通过解析Xml
 
         public void apply(TController tController) {
-            if (fragmentManager != null) {
-                tController.fragmentManager = fragmentManager;
+            tController.fragmentManager = mFragmentManager;
+            if (mLayoutRes > 0) {
+                tController.layoutRes = mLayoutRes;
             }
-            if (layoutRes > 0) {
-                tController.layoutRes = layoutRes;
+            if (mDialogView != null) {
+                tController.dialogView = mDialogView;
             }
             if (mWidth > 0) {
-                tController.mWidth = mWidth;
+                tController.width = mWidth;
             }
             if (mHeight > 0) {
-                tController.mHeight = mHeight;
+                tController.height = mHeight;
             }
-            if (mDimAmount > 0f) {
-                tController.mDimAmount = mDimAmount;
-            } else {
-                tController.mDimAmount = 0.2f;//默认0.2
-            }
-            if (mGravity > 0) {
-                tController.mGravity = mGravity;
-            } else {
-                tController.mGravity = Gravity.CENTER;
-            }
-            if (TextUtils.isEmpty(mTag)) {
-                tController.mTag = mTag;
-            } else {
-                tController.mTag = "DjDialog";
-            }
+            tController.dimAmount = mDimAmount;
+            tController.gravity = mGravity;
+            tController.tag = mTag;
             if (ids != null) {
                 tController.ids = ids;
             }
-            tController.mIsCancelableOutside = mIsCancelableOutside;
-            tController.mOnViewClickListener = mOnViewClickListener;
-            tController.bindViewListener = bindViewListener;
+            tController.isCancelableOutside = mIsCancelableOutside;
+            tController.onViewClickListener = mOnViewClickListener;
+            tController.onBindViewListener = bindViewListener;
 
             if (adapter != null) {
                 tController.setAdapter(adapter);
@@ -247,16 +218,17 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
                 } else {
                     tController.setLayoutRes(listLayoutRes);
                 }
-                tController.mOrientation = orientation;
+                tController.orientation = orientation;
             } else {
-                if (tController.getLayoutRes() <= 0) {
+                if (tController.getLayoutRes() <= 0 && tController.getDialogView() == null) {
                     throw new IllegalArgumentException("请先调用setLayoutRes()方法设置弹窗所需的xml布局!");
                 }
             }
-
             if (adapterItemClickListener != null) {
                 tController.setAdapterItemClickListener(adapterItemClickListener);
             }
+            //弹窗是否可以取消
+            tController.cancelable = mCancelable;
         }
     }
 }

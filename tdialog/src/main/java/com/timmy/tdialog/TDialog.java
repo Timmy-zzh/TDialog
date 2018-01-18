@@ -1,12 +1,15 @@
 package com.timmy.tdialog;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.timmy.tdialog.base.BaseDialogFragment;
@@ -49,10 +52,15 @@ public class TDialog extends BaseDialogFragment {
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d("TDialog onViewCreated", "onViewCreated");
+
+    }
+
     /**
      * 获取弹窗xml布局界面
-     *
-     * @return 基类调用
      */
     @Override
     protected int getLayoutRes() {
@@ -60,19 +68,25 @@ public class TDialog extends BaseDialogFragment {
     }
 
     @Override
+    protected View getDialogView() {
+        return tController.getDialogView();
+    }
+
+    @Override
     protected void bindView(View view) {
         //控件点击事件处理
         BindViewHolder viewHolder = new BindViewHolder(view, this);
-        if (tController.getIds() != null && tController.getIds().length > 0) {
+        if (tController.isCancelable() && tController.getIds() != null && tController.getIds().length > 0) {
             for (int id : tController.getIds()) {
                 viewHolder.addOnClickListener(id);
             }
         }
         //回调方法获取到布局,进行处理
-        if (tController.getBindViewListener() != null) {
-            tController.getBindViewListener().bindView(viewHolder);
+        if (tController.getOnBindViewListener() != null) {
+            tController.getOnBindViewListener().bindView(viewHolder);
         }
     }
+
 
     @Override
     public int getGravity() {
@@ -95,17 +109,22 @@ public class TDialog extends BaseDialogFragment {
     }
 
     @Override
-    public boolean getCancelableOutside() {
-        return tController.isCancelableOutside();
-    }
-
-    @Override
     public String getFragmentTag() {
         return tController.getTag();
     }
 
     public OnViewClickListener getOnViewClickListener() {
         return tController.getOnViewClickListener();
+    }
+
+    @Override
+    public boolean isCancelable() {
+        return tController.isCancelable();
+    }
+
+    @Override
+    protected boolean isCancelableOutside() {
+        return tController.isCancelableOutside();
     }
 
     public TDialog show() {
@@ -127,12 +146,17 @@ public class TDialog extends BaseDialogFragment {
 
         public Builder(FragmentManager fragmentManager) {
             params = new TController.TParams();
-            params.fragmentManager = fragmentManager;
+            params.mFragmentManager = fragmentManager;
         }
 
         //各种setXXX()方法设置数据
         public Builder setLayoutRes(@LayoutRes int layoutRes) {
-            params.layoutRes = layoutRes;
+            params.mLayoutRes = layoutRes;
+            return this;
+        }
+
+        public Builder setDialogView(View view) {
+            params.mDialogView = view;
             return this;
         }
 
@@ -167,8 +191,13 @@ public class TDialog extends BaseDialogFragment {
             return this;
         }
 
-        public Builder setCancelOutside(boolean cancel) {
+        public Builder setCancelableOutside(boolean cancel) {
             params.mIsCancelableOutside = cancel;
+            return this;
+        }
+
+        public Builder setCancelable(boolean cancelable) {
+            params.mCancelable = cancelable;
             return this;
         }
 

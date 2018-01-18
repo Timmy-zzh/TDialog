@@ -59,12 +59,12 @@ public class TListDialog extends TDialog {
 
         public Builder(FragmentManager fragmentManager) {
             params = new TController.TParams();
-            params.fragmentManager = fragmentManager;
+            params.mFragmentManager = fragmentManager;
         }
 
         //各种setXXX()方法设置数据
         public TListDialog.Builder setLayoutRes(@LayoutRes int layoutRes) {
-            params.layoutRes = layoutRes;
+            params.mLayoutRes = layoutRes;
             return this;
         }
 

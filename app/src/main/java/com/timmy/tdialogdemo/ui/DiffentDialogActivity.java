@@ -1,14 +1,17 @@
 package com.timmy.tdialogdemo.ui;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.timmy.tdialog.TDialog;
@@ -26,8 +29,18 @@ import java.util.Arrays;
  */
 public class DiffentDialogActivity extends AppCompatActivity {
 
+    private static final String TAG = "TDialog";
     private String[] data = {"java", "android", "NDK", "c++", "python", "ios", "Go", "Unity3D", "Kotlin", "Swift", "js"};
     private String[] sharePlatform = {"微信", "朋友圈", "短信", "微博", "QQ空间", "Google", "FaceBook", "微信", "朋友圈", "短信", "微博", "QQ空间"};
+    private TDialog tDialog;
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            tDialog.dismiss();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,35 +51,37 @@ public class DiffentDialogActivity extends AppCompatActivity {
     public void useTDialog(View view) {
         new TDialog.Builder(getSupportFragmentManager())
                 .setLayoutRes(R.layout.dialog_click)
+                .setDialogView(view)
                 .setWidth(600)
                 .setHeight(800)
                 .setScreenWidthAspect(this, 0.8f)
                 .setScreenHeightAspect(this, 0.3f)
                 .setTag("DialogTest")
                 .setDimAmount(0.6f)
-                .setCancelOutside(true)
+                .setCancelableOutside(true)
+                .setCancelable(true)//是否可以取消
                 .setGravity(Gravity.CENTER)
                 .setOnBindViewListener(new OnBindViewListener() {
                     @Override
                     public void bindView(BindViewHolder bindViewHolder) {
                         bindViewHolder.setText(R.id.tv_content, "abcdef");
-                        bindViewHolder.setText(R.id.tv_title,"我是Title");
+                        bindViewHolder.setText(R.id.tv_title, "我是Title");
                     }
                 })
-                .addOnClickListener(R.id.btn_left,R.id.btn_right, R.id.tv_title)
+                .addOnClickListener(R.id.btn_left, R.id.btn_right, R.id.tv_title)
                 .setOnViewClickListener(new OnViewClickListener() {
                     @Override
                     public void onViewClick(BindViewHolder viewHolder, View view, TDialog tDialog) {
-                        switch (view.getId()){
+                        switch (view.getId()) {
                             case R.id.btn_left:
-                                Toast.makeText(DiffentDialogActivity.this,"left clicked",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DiffentDialogActivity.this, "left clicked", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.btn_right:
-                                Toast.makeText(DiffentDialogActivity.this,"right clicked",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DiffentDialogActivity.this, "right clicked", Toast.LENGTH_SHORT).show();
                                 tDialog.dismiss();
                                 break;
                             case R.id.tv_title:
-                                Toast.makeText(DiffentDialogActivity.this,"title clicked",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DiffentDialogActivity.this, "title clicked", Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     }
@@ -102,7 +117,7 @@ public class DiffentDialogActivity extends AppCompatActivity {
         new TDialog.Builder(getSupportFragmentManager())
                 .setLayoutRes(R.layout.dialog_vb_convert)
                 .setScreenWidthAspect(this, 0.85f)
-                .setCancelOutside(false)
+                .setCancelableOutside(false)
                 .addOnClickListener(R.id.tv_jiuyuan_desc, R.id.tv_cancel, R.id.tv_confirm)
                 .setOnViewClickListener(new OnViewClickListener() {
                     @Override
@@ -126,10 +141,31 @@ public class DiffentDialogActivity extends AppCompatActivity {
     }
 
     public void loadingDialog(View view) {
-        new TDialog.Builder(getSupportFragmentManager())
+        tDialog = new TDialog.Builder(getSupportFragmentManager())
                 .setLayoutRes(R.layout.dialog_loading)
                 .setHeight(300)
                 .setWidth(300)
+                .setCancelableOutside(true)
+                .setCancelable(false)
+                .create()
+                .show();
+        handler.sendEmptyMessageDelayed(0, 5 * 1000);
+    }
+
+    public void dialogView(View view) {
+        TextView textView = new TextView(this);
+        textView.setText("DialogView");
+        textView.setTextSize(25);
+        textView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+        textView.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+
+        tDialog = new TDialog.Builder(getSupportFragmentManager())
+                .setLayoutRes(R.layout.dialog_loading)
+                .setDialogView(textView)
+                .setHeight(400)
+                .setWidth(600)
+                .setCancelableOutside(true)
+                .setCancelable(true)
                 .create()
                 .show();
     }

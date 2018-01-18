@@ -16,53 +16,54 @@ Dialog使用起来其实更简单,但是Google却是推荐尽量使用DialogFrag
 ##### 1.DialogFragment的优点
 * DialogFragment 本身是 Fragment 的子类，有着和 Fragment 基本一样的生命周期，使用 DialogFragment 来管理对话框，当旋转屏幕和按下后退键的时候可以更好的管理其生命周期
 * 在手机配置变化导致 Activity 需要重新创建时，例如旋转屏幕，基于 DialogFragment 的对话框将会由 FragmentManager 自动重建，然而基于 Dialog 实现的对话框却没有这样的能力
-#### 使用
+####使用
 1.添加依赖
-
-a.在工程build.gradle文件repositories中添加
+ a. 在工程build.gradle文件repositories中添加
 ```
   repositories {
     ...
     jcenter()
- }
+}
 ```
  b.在model下build.gradle文件添加
 ```
- compile 'com.timmy.tdialog:tdialog:1.2.0'
+compile 'com.timmy.tdialog:tdialog:1.3.0'
 ```
 2.Activity或者Fragment中使用
 ```
 new TDialog.Builder(getSupportFragmentManager())
         .setLayoutRes(R.layout.dialog_click)
+        .setDialogView(view)
         .setWidth(600)
         .setHeight(800)
         .setScreenWidthAspect(this, 0.8f)
         .setScreenHeightAspect(this, 0.3f)
         .setTag("DialogTest")
         .setDimAmount(0.6f)
-        .setCancelOutside(true)
+        .setCancelableOutside(true)
+        .setCancelable(true)//是否可以取消
         .setGravity(Gravity.CENTER)
         .setOnBindViewListener(new OnBindViewListener() {
             @Override
             public void bindView(BindViewHolder bindViewHolder) {
                 bindViewHolder.setText(R.id.tv_content, "abcdef");
-                bindViewHolder.setText(R.id.tv_title,"我是Title");
+                bindViewHolder.setText(R.id.tv_title, "我是Title");
             }
         })
-        .addOnClickListener(R.id.btn_left,R.id.btn_right, R.id.tv_title)
+        .addOnClickListener(R.id.btn_left, R.id.btn_right, R.id.tv_title)
         .setOnViewClickListener(new OnViewClickListener() {
             @Override
             public void onViewClick(BindViewHolder viewHolder, View view, TDialog tDialog) {
-                switch (view.getId()){
+                switch (view.getId()) {
                     case R.id.btn_left:
-                        Toast.makeText(DiffentDialogActivity.this,"left clicked",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DiffentDialogActivity.this, "left clicked", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.btn_right:
-                        Toast.makeText(DiffentDialogActivity.this,"right clicked",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DiffentDialogActivity.this, "right clicked", Toast.LENGTH_SHORT).show();
                         tDialog.dismiss();
                         break;
                     case R.id.tv_title:
-                        Toast.makeText(DiffentDialogActivity.this,"title clicked",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DiffentDialogActivity.this, "title clicked", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -73,16 +74,17 @@ new TDialog.Builder(getSupportFragmentManager())
 ```
 #### 使用方法解析
 TDialog的实现原理和系统Dialog原理差不多,主要使用Builder设计模式实现
-1.创建弹窗,必须传入xml布局文件,且自己设置背景色,因为默认是透明背景色
+1.创建弹窗,传入xml布局文件或者传入View控件,且自己设置背景色,因为默认是透明背景色
 ```
 new TDialog.Builder(getSupportFragmentManager())
         .setLayoutRes(R.layout.dialog_click)
+        .setDialogView(view)
         .create()
         .show();
 ```
 2.设置弹窗的宽高(如果不设置宽或者高,默认使用包裹内容的高度)
 ```
-          new TDialog.Builder(getSupportFragmentManager())
+   new TDialog.Builder(getSupportFragmentManager())
             .setLayoutRes(R.layout.dialog_click)
             .setWidth(600)  //设置弹窗固定宽度(单位:px)
             .setHeight(800)//设置弹窗固定高度
@@ -100,9 +102,10 @@ new TDialog.Builder(getSupportFragmentManager())
 ```
 .setDimAmount(0.6f)
 ```
-5.设置弹窗外部是否可以点击取消(默认可点击取消)
+5.设置弹窗外部是否可以点击取消(默认可点击取消),和设置弹窗是否可以取消(默认可取消)
 ```
-.setCancelOutside(true)
+.setCancelableOutside(true)
+.setCancelable(true)//是否可以取消
 ```
 6.当弹窗需要动态改变控件子view内容时,这里借鉴了RecyclerView.Adapter的设计思想,内部封装好一个BindViewHolder
 ```
@@ -284,4 +287,3 @@ TDialog的实现原理主要分为三步
 3. show()方法调用显示弹窗
 
 #### 项目github地址:https://github.com/Timmy-zzh/TDialog
-

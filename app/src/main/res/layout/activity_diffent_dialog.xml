@@ -43,8 +43,19 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:textAllCaps="false"
             android:onClick="loadingDialog"
-            android:text="加载中" />
+            android:text="加载中... (不能取消,5秒后自动隐藏)" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAllCaps="false"
+            android:onClick="dialogView"
+            android:text="使用setDialogView()直接传入View" />
 
         <Button
             android:layout_width="match_parent"

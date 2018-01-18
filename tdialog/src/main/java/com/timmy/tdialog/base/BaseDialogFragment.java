@@ -2,11 +2,9 @@ package com.timmy.tdialog.base;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -41,57 +39,51 @@ import android.view.WindowManager;
  * //                }
  * //           }
  * 3.对应使用Dialog不同部分包括
- *      a.xml布局
- *      b.宽高
- *      c.位置
- *      d.背景色
- *      e.透明度
- *      f.是否可以点击空白处隐藏
- *      控制方法在onStart处理,
+ * a.xml布局
+ * b.宽高
+ * c.位置
+ * d.背景色
+ * e.透明度
+ * f.是否可以点击空白处隐藏
+ * 控制方法在onStart处理,
  * 4.暴露方法:界面中控件处理和点击事件处理
  * 5.监听回调,很多弹窗需要输入信息,然后将输入的信息通过回调的方法返回
  * 6.当设备Configure属性变化时,数据保存和恢复处理
- *
  **/
 public abstract class BaseDialogFragment extends DialogFragment {
 
-    public static final String TAG = "BaseDialogFragment";
+    public static final String TAG = "TDialog";
     private static final float DEFAULT_DIMAMOUNT = 0.2F;
 
     protected abstract int getLayoutRes();
 
     protected abstract void bindView(View view);
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return super.onCreateDialog(savedInstanceState);
-    }
+    protected abstract View getDialogView();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //去除Dialog默认头部
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(getCancelableOutside());
-       View view = inflater.inflate(getLayoutRes(),container,false);
+        View view = null;
+        if (getLayoutRes() > 0) {
+            view = inflater.inflate(getLayoutRes(), container, false);
+        }
+        if (getDialogView() != null) {
+            view = getDialogView();
+        }
         bindView(view);
         return view;
     }
 
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //去除Dialog默认头部
+        Dialog dialog = getDialog();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCanceledOnTouchOutside(isCancelableOutside());
+        setCancelable(isCancelable());
     }
 
     @Override
@@ -140,19 +132,16 @@ public abstract class BaseDialogFragment extends DialogFragment {
         return DEFAULT_DIMAMOUNT;
     }
 
-    /**
-     * 默认Dialog外部点击可以取消显示
-     */
-    public boolean getCancelableOutside() {
-        return true;
-    }
-
     public String getFragmentTag() {
         return TAG;
     }
 
     public void show(FragmentManager fragmentManager) {
         show(fragmentManager, getFragmentTag());
+    }
+
+    protected boolean isCancelableOutside() {
+        return true;
     }
 
     /**
@@ -162,7 +151,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
         return acitvity.getWindowManager().getDefaultDisplay().getHeight();
     }
 
-    public static int getWindowWidth(Activity acitvity) {
+    protected static int getWindowWidth(Activity acitvity) {
         return acitvity.getWindowManager().getDefaultDisplay().getWidth();
     }
 }
