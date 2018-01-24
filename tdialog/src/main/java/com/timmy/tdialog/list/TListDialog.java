@@ -1,6 +1,7 @@
 package com.timmy.tdialog.list;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -147,6 +148,10 @@ public class TListDialog extends TDialog {
             return this;
         }
 
+        public TListDialog.Builder setOnDismissListener(DialogInterface.OnDismissListener dismissListener) {
+            params.mOnDismissListener = dismissListener;
+            return this;
+        }
 
         public TListDialog create() {
             TListDialog dialog = new TListDialog();

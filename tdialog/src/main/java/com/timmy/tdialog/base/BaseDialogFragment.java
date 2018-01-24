@@ -2,6 +2,7 @@ package com.timmy.tdialog.base;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -83,7 +84,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
         return view;
     }
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -97,7 +97,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG,"onStart");
         Window window = getDialog().getWindow();
         if (window != null) {
             //设置窗体背景色透明

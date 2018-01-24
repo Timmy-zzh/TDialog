@@ -1,6 +1,7 @@
 package com.timmy.tdialogdemo.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -50,26 +51,32 @@ public class DiffentDialogActivity extends AppCompatActivity {
 
     public void useTDialog(View view) {
         new TDialog.Builder(getSupportFragmentManager())
-                .setLayoutRes(R.layout.dialog_click)
-//                .setDialogView(view)
-                .setWidth(600)
-                .setHeight(800)
-                .setScreenWidthAspect(this, 0.8f)
-                .setScreenHeightAspect(this, 0.3f)
-                .setTag("DialogTest")
-                .setDimAmount(0.6f)
-                .setCancelableOutside(true)
-                .setCancelable(true)//是否可以取消
-                .setGravity(Gravity.CENTER)
-                .setOnBindViewListener(new OnBindViewListener() {
+                .setLayoutRes(R.layout.dialog_click)    //设置弹窗展示的xml布局
+//                .setDialogView(view)  //设置弹窗布局,直接传入View
+                .setWidth(600)  //设置弹窗宽度(px)
+                .setHeight(800)  //设置弹窗高度(px)
+                .setScreenWidthAspect(this, 0.8f)   //设置弹窗宽度(参数aspect为屏幕宽度比例 0 - 1f)
+                .setScreenHeightAspect(this, 0.3f)  //设置弹窗高度(参数aspect为屏幕宽度比例 0 - 1f)
+                .setGravity(Gravity.CENTER)     //设置弹窗展示位置
+                .setTag("DialogTest")   //设置Tag
+                .setDimAmount(0.6f)     //设置弹窗背景透明度(0-1f)
+                .setCancelableOutside(true)     //弹窗在界面外是否可以点击取消
+                .setCancelable(true)    //弹窗是否可以取消
+                .setOnDismissListener(new DialogInterface.OnDismissListener() { //弹窗隐藏时回调方法
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        Toast.makeText(DiffentDialogActivity.this, "弹窗消失回调", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setOnBindViewListener(new OnBindViewListener() {   //通过BindViewHolder拿到控件对象,进行修改
                     @Override
                     public void bindView(BindViewHolder bindViewHolder) {
                         bindViewHolder.setText(R.id.tv_content, "abcdef");
                         bindViewHolder.setText(R.id.tv_title, "我是Title");
                     }
                 })
-                .addOnClickListener(R.id.btn_left, R.id.btn_right, R.id.tv_title)
-                .setOnViewClickListener(new OnViewClickListener() {
+                .addOnClickListener(R.id.btn_left, R.id.btn_right, R.id.tv_title)   //添加进行点击控件的id
+                .setOnViewClickListener(new OnViewClickListener() {     //View控件点击事件回调
                     @Override
                     public void onViewClick(BindViewHolder viewHolder, View view, TDialog tDialog) {
                         switch (view.getId()) {
@@ -86,8 +93,8 @@ public class DiffentDialogActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .create()
-                .show();
+                .create()   //创建TDialog
+                .show();    //展示
     }
 
     public void upgradeDialog(View view) {
@@ -260,6 +267,12 @@ public class DiffentDialogActivity extends AppCompatActivity {
                     public void onItemClick(BindViewHolder holder, int position, String s, TDialog tDialog) {
                         Toast.makeText(DiffentDialogActivity.this, "click:" + s, Toast.LENGTH_SHORT).show();
                         tDialog.dismiss();
+                    }
+                })
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        Toast.makeText(DiffentDialogActivity.this, "setOnDismissListener 回调", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .create()

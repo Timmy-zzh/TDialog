@@ -1,5 +1,6 @@
 package com.timmy.tdialog.base;
 
+import android.content.DialogInterface;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,12 @@ import com.timmy.tdialog.listener.OnViewClickListener;
 
 import java.io.Serializable;
 
+/**
+ * 数据保存封装的容器类
+ * @author Timmy
+ * @time 2018/1/24 14:40
+ * @GitHub https://github.com/Timmy-zzh/TDialog
+ **/
 public class TController<A extends TBaseAdapter> implements Parcelable, Serializable {
 
     private FragmentManager fragmentManager;
@@ -31,6 +38,7 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
     private int orientation;
     private boolean cancelable;//弹窗是否可以取消
     private View dialogView;
+    private DialogInterface.OnDismissListener onDismissListener;
 
     //////////////////////////////////////////Parcelable持久化//////////////////////////////////////////////////////
     public TController() {
@@ -144,6 +152,10 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
         return onBindViewListener;
     }
 
+    public DialogInterface.OnDismissListener getOnDismissListener() {
+        return onDismissListener;
+    }
+
     public View getDialogView() {
         return dialogView;
     }
@@ -186,6 +198,7 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
         public int orientation = LinearLayoutManager.VERTICAL;//默认RecyclerView的列表方向为垂直方向
         public boolean mCancelable = true;//弹窗是否可以取消
         public View mDialogView;//直接使用传入进来的View,而不需要通过解析Xml
+        public DialogInterface.OnDismissListener mOnDismissListener;
 
         public void apply(TController tController) {
             tController.fragmentManager = mFragmentManager;
@@ -210,6 +223,7 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
             tController.isCancelableOutside = mIsCancelableOutside;
             tController.onViewClickListener = mOnViewClickListener;
             tController.onBindViewListener = bindViewListener;
+            tController.onDismissListener = mOnDismissListener;
 
             if (adapter != null) {
                 tController.setAdapter(adapter);

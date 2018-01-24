@@ -20,8 +20,23 @@ import com.timmy.tdialog.listener.OnBindViewListener;
 import com.timmy.tdialog.listener.OnViewClickListener;
 
 /**
+ * 1.0.0版本: 弹窗实现基本功能
+ *       OnBindViewListener
+ * 1.1.0版本: 添加点击事件封装回调方法
+ *      addOnClickListener()
+ *      setOnViewClickListener()
+ * 1.2.0版本:
+ *      分离出列表弹窗TListDialog
+ *      解决弹窗按Home键时出现的bug
+ * 1.3.0版本:
+ *      处理setCancelable()方法,禁止弹窗点击取消
+ *      弹窗内容直接传入View: setDialogView()
+ * 1.3.1版本:
+ *      添加弹窗隐藏时回调监听方法:setOnDismissListener()
+ *
  * @author Timmy
  * @time 2018/1/4 16:28
+ * @GitHub https://github.com/Timmy-zzh/TDialog
  **/
 public class TDialog extends BaseDialogFragment {
 
@@ -52,11 +67,16 @@ public class TDialog extends BaseDialogFragment {
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * 弹窗消失时回调方法
+     */
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.d("TDialog onViewCreated", "onViewCreated");
-
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        DialogInterface.OnDismissListener onDismissListener = tController.getOnDismissListener();
+        if (onDismissListener != null) {
+            onDismissListener.onDismiss(dialog);
+        }
     }
 
     /**
@@ -132,7 +152,7 @@ public class TDialog extends BaseDialogFragment {
         if (tController.getWidth() <= 0 && tController.getHeight() <= 0) {
             tController.setWidth(600);
         }
-        Log.d(TAG,"show");
+        Log.d(TAG, "show");
         show(tController.getFragmentManager());
         return this;
     }
@@ -202,6 +222,12 @@ public class TDialog extends BaseDialogFragment {
             return this;
         }
 
+        public Builder setOnDismissListener(DialogInterface.OnDismissListener dismissListener) {
+            params.mOnDismissListener = dismissListener;
+            return this;
+        }
+
+
         public Builder setDimAmount(float dim) {
             params.mDimAmount = dim;
             return this;
@@ -229,7 +255,7 @@ public class TDialog extends BaseDialogFragment {
 
         public TDialog create() {
             TDialog dialog = new TDialog();
-            Log.d(TAG,"create");
+            Log.d(TAG, "create");
             //将数据从Buidler的DjParams中传递到DjDialog中
             params.apply(dialog.tController);
             return dialog;

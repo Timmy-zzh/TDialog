@@ -9,7 +9,12 @@ import android.view.ViewGroup;
 import com.timmy.tdialog.TDialog;
 
 import java.util.List;
-
+/**
+ *
+ * @author Timmy
+ * @time 2018/1/24 14:39
+ * @GitHub https://github.com/Timmy-zzh/TDialog
+ **/
 public abstract class TBaseAdapter<T> extends RecyclerView.Adapter<BindViewHolder> {
 
     private final int layoutRes;
