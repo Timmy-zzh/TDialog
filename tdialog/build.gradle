@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-//apply from: 'bintrayUpload.gradle'
 
 android {
     compileSdkVersion 26
@@ -24,97 +23,100 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:support-v4:26.1.0'
     compile 'com.android.support:recyclerview-v7:26.1.0'
 }
 
+apply from: 'bintrayUpload.gradle'
+
+
 //升级gradlew bintrayUpload///////////////////////////////////////////////////////////////////////
 
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'com.github.dcendents.android-maven'
-
-def siteUrl = 'https://github.com/Timmy-zzh/TDialog'   // 项目的主页
-def gitUrl = 'https://github.com/Timmy-zzh/TDialog.git'   // Git仓库的url
-
-version = "1.3.1" //发布版本号
-group = "com.timmy.tdialog" //最终引用形式，如compile 'com.timmy.tdialog:1.0.0'，其中tdialog在后面配置
-
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
-                // Add your description here
-                name 'Timmy Android Library 11'
-                description 'timmy open library TDialog'
-                url siteUrl
-                // Set your license
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id 'timmy '        //填写bintray或者github的用户名
-                        name 'timmy '         //姓名
-                        email 'timmy.zzh@gmail.com'//邮箱
-                    }
-                }
-                scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
-                }
-            }
-        }
-    }
-}
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-task javadoc(type: Javadoc) {
-    failOnError false //必须添加以免出错
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-
-Properties properties = new Properties()
-// 加载本地配置
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    configurations = ['archives']
-    pkg {
-        repo = 'maven'//自己创建的仓库名字
-        name = 'tdialog'//发布到JCenter上的项目名字
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = ['Apache-2.0']//不能随便写，只能是仓库创建时选择的license type
-        publish = true // 是否是公开项目，公开别人可以引用
-    }
-}
-
-javadoc {
-    options{
-        //如果你的项目里面有中文注释的话，必须将格式设置为UTF-8，不然会出现乱码
-        encoding "UTF-8"
-        charSet 'UTF-8'
-        author true
-        version true
-        links "http://docs.oracle.com/javase/7/docs/api"
-    }
-}
+//apply plugin: 'com.jfrog.bintray'
+//apply plugin: 'com.github.dcendents.android-maven'
+//
+//def siteUrl = 'https://github.com/Timmy-zzh/TDialog'   // 项目的主页
+//def gitUrl = 'https://github.com/Timmy-zzh/TDialog.git'   // Git仓库的url
+//
+//version = "1.3.1" //发布版本号
+//group = "com.timmy.tdialog" //最终引用形式，如compile 'com.timmy.tdialog:1.0.0'，其中tdialog在后面配置
+//
+//install {
+//    repositories.mavenInstaller {
+//        // This generates POM.xml with proper parameters
+//        pom {
+//            project {
+//                packaging 'aar'
+//                // Add your description here
+//                name 'Timmy Android Library 11'
+//                description 'timmy open library TDialog'
+//                url siteUrl
+//                // Set your license
+//                licenses {
+//                    license {
+//                        name 'The Apache Software License, Version 2.0'
+//                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                    }
+//                }
+//                developers {
+//                    developer {
+//                        id 'timmy '        //填写bintray或者github的用户名
+//                        name 'timmy '         //姓名
+//                        email 'timmy.zzh@gmail.com'//邮箱
+//                    }
+//                }
+//                scm {
+//                    connection gitUrl
+//                    developerConnection gitUrl
+//                    url siteUrl
+//                }
+//            }
+//        }
+//    }
+//}
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+//task javadoc(type: Javadoc) {
+//    failOnError false //必须添加以免出错
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//}
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+//artifacts {
+//    archives javadocJar
+//    archives sourcesJar
+//}
+//
+//Properties properties = new Properties()
+//// 加载本地配置
+//properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//
+//bintray {
+//    user = properties.getProperty("bintray.user")
+//    key = properties.getProperty("bintray.apikey")
+//    configurations = ['archives']
+//    pkg {
+//        repo = 'maven'//自己创建的仓库名字
+//        name = 'tdialog'//发布到JCenter上的项目名字
+//        websiteUrl = siteUrl
+//        vcsUrl = gitUrl
+//        licenses = ['Apache-2.0']//不能随便写，只能是仓库创建时选择的license type
+//        publish = true // 是否是公开项目，公开别人可以引用
+//    }
+//}
+//
+//javadoc {
+//    options{
+//        //如果你的项目里面有中文注释的话，必须将格式设置为UTF-8，不然会出现乱码
+//        encoding "UTF-8"
+//        charSet 'UTF-8'
+//        author true
+//        version true
+//        links "http://docs.oracle.com/javase/7/docs/api"
+//    }
+//}
