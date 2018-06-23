@@ -15,9 +15,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:onClick="testDialog"
-            android:visibility="gone"
             android:text="测试"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:visibility="gone" />
 
         <Button
             android:layout_width="match_parent"
@@ -54,9 +54,9 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:textAllCaps="false"
             android:onClick="loadingDialog"
-            android:text="加载中... (不能取消,5秒后自动隐藏)" />
+            android:text="加载中... (不能取消,5秒后自动隐藏)"
+            android:textAllCaps="false" />
 
         <Button
             android:layout_width="match_parent"
@@ -64,9 +64,19 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:textAllCaps="false"
+            android:onClick="progressDialog"
+            android:text="下载进度条"
+            android:textAllCaps="false" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:onClick="dialogView"
-            android:text="使用setDialogView()直接传入View" />
+            android:text="使用setDialogView()直接传入View"
+            android:textAllCaps="false" />
 
         <Button
             android:layout_width="match_parent"

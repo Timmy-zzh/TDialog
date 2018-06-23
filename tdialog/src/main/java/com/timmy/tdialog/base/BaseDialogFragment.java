@@ -1,8 +1,7 @@
 package com.timmy.tdialog.base;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,7 +89,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
         Dialog dialog = getDialog();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCanceledOnTouchOutside(isCancelableOutside());
-        setCancelable(isCancelable());
+//        setCancelable(isCancelable());
     }
 
     @Override
@@ -148,18 +146,17 @@ public abstract class BaseDialogFragment extends DialogFragment {
         show(fragmentManager, getFragmentTag());
     }
 
-    protected boolean isCancelableOutside() {
+    protected boolean isCancelableOutside(){
         return true;
     }
 
-    /**
-     * 获得屏幕宽/高
-     */
-    public static int getWindowHeight(Activity acitvity) {
-        return acitvity.getWindowManager().getDefaultDisplay().getHeight();
+    //获取设备屏幕宽度
+    public static final int getScreenWidth(Context context) {
+        return context.getResources().getDisplayMetrics().widthPixels;
     }
 
-    protected static int getWindowWidth(Activity acitvity) {
-        return acitvity.getWindowManager().getDefaultDisplay().getWidth();
+    //获取设备屏幕高度
+    public static final int getScreenHeight(Context context) {
+        return context.getResources().getDisplayMetrics().heightPixels;
     }
 }

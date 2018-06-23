@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,15 +33,39 @@ import java.util.Arrays;
 public class DiffentDialogActivity extends AppCompatActivity {
 
     private static final String TAG = "TDialog";
+    private static final int WHAT_LOADING = 0;
+    private static final int WHAT_PROGRESS = 1;
     private String[] data = {"java", "android", "NDK", "c++", "python", "ios", "Go", "Unity3D", "Kotlin", "Swift", "js"};
     private String[] sharePlatform = {"微信", "朋友圈", "短信", "微博", "QQ空间", "Google", "FaceBook", "微信", "朋友圈", "短信", "微博", "QQ空间"};
     private TDialog tDialog;
+    int currProgress = 5;
+    private ProgressBar progressBar;
+    private TextView tvProgress;
 
-    Handler handler = new Handler() {
+
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            tDialog.dismiss();
+            switch (msg.what) {
+                case WHAT_LOADING:
+                    if (tDialog != null) {
+                        tDialog.dismiss();
+                    }
+                    return;
+
+                case WHAT_PROGRESS:
+                    currProgress += 5;
+                    progressBar.setProgress(currProgress);
+                    tvProgress.setText("progress:" + currProgress + "/100");
+                    if (tDialog != null && currProgress >= 100) {
+                        currProgress = 0;
+                        tDialog.dismiss();
+                        tDialog = null;
+                    } else {
+                        handler.sendEmptyMessageDelayed(WHAT_PROGRESS, 1000);
+                    }
+                    return;
+            }
         }
     };
 
@@ -50,15 +75,15 @@ public class DiffentDialogActivity extends AppCompatActivity {
         setContentView(R.layout.activity_diffent_dialog);
     }
 
-    public void testDialog(View view2){
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_loading, null);
-        tDialog = new TDialog.Builder(getSupportFragmentManager())
-                .setDialogView(view)
-                .setCancelableOutside(false)
-                .create();
-        tDialog.show();
-        tDialog.dismiss();
-    }
+//    public void testDialog(View view2){
+//        View view = LayoutInflater.from(this).inflate(R.layout.dialog_loading, null);
+//        tDialog = new TDialog.Builder(getSupportFragmentManager())
+//                .setDialogView(view)
+////                .setCancelableOutside(false)
+//                .create();
+//        tDialog.show();
+////        tDialog.dismiss();
+//    }
 
     public void useTDialog(View view) {
         new TDialog.Builder(getSupportFragmentManager())
@@ -72,7 +97,6 @@ public class DiffentDialogActivity extends AppCompatActivity {
                 .setTag("DialogTest")   //设置Tag
                 .setDimAmount(0.6f)     //设置弹窗背景透明度(0-1f)
                 .setCancelableOutside(true)     //弹窗在界面外是否可以点击取消
-                .setCancelable(true)    //弹窗是否可以取消
                 .setOnDismissListener(new DialogInterface.OnDismissListener() { //弹窗隐藏时回调方法
                     @Override
                     public void onDismiss(DialogInterface dialog) {
@@ -100,6 +124,7 @@ public class DiffentDialogActivity extends AppCompatActivity {
                                 break;
                             case R.id.tv_title:
                                 Toast.makeText(DiffentDialogActivity.this, "title clicked", Toast.LENGTH_SHORT).show();
+                                viewHolder.setText(R.id.tv_title, "Title点击了");
                                 break;
                         }
                     }
@@ -148,7 +173,7 @@ public class DiffentDialogActivity extends AppCompatActivity {
                                 tDialog.dismiss();
                                 break;
                             case R.id.tv_confirm:
-                                Toast.makeText(DiffentDialogActivity.this, "操作11", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DiffentDialogActivity.this, "执行优惠券兑换逻辑", Toast.LENGTH_SHORT).show();
                                 tDialog.dismiss();
                                 break;
                         }
@@ -163,11 +188,34 @@ public class DiffentDialogActivity extends AppCompatActivity {
                 .setLayoutRes(R.layout.dialog_loading)
                 .setHeight(300)
                 .setWidth(300)
-                .setCancelableOutside(true)
-                .setCancelable(false)
+                .setCancelableOutside(false)
                 .create()
                 .show();
-        handler.sendEmptyMessageDelayed(0, 5 * 1000);
+        handler.sendEmptyMessageDelayed(WHAT_LOADING, 5 * 1000);
+    }
+
+    public void progressDialog(final View view) {
+        tDialog = new TDialog.Builder(getSupportFragmentManager())
+                .setLayoutRes(R.layout.dialog_loading_progress)
+                .setScreenWidthAspect(this, 0.8f)
+                .setCancelableOutside(true)
+                .setOnBindViewListener(new OnBindViewListener() {
+                    @Override
+                    public void bindView(BindViewHolder viewHolder) {
+                        progressBar = viewHolder.getView(R.id.progress_bar);
+                        tvProgress = viewHolder.getView(R.id.tv_progress);
+                    }
+                })
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        handler.removeMessages(WHAT_PROGRESS);
+                        currProgress = 5;
+                    }
+                })
+                .create()
+                .show();
+        handler.sendEmptyMessageDelayed(WHAT_PROGRESS, 1000);
     }
 
     public void dialogView(View view) {
@@ -183,7 +231,6 @@ public class DiffentDialogActivity extends AppCompatActivity {
                 .setHeight(400)
                 .setWidth(600)
                 .setCancelableOutside(true)
-                .setCancelable(true)
                 .create()
                 .show();
     }

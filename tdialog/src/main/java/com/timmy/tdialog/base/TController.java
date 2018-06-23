@@ -36,7 +36,7 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
     private A adapter;
     private TBaseAdapter.OnAdapterItemClickListener adapterItemClickListener;
     private int orientation;
-    private boolean cancelable;//弹窗是否可以取消
+//    private boolean cancelable;//弹窗是否可以取消
     private View dialogView;
     private DialogInterface.OnDismissListener onDismissListener;
 
@@ -54,7 +54,6 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
         ids = in.createIntArray();
         isCancelableOutside = in.readByte() != 0;
         orientation = in.readInt();
-        cancelable = in.readByte() != 0;
     }
 
     public static final Creator<TController> CREATOR = new Creator<TController>() {
@@ -86,7 +85,6 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
         dest.writeIntArray(ids);
         dest.writeByte((byte) (isCancelableOutside ? 1 : 0));
         dest.writeInt(orientation);
-        dest.writeByte((byte) (cancelable ? 1 : 0));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,10 +140,6 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
 
     public int getOrientation() {
         return orientation;
-    }
-
-    public boolean isCancelable() {
-        return cancelable;
     }
 
     public OnBindViewListener getOnBindViewListener() {
@@ -241,8 +235,6 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
             if (adapterItemClickListener != null) {
                 tController.setAdapterItemClickListener(adapterItemClickListener);
             }
-            //弹窗是否可以取消
-            tController.cancelable = mCancelable;
         }
     }
 }

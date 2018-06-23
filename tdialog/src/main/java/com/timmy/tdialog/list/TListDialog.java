@@ -80,7 +80,7 @@ public class TListDialog extends TDialog {
          * 设置弹窗宽度是屏幕宽度的比例 0 -1
          */
         public TListDialog.Builder setScreenWidthAspect(Activity activity, float widthAspect) {
-            params.mWidth = (int) (getWindowWidth(activity) * widthAspect);
+            params.mWidth = (int) (getScreenWidth(activity) * widthAspect);
             return this;
         }
 
@@ -93,7 +93,7 @@ public class TListDialog extends TDialog {
          * 设置屏幕高度比例 0 -1
          */
         public TListDialog.Builder setScreenHeightAspect(Activity activity, float heightAspect) {
-            params.mHeight = (int) (getWindowHeight(activity) * heightAspect);
+            params.mHeight = (int) (getScreenHeight(activity) * heightAspect);
             return this;
         }
 

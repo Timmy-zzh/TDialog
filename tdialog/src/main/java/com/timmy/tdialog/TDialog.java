@@ -2,8 +2,10 @@ package com.timmy.tdialog;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.FloatRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -95,8 +97,8 @@ public class TDialog extends BaseDialogFragment {
     @Override
     protected void bindView(View view) {
         //控件点击事件处理
-        BindViewHolder viewHolder = new BindViewHolder(view, this);
-        if (tController.isCancelable() && tController.getIds() != null && tController.getIds().length > 0) {
+        BindViewHolder  viewHolder = new BindViewHolder(view, this);
+        if ( tController.getIds() != null && tController.getIds().length > 0) {
             for (int id : tController.getIds()) {
                 viewHolder.addOnClickListener(id);
             }
@@ -106,7 +108,6 @@ public class TDialog extends BaseDialogFragment {
             tController.getOnBindViewListener().bindView(viewHolder);
         }
     }
-
 
     @Override
     public int getGravity() {
@@ -138,11 +139,6 @@ public class TDialog extends BaseDialogFragment {
     }
 
     @Override
-    public boolean isCancelable() {
-        return tController.isCancelable();
-    }
-
-    @Override
     protected boolean isCancelableOutside() {
         return tController.isCancelableOutside();
     }
@@ -170,64 +166,107 @@ public class TDialog extends BaseDialogFragment {
             params.mFragmentManager = fragmentManager;
         }
 
-        //各种setXXX()方法设置数据
+        /**
+         * 传入弹窗xmL布局文件
+         * @param layoutRes
+         * @return
+         */
         public Builder setLayoutRes(@LayoutRes int layoutRes) {
             params.mLayoutRes = layoutRes;
             return this;
         }
 
+        /**
+         * 直接传入控件
+         * @param view
+         * @return
+         */
         public Builder setDialogView(View view) {
             params.mDialogView = view;
             return this;
         }
 
         /**
-         * 设置弹窗宽度是屏幕宽度的比例 0 -1
+         * 设置弹窗宽度(单位:像素)
+         * @param widthPx
+         * @return
          */
-        public Builder setScreenWidthAspect(Activity activity, float widthAspect) {
-            params.mWidth = (int) (getWindowWidth(activity) * widthAspect);
-            return this;
-        }
-
         public Builder setWidth(int widthPx) {
             params.mWidth = widthPx;
             return this;
         }
-
         /**
-         * 设置屏幕高度比例 0 -1
+         * 设置弹窗高度(px)
+         * @param heightPx
+         * @return
          */
-        public Builder setScreenHeightAspect(Activity activity, float heightAspect) {
-            params.mHeight = (int) (getWindowHeight(activity) * heightAspect);
-            return this;
-        }
-
         public Builder setHeight(int heightPx) {
             params.mHeight = heightPx;
             return this;
         }
 
+        /**
+         * 设置弹窗宽度是屏幕宽度的比例 0 -1
+         */
+        public Builder setScreenWidthAspect(Context context, float widthAspect) {
+            params.mWidth = (int) (getScreenWidth(context) * widthAspect);
+            return this;
+        }
+
+        /**
+         * 设置弹窗高度是屏幕高度的比例 0 -1
+         */
+        public Builder setScreenHeightAspect(Context context, float heightAspect) {
+            params.mHeight = (int) (getScreenHeight(context) * heightAspect);
+            return this;
+        }
+
+        /**
+         * 设置弹窗在屏幕中显示的位置
+         * @param gravity
+         * @return
+         */
         public Builder setGravity(int gravity) {
             params.mGravity = gravity;
             return this;
         }
 
+        /**
+         * 设置弹窗在弹窗区域外是否可以取消
+         * @param cancel
+         * @return
+         */
         public Builder setCancelableOutside(boolean cancel) {
             params.mIsCancelableOutside = cancel;
             return this;
         }
 
-        public Builder setCancelable(boolean cancelable) {
-            params.mCancelable = cancelable;
-            return this;
-        }
+//        /**
+//         * 设置弹窗是否
+//         * @param cancelable
+//         * @return
+//         */
+//        public Builder setCancelable(boolean cancelable) {
+//            params.mCancelable = cancelable;
+//            return this;
+//        }
 
+        /**
+         * 弹窗dismiss时监听回调方法
+         * @param dismissListener
+         * @return
+         */
         public Builder setOnDismissListener(DialogInterface.OnDismissListener dismissListener) {
             params.mOnDismissListener = dismissListener;
             return this;
         }
 
 
+        /**
+         * 设置弹窗背景透明度(0-1f)
+         * @param dim
+         * @return
+         */
         public Builder setDimAmount(float dim) {
             params.mDimAmount = dim;
             return this;
@@ -238,21 +277,40 @@ public class TDialog extends BaseDialogFragment {
             return this;
         }
 
+        /**
+         * 通过回调拿到弹窗布局控件对象
+         * @param listener
+         * @return
+         */
         public Builder setOnBindViewListener(OnBindViewListener listener) {
             params.bindViewListener = listener;
             return this;
         }
 
+        /**
+         * 添加弹窗控件的点击事件
+         * @param ids 传入需要点击的控件id
+         * @return
+         */
         public Builder addOnClickListener(int... ids) {
             params.ids = ids;
             return this;
         }
 
+        /**
+         * 弹窗控件点击回调
+         * @param listener
+         * @return
+         */
         public Builder setOnViewClickListener(OnViewClickListener listener) {
             params.mOnViewClickListener = listener;
             return this;
         }
 
+        /**
+         * 真正创建TDialog对象实例
+         * @return
+         */
         public TDialog create() {
             TDialog dialog = new TDialog();
             Log.d(TAG, "create");
