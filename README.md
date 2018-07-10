@@ -332,16 +332,25 @@ TDialog的实现原理主要分为三步
 #### 项目github地址:https://github.com/Timmy-zzh/TDialog
 
 ##### 版本历史
+2.0.0版本:
+      添加弹窗动画
+      修复show()方法调用时bug
+      去除setCancelable()方法
+
 1.3.1版本:
       添加弹窗隐藏时回调监听方法:setOnDismissListener()
+
 1.3.0版本:
       处理setCancelable()方法,禁止弹窗点击取消
       弹窗内容直接传入View: setDialogView()
+
 1.2.0版本:
       分离出列表弹窗TListDialog
       解决弹窗按Home键时出现的bug
+
 1.1.0版本: 添加点击事件封装回调方法
       addOnClickListener()
       setOnViewClickListener()
+
 1.0.0版本: 弹窗实现基本功能
        OnBindViewListener
