@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.support.annotation.FloatRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,18 +25,18 @@ import com.timmy.tdialog.listener.OnViewClickListener;
 
 /**
  * 1.0.0版本: 弹窗实现基本功能
- *       OnBindViewListener
+ * OnBindViewListener
  * 1.1.0版本: 添加点击事件封装回调方法
- *      addOnClickListener()
- *      setOnViewClickListener()
+ * addOnClickListener()
+ * setOnViewClickListener()
  * 1.2.0版本:
- *      分离出列表弹窗TListDialog
- *      解决弹窗按Home键时出现的bug
+ * 分离出列表弹窗TListDialog
+ * 解决弹窗按Home键时出现的bug
  * 1.3.0版本:
- *      处理setCancelable()方法,禁止弹窗点击取消
- *      弹窗内容直接传入View: setDialogView()
+ * 处理setCancelable()方法,禁止弹窗点击取消
+ * 弹窗内容直接传入View: setDialogView()
  * 1.3.1版本:
- *      添加弹窗隐藏时回调监听方法:setOnDismissListener()
+ * 添加弹窗隐藏时回调监听方法:setOnDismissListener()
  *
  * @author Timmy
  * @time 2018/1/4 16:28
@@ -97,8 +99,8 @@ public class TDialog extends BaseDialogFragment {
     @Override
     protected void bindView(View view) {
         //控件点击事件处理
-        BindViewHolder  viewHolder = new BindViewHolder(view, this);
-        if ( tController.getIds() != null && tController.getIds().length > 0) {
+        BindViewHolder viewHolder = new BindViewHolder(view, this);
+        if (tController.getIds() != null && tController.getIds().length > 0) {
             for (int id : tController.getIds()) {
                 viewHolder.addOnClickListener(id);
             }
@@ -143,13 +145,16 @@ public class TDialog extends BaseDialogFragment {
         return tController.isCancelableOutside();
     }
 
+    @Override
+    protected int getDialogAnimationRes() {
+        return tController.getDialogAnimationRes();
+    }
+
     public TDialog show() {
-        //如果宽高都没有设置,则默认给弹窗提供宽度为800
-        if (tController.getWidth() <= 0 && tController.getHeight() <= 0) {
-            tController.setWidth(600);
-        }
         Log.d(TAG, "show");
-        show(tController.getFragmentManager());
+        FragmentTransaction ft = tController.getFragmentManager().beginTransaction();
+        ft.add(this, tController.getTag());
+        ft.commitAllowingStateLoss();
         return this;
     }
 
@@ -168,6 +173,7 @@ public class TDialog extends BaseDialogFragment {
 
         /**
          * 传入弹窗xmL布局文件
+         *
          * @param layoutRes
          * @return
          */
@@ -178,6 +184,7 @@ public class TDialog extends BaseDialogFragment {
 
         /**
          * 直接传入控件
+         *
          * @param view
          * @return
          */
@@ -188,6 +195,7 @@ public class TDialog extends BaseDialogFragment {
 
         /**
          * 设置弹窗宽度(单位:像素)
+         *
          * @param widthPx
          * @return
          */
@@ -195,8 +203,10 @@ public class TDialog extends BaseDialogFragment {
             params.mWidth = widthPx;
             return this;
         }
+
         /**
          * 设置弹窗高度(px)
+         *
          * @param heightPx
          * @return
          */
@@ -223,6 +233,7 @@ public class TDialog extends BaseDialogFragment {
 
         /**
          * 设置弹窗在屏幕中显示的位置
+         *
          * @param gravity
          * @return
          */
@@ -233,6 +244,7 @@ public class TDialog extends BaseDialogFragment {
 
         /**
          * 设置弹窗在弹窗区域外是否可以取消
+         *
          * @param cancel
          * @return
          */
@@ -241,18 +253,9 @@ public class TDialog extends BaseDialogFragment {
             return this;
         }
 
-//        /**
-//         * 设置弹窗是否
-//         * @param cancelable
-//         * @return
-//         */
-//        public Builder setCancelable(boolean cancelable) {
-//            params.mCancelable = cancelable;
-//            return this;
-//        }
-
         /**
          * 弹窗dismiss时监听回调方法
+         *
          * @param dismissListener
          * @return
          */
@@ -264,6 +267,7 @@ public class TDialog extends BaseDialogFragment {
 
         /**
          * 设置弹窗背景透明度(0-1f)
+         *
          * @param dim
          * @return
          */
@@ -279,6 +283,7 @@ public class TDialog extends BaseDialogFragment {
 
         /**
          * 通过回调拿到弹窗布局控件对象
+         *
          * @param listener
          * @return
          */
@@ -289,6 +294,7 @@ public class TDialog extends BaseDialogFragment {
 
         /**
          * 添加弹窗控件的点击事件
+         *
          * @param ids 传入需要点击的控件id
          * @return
          */
@@ -299,6 +305,7 @@ public class TDialog extends BaseDialogFragment {
 
         /**
          * 弹窗控件点击回调
+         *
          * @param listener
          * @return
          */
@@ -308,7 +315,19 @@ public class TDialog extends BaseDialogFragment {
         }
 
         /**
+         * 设置弹窗动画
+         *
+         * @param animationRes
+         * @return
+         */
+        public Builder setDialogAnimationRes(int animationRes) {
+            params.mDialogAnimationRes = animationRes;
+            return this;
+        }
+
+        /**
          * 真正创建TDialog对象实例
+         *
          * @return
          */
         public TDialog create() {

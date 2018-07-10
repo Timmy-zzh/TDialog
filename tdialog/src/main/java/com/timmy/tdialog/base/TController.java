@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
@@ -16,6 +17,7 @@ import java.io.Serializable;
 
 /**
  * 数据保存封装的容器类
+ *
  * @author Timmy
  * @time 2018/1/24 14:40
  * @GitHub https://github.com/Timmy-zzh/TDialog
@@ -36,9 +38,10 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
     private A adapter;
     private TBaseAdapter.OnAdapterItemClickListener adapterItemClickListener;
     private int orientation;
-//    private boolean cancelable;//弹窗是否可以取消
+    private int dialogAnimationRes;
     private View dialogView;
     private DialogInterface.OnDismissListener onDismissListener;
+
 
     //////////////////////////////////////////Parcelable持久化//////////////////////////////////////////////////////
     public TController() {
@@ -171,6 +174,10 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
         this.adapterItemClickListener = adapterItemClickListener;
     }
 
+    public int getDialogAnimationRes() {
+        return dialogAnimationRes;
+    }
+
     /**************************************************************************
      */
     public static class TParams<A extends TBaseAdapter> {
@@ -185,12 +192,12 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
         public boolean mIsCancelableOutside = true;
         public OnViewClickListener mOnViewClickListener;
         public OnBindViewListener bindViewListener;
+        public int mDialogAnimationRes = 0;//弹窗动画
         //列表
         public A adapter;
         public TBaseAdapter.OnAdapterItemClickListener adapterItemClickListener;
         public int listLayoutRes;
         public int orientation = LinearLayoutManager.VERTICAL;//默认RecyclerView的列表方向为垂直方向
-        public boolean mCancelable = true;//弹窗是否可以取消
         public View mDialogView;//直接使用传入进来的View,而不需要通过解析Xml
         public DialogInterface.OnDismissListener mOnDismissListener;
 
@@ -218,6 +225,7 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
             tController.onViewClickListener = mOnViewClickListener;
             tController.onBindViewListener = bindViewListener;
             tController.onDismissListener = mOnDismissListener;
+            tController.dialogAnimationRes = mDialogAnimationRes;
 
             if (adapter != null) {
                 tController.setAdapter(adapter);
@@ -234,6 +242,11 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
             }
             if (adapterItemClickListener != null) {
                 tController.setAdapterItemClickListener(adapterItemClickListener);
+            }
+
+            //如果宽高都没有设置,则默认给弹窗提供宽度为600
+            if (tController.width <= 0 && tController.height <= 0) {
+                tController.width = 600;
             }
         }
     }

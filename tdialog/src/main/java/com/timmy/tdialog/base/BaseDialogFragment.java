@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.timmy.tdialog.R;
+
 /**
  * DialogFragment的基类
  * 1.系统默认onCreateDialog方法返回一个Dialog对象,对其不做处理
@@ -89,7 +91,9 @@ public abstract class BaseDialogFragment extends DialogFragment {
         Dialog dialog = getDialog();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCanceledOnTouchOutside(isCancelableOutside());
-//        setCancelable(isCancelable());
+        if (dialog.getWindow() != null && getDialogAnimationRes() > 0) {
+            dialog.getWindow().setWindowAnimations(getDialogAnimationRes());
+        }
     }
 
     @Override
@@ -146,8 +150,13 @@ public abstract class BaseDialogFragment extends DialogFragment {
         show(fragmentManager, getFragmentTag());
     }
 
-    protected boolean isCancelableOutside(){
+    protected boolean isCancelableOutside() {
         return true;
+    }
+
+    //获取弹窗显示动画,子类实现
+    protected int getDialogAnimationRes() {
+        return 0;
     }
 
     //获取设备屏幕宽度

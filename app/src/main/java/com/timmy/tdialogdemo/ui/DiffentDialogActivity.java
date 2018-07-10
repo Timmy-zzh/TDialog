@@ -75,15 +75,15 @@ public class DiffentDialogActivity extends AppCompatActivity {
         setContentView(R.layout.activity_diffent_dialog);
     }
 
-//    public void testDialog(View view2){
-//        View view = LayoutInflater.from(this).inflate(R.layout.dialog_loading, null);
-//        tDialog = new TDialog.Builder(getSupportFragmentManager())
-//                .setDialogView(view)
-////                .setCancelableOutside(false)
-//                .create();
-//        tDialog.show();
-////        tDialog.dismiss();
-//    }
+    public void testDialog(View view2) {
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_loading, null);
+        tDialog = new TDialog.Builder(getSupportFragmentManager())
+                .setDialogView(view)
+//                .setCancelableOutside(false)
+                .create();
+        tDialog.show();
+//        tDialog.dismiss();
+    }
 
     public void useTDialog(View view) {
         new TDialog.Builder(getSupportFragmentManager())
@@ -97,6 +97,7 @@ public class DiffentDialogActivity extends AppCompatActivity {
                 .setTag("DialogTest")   //设置Tag
                 .setDimAmount(0.6f)     //设置弹窗背景透明度(0-1f)
                 .setCancelableOutside(true)     //弹窗在界面外是否可以点击取消
+                .setDialogAnimationRes(R.style.animate_dialog)
                 .setOnDismissListener(new DialogInterface.OnDismissListener() { //弹窗隐藏时回调方法
                     @Override
                     public void onDismiss(DialogInterface dialog) {
@@ -138,6 +139,7 @@ public class DiffentDialogActivity extends AppCompatActivity {
                 .setLayoutRes(R.layout.dialog_version_upgrde)
                 .setScreenWidthAspect(this, 0.7f)
                 .addOnClickListener(R.id.tv_cancel, R.id.tv_confirm)
+                .setDialogAnimationRes(R.style.animate_dialog_scale)
                 .setOnViewClickListener(new OnViewClickListener() {
                     @Override
                     public void onViewClick(BindViewHolder viewHolder, View view, TDialog tDialog) {
@@ -262,6 +264,7 @@ public class DiffentDialogActivity extends AppCompatActivity {
                 .setLayoutRes(R.layout.dialog_change_avatar)
                 .setScreenWidthAspect(this, 1.0f)
                 .setGravity(Gravity.BOTTOM)
+                .setDialogAnimationRes(R.style.animate_dialog)
                 .addOnClickListener(R.id.tv_open_camera, R.id.tv_open_album, R.id.tv_cancel)
                 .setOnViewClickListener(new OnViewClickListener() {
                     @Override
