@@ -332,6 +332,7 @@ TDialog的实现原理主要分为三步
 #### 项目github地址:https://github.com/Timmy-zzh/TDialog
 
 ##### 版本历史
+```
 2.0.0版本:
       添加弹窗动画
       修复show()方法调用时bug
@@ -354,3 +355,4 @@ TDialog的实现原理主要分为三步
 
 1.0.0版本: 弹窗实现基本功能
        OnBindViewListener
+```
