@@ -97,7 +97,7 @@ public class DiffentDialogActivity extends AppCompatActivity {
                 .setTag("DialogTest")   //设置Tag
                 .setDimAmount(0.6f)     //设置弹窗背景透明度(0-1f)
                 .setCancelableOutside(true)     //弹窗在界面外是否可以点击取消
-                .setDialogAnimationRes(R.style.animate_dialog)
+                .setDialogAnimationRes(R.style.animate_dialog) //设置弹窗动画
                 .setOnDismissListener(new DialogInterface.OnDismissListener() { //弹窗隐藏时回调方法
                     @Override
                     public void onDismiss(DialogInterface dialog) {

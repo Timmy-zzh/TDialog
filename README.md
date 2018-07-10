@@ -1,4 +1,3 @@
-
 #### 前言
 >文章代码示例已放到Github上了,有需要的朋友可以去看下[TDialog](https://github.com/Timmy-zzh/TDialog),欢迎star和fork,项目会一直维护,有疑问可以提Issues或留言.
 ##### 文章目录
@@ -6,7 +5,7 @@
 * 框架使用解析
 * 框架原理解析
 ###### 正文开始前先来一波效果图
-![](/images/TDialog.gif)
+
 #### 一.TDialog的由来
 所有框架的由来都是为了更方便,更高效的解决问题,TDialog也一样,是为了在项目中更高效的实现项目的弹窗效果
 
@@ -22,61 +21,89 @@ Dialog使用起来其实更简单,但是Google却是推荐尽量使用DialogFrag
 ```
   repositories {
     ...
-    jcenter()
+    jcenter() 
 }
 ```
  b.在model下build.gradle文件添加
- ```
- compile 'com.timmy.tdialog:tdialog:1.3.1'
- ```
- 2.Activity或者Fragment中使用
- ```
-         new TDialog.Builder(getSupportFragmentManager())
-                 .setLayoutRes(R.layout.dialog_click)    //设置弹窗展示的xml布局
- //                .setDialogView(view)  //设置弹窗布局,直接传入View
-                 .setWidth(600)  //设置弹窗宽度(px)
-                 .setHeight(800)  //设置弹窗高度(px)
-                 .setScreenWidthAspect(this, 0.8f)   //设置弹窗宽度(参数aspect为屏幕宽度比例 0 - 1f)
-                 .setScreenHeightAspect(this, 0.3f)  //设置弹窗高度(参数aspect为屏幕宽度比例 0 - 1f)
-                 .setGravity(Gravity.CENTER)     //设置弹窗展示位置
-                 .setTag("DialogTest")   //设置Tag
-                 .setDimAmount(0.6f)     //设置弹窗背景透明度(0-1f)
-                 .setCancelableOutside(true)     //弹窗在界面外是否可以点击取消
-                 .setCancelable(true)    //弹窗是否可以取消
-                 .setOnDismissListener(new DialogInterface.OnDismissListener() { //弹窗隐藏时回调方法
-                     @Override
-                     public void onDismiss(DialogInterface dialog) {
-                         Toast.makeText(DiffentDialogActivity.this, "弹窗消失回调", Toast.LENGTH_SHORT).show();
-                     }
-                 })
-                 .setOnBindViewListener(new OnBindViewListener() {   //通过BindViewHolder拿到控件对象,进行修改
-                     @Override
-                     public void bindView(BindViewHolder bindViewHolder) {
-                         bindViewHolder.setText(R.id.tv_content, "abcdef");
-                         bindViewHolder.setText(R.id.tv_title, "我是Title");
-                     }
-                 })
-                 .addOnClickListener(R.id.btn_left, R.id.btn_right, R.id.tv_title)   //添加进行点击控件的id
-                 .setOnViewClickListener(new OnViewClickListener() {     //View控件点击事件回调
-                     @Override
-                     public void onViewClick(BindViewHolder viewHolder, View view, TDialog tDialog) {
-                         switch (view.getId()) {
-                             case R.id.btn_left:
-                                 Toast.makeText(DiffentDialogActivity.this, "left clicked", Toast.LENGTH_SHORT).show();
-                                 break;
-                             case R.id.btn_right:
-                                 Toast.makeText(DiffentDialogActivity.this, "right clicked", Toast.LENGTH_SHORT).show();
-                                 tDialog.dismiss();
-                                 break;
-                             case R.id.tv_title:
-                                 Toast.makeText(DiffentDialogActivity.this, "title clicked", Toast.LENGTH_SHORT).show();
-                                 break;
-                         }
-                     }
-                 })
-                 .create()   //创建TDialog
-                 .show();    //展示
- ```
+```
+compile 'com.timmy.tdialog:tdialog:2.0.0'
+```
+2.Activity或者Fragment中使用
+```
+
+        new TDialog.Builder(getSupportFragmentManager())
+                .setLayoutRes(R.layout.dialog_click)    //设置弹窗展示的xml布局
+//                .setDialogView(view)  //设置弹窗布局,直接传入View
+                .setWidth(600)  //设置弹窗宽度(px)
+                .setHeight(800)  //设置弹窗高度(px)
+                .setScreenWidthAspect(this, 0.8f)   //设置弹窗宽度(参数aspect为屏幕宽度比例 0 - 1f)
+                .setScreenHeightAspect(this, 0.3f)  //设置弹窗高度(参数aspect为屏幕宽度比例 0 - 1f)
+                .setGravity(Gravity.CENTER)     //设置弹窗展示位置
+                .setTag("DialogTest")   //设置Tag
+                .setDimAmount(0.6f)     //设置弹窗背景透明度(0-1f)
+                .setCancelableOutside(true)     //弹窗在界面外是否可以点击取消
+                .setDialogAnimationRes(R.style.animate_dialog)  //设置弹窗动画
+                .setOnDismissListener(new DialogInterface.OnDismissListener() { //弹窗隐藏时回调方法
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        Toast.makeText(DiffentDialogActivity.this, "弹窗消失回调", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setOnBindViewListener(new OnBindViewListener() {   //通过BindViewHolder拿到控件对象,进行修改
+                    @Override
+                    public void bindView(BindViewHolder bindViewHolder) {
+                        bindViewHolder.setText(R.id.tv_content, "abcdef");
+                        bindViewHolder.setText(R.id.tv_title, "我是Title");
+                    }
+                })
+                .addOnClickListener(R.id.btn_left, R.id.btn_right, R.id.tv_title)   //添加进行点击控件的id
+                .setOnViewClickListener(new OnViewClickListener() {     //View控件点击事件回调
+                    @Override
+                    public void onViewClick(BindViewHolder viewHolder, View view, TDialog tDialog) {
+                        switch (view.getId()) {
+                            case R.id.btn_left:
+                                Toast.makeText(DiffentDialogActivity.this, "left clicked", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.btn_right:
+                                Toast.makeText(DiffentDialogActivity.this, "right clicked", Toast.LENGTH_SHORT).show();
+                                tDialog.dismiss();
+                                break;
+                            case R.id.tv_title:
+                                Toast.makeText(DiffentDialogActivity.this, "title clicked", Toast.LENGTH_SHORT).show();
+                                viewHolder.setText(R.id.tv_title, "Title点击了");
+                                break;
+                        }
+                    }
+                })
+                .create()   //创建TDialog
+                .show();    //展示
+
+```
+添加动画姿势
+```
+新建补间动画文件
+enter.xml
+<?xml version="1.0" encoding="utf-8"?>
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="300"
+    android:fromYDelta="100%p"
+    android:toYDelta="0%p">
+
+</translate>
+exit.xml
+<?xml version="1.0" encoding="utf-8"?>
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="300"
+    android:fromYDelta="0%p"
+    android:toYDelta="100%p">
+
+</translate>
+style.xml文件
+<style name="animate_dialog">
+    <item name="android:windowEnterAnimation">@anim/enter</item>
+    <item name="android:windowExitAnimation">@anim/exit</item>
+</style>
+```
 #### 使用方法解析
 TDialog的实现原理和系统Dialog原理差不多,主要使用Builder设计模式实现
 1.创建弹窗,传入xml布局文件或者传入View控件,且自己设置背景色,因为默认是透明背景色
@@ -107,14 +134,14 @@ new TDialog.Builder(getSupportFragmentManager())
 ```
 .setDimAmount(0.6f)
 ```
-5.设置弹窗外部是否可以点击取消(默认可点击取消),和设置弹窗是否可以取消(默认可取消)
+5.设置弹窗外部是否可以点击取消(默认可点击取消),和设置弹窗是否可以取消(默认可取消),弹窗隐藏时回调方法
 ```
 .setCancelableOutside(true)
 .setCancelable(true)//是否可以取消
 .setOnDismissListener(new DialogInterface.OnDismissListener() { //弹窗隐藏时回调方法
     @Override
     public void onDismiss(DialogInterface dialog) {
-        Toast.makeText(DiffentDialogActivity.this, "弹窗消失回调", Toast.LENGTH_SHORT).show();
+        Toast.makeText(DiffentDialogActivity.this, "弹窗隐藏回调", Toast.LENGTH_SHORT).show();
     }
 })
 ```
@@ -124,7 +151,7 @@ new TDialog.Builder(getSupportFragmentManager())
     @Override
     public void bindView(BindViewHolder bindViewHolder) {
         bindViewHolder.setText(R.id.tv_content, "abcdef");
-    bindViewHolder.setText(R.id.tv_title,"我是Title");
+    bindViewHolder.setText(R.id.tv_title,"我是Title");        
     }
 })
 ```
@@ -147,7 +174,11 @@ addOnClickListener(ids[])只需要将点击事件控件的id传入,并设置回�
     }
 })
 ```
-8.列表弹窗-使用TListDialog,TListDialog继承自TDialog,可以使用父类所有的方法,并且扩展列表数据展示丰富setAdapter()和item点击事件回调方法setOnAdapterItemClickListener()
+8.设置弹窗动画
+```
+.setDialogAnimationRes(R.style.animate_dialog) 
+```
+a.列表弹窗-使用TListDialog,TListDialog继承自TDialog,可以使用父类所有的方法,并且扩展列表数据展示丰富setAdapter()和item点击事件回调方法setOnAdapterItemClickListener()
 ```
 new TListDialog.Builder(getSupportFragmentManager())
         .setHeight(600)
@@ -297,20 +328,8 @@ TDialog的实现原理主要分为三步
 2. create()方法调用后才会实例化TDialog对象,并将TController.TParams中设置的数据传递到TDialog的属性TController对象中
 3. show()方法调用显示弹窗
 4. UML调用时序图
-![](/images/TDialog-fw.png)
+
+
+
 #### 项目github地址:https://github.com/Timmy-zzh/TDialog
 
-##### 版本历史
-1.3.1版本:
-      添加弹窗隐藏时回调监听方法:setOnDismissListener()
-1.3.0版本:
-      处理setCancelable()方法,禁止弹窗点击取消
-      弹窗内容直接传入View: setDialogView()
-1.2.0版本:
-      分离出列表弹窗TListDialog
-      解决弹窗按Home键时出现的bug
-1.1.0版本: 添加点击事件封装回调方法
-      addOnClickListener()
-      setOnViewClickListener()
-1.0.0版本: 弹窗实现基本功能
-       OnBindViewListener
