@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,6 @@ public class DiffentDialogActivity extends AppCompatActivity {
                         tDialog.dismiss();
                     }
                     return;
-
                 case WHAT_PROGRESS:
                     currProgress += 5;
                     progressBar.setProgress(currProgress);
@@ -79,10 +79,20 @@ public class DiffentDialogActivity extends AppCompatActivity {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_loading, null);
         tDialog = new TDialog.Builder(getSupportFragmentManager())
                 .setDialogView(view)
-//                .setCancelableOutside(false)
+                .setCancelableOutside(false)
+                .setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                        Toast.makeText(DiffentDialogActivity.this, "keyCode:" + keyCode, Toast.LENGTH_SHORT).show();
+                        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                            return true;
+                        }
+                        return false;
+                    }
+                })
                 .create();
         tDialog.show();
-//        tDialog.dismiss();
     }
 
     public void useTDialog(View view) {
@@ -130,6 +140,13 @@ public class DiffentDialogActivity extends AppCompatActivity {
                         }
                     }
                 })
+                .setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                        Toast.makeText(DiffentDialogActivity.this, "按键 keyCode:" + keyCode, Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                })
                 .create()   //创建TDialog
                 .show();    //展示
     }
@@ -152,6 +169,33 @@ public class DiffentDialogActivity extends AppCompatActivity {
                                 tDialog.dismiss();
                                 break;
                         }
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    public void upgradeDialogStrong(View view) {
+        new TDialog.Builder(getSupportFragmentManager())
+                .setLayoutRes(R.layout.dialog_version_upgrde_strong)
+                .setScreenWidthAspect(this, 0.7f)
+                .addOnClickListener(R.id.tv_confirm)
+                .setCancelableOutside(false)
+                .setDialogAnimationRes(R.style.animate_dialog_scale)
+                .setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                        if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            Toast.makeText(DiffentDialogActivity.this, "返回健无效，请强制升级后使用", Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                        return false;
+                    }
+                })
+                .setOnViewClickListener(new OnViewClickListener() {
+                    @Override
+                    public void onViewClick(BindViewHolder viewHolder, View view, TDialog tDialog) {
+                        Toast.makeText(DiffentDialogActivity.this, "开始下载新版本apk文件", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .create()

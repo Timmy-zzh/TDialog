@@ -26,7 +26,7 @@ Dialog使用起来其实更简单,但是Google却是推荐尽量使用DialogFrag
 ```
  b.在model下build.gradle文件添加
 ```
-compile 'com.timmy.tdialog:tdialog:2.0.0'
+implementation 'com.timmy.tdialog:tdialog:2.1.0'
 ```
 2.Activity或者Fragment中使用
 ```
@@ -73,6 +73,12 @@ compile 'com.timmy.tdialog:tdialog:2.0.0'
                                 viewHolder.setText(R.id.tv_title, "Title点击了");
                                 break;
                         }
+                    }
+                })
+                .setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                        return false;
                     }
                 })
                 .create()   //创建TDialog
@@ -137,7 +143,6 @@ new TDialog.Builder(getSupportFragmentManager())
 5.设置弹窗外部是否可以点击取消(默认可点击取消),和设置弹窗是否可以取消(默认可取消),弹窗隐藏时回调方法
 ```
 .setCancelableOutside(true)
-.setCancelable(true)//是否可以取消
 .setOnDismissListener(new DialogInterface.OnDismissListener() { //弹窗隐藏时回调方法
     @Override
     public void onDismiss(DialogInterface dialog) {
@@ -177,6 +182,19 @@ addOnClickListener(ids[])只需要将点击事件控件的id传入,并设置回�
 8.设置弹窗动画
 ```
 .setDialogAnimationRes(R.style.animate_dialog) 
+```
+9.监听返回键点击事件,需配合setCancelableOutside(false)方法一起使用
+```
+.setOnKeyListener(new DialogInterface.OnKeyListener() {
+    @Override
+    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+           if (keyCode == KeyEvent.KEYCODE_BACK) {
+                Toast.makeText(DiffentDialogActivity.this, "返回健无效，请强制升级后使用", Toast.LENGTH_SHORT).show();
+                 return true;
+           }
+           return false;  //默认返回值
+     }
+})
 ```
 a.列表弹窗-使用TListDialog,TListDialog继承自TDialog,可以使用父类所有的方法,并且扩展列表数据展示丰富setAdapter()和item点击事件回调方法setOnAdapterItemClickListener()
 ```
@@ -333,6 +351,9 @@ TDialog的实现原理主要分为三步
 
 ##### 版本历史
 ```
+2.1.0版本:
+      添加返回键事件监听
+
 2.0.0版本:
       添加弹窗动画
       修复show()方法调用时bug

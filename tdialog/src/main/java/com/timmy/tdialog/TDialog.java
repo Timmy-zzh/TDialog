@@ -150,6 +150,11 @@ public class TDialog extends BaseDialogFragment {
         return tController.getDialogAnimationRes();
     }
 
+    @Override
+    protected DialogInterface.OnKeyListener getOnKeyListener() {
+        return tController.getOnKeyListener();
+    }
+
     public TDialog show() {
         Log.d(TAG, "show");
         FragmentTransaction ft = tController.getFragmentManager().beginTransaction();
@@ -322,6 +327,14 @@ public class TDialog extends BaseDialogFragment {
          */
         public Builder setDialogAnimationRes(int animationRes) {
             params.mDialogAnimationRes = animationRes;
+            return this;
+        }
+
+        /**
+         * 监听弹窗后，返回键点击事件
+         */
+        public Builder setOnKeyListener(DialogInterface.OnKeyListener keyListener) {
+            params.mKeyListener = keyListener;
             return this;
         }
 

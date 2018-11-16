@@ -2,6 +2,7 @@ package com.timmy.tdialog.base;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -94,6 +95,13 @@ public abstract class BaseDialogFragment extends DialogFragment {
         if (dialog.getWindow() != null && getDialogAnimationRes() > 0) {
             dialog.getWindow().setWindowAnimations(getDialogAnimationRes());
         }
+        if (getOnKeyListener() !=null){
+            dialog.setOnKeyListener(getOnKeyListener());
+        }
+    }
+
+    protected DialogInterface.OnKeyListener getOnKeyListener() {
+        return null;
     }
 
     @Override

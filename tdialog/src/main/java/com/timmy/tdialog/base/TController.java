@@ -41,6 +41,7 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
     private int dialogAnimationRes;
     private View dialogView;
     private DialogInterface.OnDismissListener onDismissListener;
+    private DialogInterface.OnKeyListener onKeyListener;
 
 
     //////////////////////////////////////////Parcelable持久化//////////////////////////////////////////////////////
@@ -153,6 +154,10 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
         return onDismissListener;
     }
 
+    public DialogInterface.OnKeyListener getOnKeyListener() {
+        return onKeyListener;
+    }
+
     public View getDialogView() {
         return dialogView;
     }
@@ -200,6 +205,7 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
         public int orientation = LinearLayoutManager.VERTICAL;//默认RecyclerView的列表方向为垂直方向
         public View mDialogView;//直接使用传入进来的View,而不需要通过解析Xml
         public DialogInterface.OnDismissListener mOnDismissListener;
+        public DialogInterface.OnKeyListener mKeyListener;
 
         public void apply(TController tController) {
             tController.fragmentManager = mFragmentManager;
@@ -226,6 +232,7 @@ public class TController<A extends TBaseAdapter> implements Parcelable, Serializ
             tController.onBindViewListener = bindViewListener;
             tController.onDismissListener = mOnDismissListener;
             tController.dialogAnimationRes = mDialogAnimationRes;
+            tController.onKeyListener =mKeyListener;
 
             if (adapter != null) {
                 tController.setAdapter(adapter);

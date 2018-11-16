@@ -17,7 +17,7 @@
             android:visibility="gone"
             android:onClick="testDialog"
             android:text="测试"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false" />
 
         <Button
             android:layout_width="match_parent"
@@ -36,7 +36,16 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:onClick="upgradeDialog"
-            android:text="版本升级" />
+            android:text="版本升级（提醒升级）" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:onClick="upgradeDialogStrong"
+            android:text="版本升级（强制升级，弹窗不可取消）" />
 
         <Button
             android:layout_width="match_parent"
