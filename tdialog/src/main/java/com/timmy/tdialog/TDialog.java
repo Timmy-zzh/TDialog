@@ -157,9 +157,13 @@ public class TDialog extends BaseDialogFragment {
 
     public TDialog show() {
         Log.d(TAG, "show");
-        FragmentTransaction ft = tController.getFragmentManager().beginTransaction();
-        ft.add(this, tController.getTag());
-        ft.commitAllowingStateLoss();
+        try {
+            FragmentTransaction ft = tController.getFragmentManager().beginTransaction();
+            ft.add(this, tController.getTag());
+            ft.commitAllowingStateLoss();
+        } catch (Exception e) {
+            Log.e("TDialog", e.toString());
+        }
         return this;
     }
 

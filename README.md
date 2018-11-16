@@ -26,7 +26,7 @@ Dialog使用起来其实更简单,但是Google却是推荐尽量使用DialogFrag
 ```
  b.在model下build.gradle文件添加
 ```
-implementation 'com.timmy.tdialog:tdialog:2.1.0'
+implementation 'com.timmy.tdialog:tdialog:2.1.1'
 ```
 2.Activity或者Fragment中使用
 ```
@@ -351,8 +351,9 @@ TDialog的实现原理主要分为三步
 
 ##### 版本历史
 ```
-2.1.0版本:
+2.1.1版本:
       添加返回键事件监听
+      show()方法添加容错处理
 
 2.0.0版本:
       添加弹窗动画

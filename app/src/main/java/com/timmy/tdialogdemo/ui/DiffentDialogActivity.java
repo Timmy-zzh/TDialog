@@ -53,6 +53,7 @@ public class DiffentDialogActivity extends AppCompatActivity {
                         tDialog.dismiss();
                     }
                     return;
+
                 case WHAT_PROGRESS:
                     currProgress += 5;
                     progressBar.setProgress(currProgress);
