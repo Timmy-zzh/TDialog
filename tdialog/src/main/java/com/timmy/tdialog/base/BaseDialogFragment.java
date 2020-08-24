@@ -68,7 +68,8 @@ public abstract class BaseDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return super.onCreateDialog(savedInstanceState);
+//        return super.onCreateDialog(savedInstanceState);
+        return new WeakDialog(requireContext(), getTheme());
     }
 
     @Nullable

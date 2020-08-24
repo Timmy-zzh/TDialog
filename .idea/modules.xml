@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TDialog.iml" filepath="$PROJECT_DIR$/TDialog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/TDialog-app.iml" filepath="$PROJECT_DIR$/app/TDialog-app.iml" group="TDialog/app" />
+      <module fileurl="file://$PROJECT_DIR$/TDialog-leak-TDialog.iml" filepath="$PROJECT_DIR$/TDialog-leak-TDialog.iml" group="TDialog" />
+      <module fileurl="file://$PROJECT_DIR$/tdialog/TDialog-tdialog.iml" filepath="$PROJECT_DIR$/tdialog/TDialog-tdialog.iml" group="TDialog/tdialog" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/tdialog/tdialog.iml" filepath="$PROJECT_DIR$/tdialog/tdialog.iml" />
     </modules>
