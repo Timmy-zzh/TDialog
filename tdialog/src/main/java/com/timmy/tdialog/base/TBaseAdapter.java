@@ -1,7 +1,7 @@
 package com.timmy.tdialog.base;
 
-import android.support.annotation.LayoutRes;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.LayoutRes;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.timmy.tdialog.TDialog;
 
 import java.util.List;
+
 /**
  *
  * @author Timmy

@@ -2,18 +2,17 @@ package com.timmy.tdialogdemo.ui;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.timmy.tdialogdemo.R;
 
-import static android.support.v4.os.LocaleListCompat.create;
+import static androidx.core.os.LocaleListCompat.create;
 
 /**
  * 系统Dialog使用

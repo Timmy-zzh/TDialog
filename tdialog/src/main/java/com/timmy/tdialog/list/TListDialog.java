@@ -2,10 +2,10 @@ package com.timmy.tdialog.list;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.support.annotation.LayoutRes;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.LayoutRes;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
@@ -15,8 +15,6 @@ import com.timmy.tdialog.base.TBaseAdapter;
 import com.timmy.tdialog.base.TController;
 import com.timmy.tdialog.listener.OnBindViewListener;
 import com.timmy.tdialog.listener.OnViewClickListener;
-
-import java.util.logging.Logger;
 
 /**
  * 列表弹窗  与TDialog实现分开处理

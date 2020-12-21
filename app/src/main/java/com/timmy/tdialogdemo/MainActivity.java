@@ -1,21 +1,10 @@
 package com.timmy.tdialogdemo;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.timmy.tdialog.TDialog;
-import com.timmy.tdialog.base.BindViewHolder;
-import com.timmy.tdialog.listener.OnBindViewListener;
-import com.timmy.tdialog.listener.OnViewClickListener;
 import com.timmy.tdialogdemo.ui.DialogEncapActivity;
 import com.timmy.tdialogdemo.ui.DiffentDialogActivity;
 import com.timmy.tdialogdemo.ui.NormalDFActivity;
