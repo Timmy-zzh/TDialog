@@ -1,43 +1,22 @@
 package com.timmy.tdialog;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.FloatRange;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import com.timmy.tdialog.base.BaseDialogFragment;
 import com.timmy.tdialog.base.BindViewHolder;
-import com.timmy.tdialog.base.TBaseAdapter;
 import com.timmy.tdialog.base.TController;
 import com.timmy.tdialog.listener.OnBindViewListener;
 import com.timmy.tdialog.listener.OnViewClickListener;
 
 /**
- * 1.0.0版本: 弹窗实现基本功能
- * OnBindViewListener
- * 1.1.0版本: 添加点击事件封装回调方法
- * addOnClickListener()
- * setOnViewClickListener()
- * 1.2.0版本:
- * 分离出列表弹窗TListDialog
- * 解决弹窗按Home键时出现的bug
- * 1.3.0版本:
- * 处理setCancelable()方法,禁止弹窗点击取消
- * 弹窗内容直接传入View: setDialogView()
- * 1.3.1版本:
- * 添加弹窗隐藏时回调监听方法:setOnDismissListener()
- *
  * @author Timmy
  * @time 2018/1/4 16:28
  * @GitHub https://github.com/Timmy-zzh/TDialog

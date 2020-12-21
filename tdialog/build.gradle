@@ -1,15 +1,16 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 211
+        versionName "2.1.1"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
     }
 
@@ -23,8 +24,16 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly 'com.android.support:support-v4:27.1.1'
-    compileOnly 'com.android.support:recyclerview-v7:27.1.1'
+    compileOnly 'androidx.appcompat:appcompat:1.2.0'
+    compileOnly 'androidx.recyclerview:recyclerview:1.1.0'
 }
 
-apply from: 'bintrayUpload.gradle'
+publish {
+    repoName = 'maven'
+    userOrg = 'chenyan521'
+    groupId = 'com.timmy.tdialog'
+    artifactId = 'tdialog-androidx'
+    publishVersion = android.defaultConfig.versionName
+    desc = 'timmy open library TDialog'
+    website = 'https://github.com/Timmy-zzh/TDialog'
+}

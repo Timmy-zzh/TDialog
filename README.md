@@ -17,18 +17,27 @@ Dialog使用起来其实更简单,但是Google却是推荐尽量使用DialogFrag
 * 在手机配置变化导致 Activity 需要重新创建时，例如旋转屏幕，基于 DialogFragment 的对话框将会由 FragmentManager 自动重建，然而基于 Dialog 实现的对话框却没有这样的能力
 ####使用
 1.添加依赖
- a. 在工程build.gradle文件repositories中添加
+
+- 在工程build.gradle文件repositories中添加
+
 ```
   repositories {
     ...
     jcenter() 
 }
 ```
- b.在model下build.gradle文件添加
+
+- 在module下build.gradle文件添加 
+
 ```
 implementation 'com.timmy.tdialog:tdialog:2.1.1'
+	
+//AndroidX版本
+implementation 'com.timmy.tdialog:tdialog-androidx:2.1.1'
 ```
+
 2.Activity或者Fragment中使用
+
 ```
 
         new TDialog.Builder(getSupportFragmentManager())
@@ -86,6 +95,7 @@ implementation 'com.timmy.tdialog:tdialog:2.1.1'
 
 ```
 添加动画姿势
+
 ```
 新建补间动画文件
 enter.xml
